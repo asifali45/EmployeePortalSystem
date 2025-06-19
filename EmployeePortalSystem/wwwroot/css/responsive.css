@@ -1,0 +1,851 @@
+﻿
+/* Login Start Here */
+/* ---------------- */
+
+
+@media(max - width: 768px) {
+    /* nav logo */
+    .nav_logo {
+        padding: 10px 0;
+        height: auto;
+        text - align: center;
+    }
+
+        .nav_logo img {
+            margin - left: 0;
+            width: 100px;
+            height: auto;
+        }
+
+    /* background section */
+    .background_section {
+        background - size: cover;
+        background - position: center;
+        background - repeat: no - repeat;
+        min - height: 110px;
+        padding: 20px 10px;
+        display: flex;
+        justify - content: center;
+        align - items: center;
+    }
+
+    /* login card (keeps row layout) */
+    .login_card {
+        flex - direction: row; /* keep side-by-side layout */
+        flex - wrap: wrap;
+        margin: 20px auto;
+        padding: 15px;
+        gap: 20px;
+        box - shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        border - radius: 16px;
+        background - color: white;
+        width: 95 %;
+        max - width: 600px;
+        align - items: center;
+        justify - content: space - around;
+    }
+
+    .login_image {
+        flex: 1;
+        text - align: center;
+    }
+
+        .login_image img {
+            height: 220px;
+            width: auto;
+            max - width: 100 %;
+        }
+
+    .login_form {
+        flex: 1;
+        max - width: 260px;
+        width: 100 %;
+        text - align: left;
+    }
+
+        .login_form label {
+            font - size: 12px;
+            margin - bottom: 4px;
+            display: block;
+        }
+
+        .login_form input[type = "text"],
+        .login_form input[type = "password"] {
+            width: 100 %;
+            font - size: 14px;
+            padding: 10px;
+            margin - bottom: 12px;
+            border - radius: 12px;
+            border: 1px solid #ccc;
+            background - color: #f2f2f2;
+        }
+
+    .remember {
+        display: flex;
+        align - items: center;
+        font - size: 11px;
+        gap: 5px;
+        margin - bottom: 12px;
+    }
+
+    .button_group {
+        display: flex;
+        justify - content: space - between;
+        gap: 10px;
+        margin - bottom: 10px;
+    }
+
+    .login - btn,
+    .forgot - btn {
+        width: 40 %;
+        padding: 5px;
+        font - size: 10px;
+        font - weight: 600;
+        border - radius: 20px;
+        margin - bottom: 10px;
+        box - shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .login - btn {
+        background - color: #cd2f74;
+        color: white;
+        border: none;
+    }
+
+    .forgot - btn {
+        background - color: white;
+        color: #cd2f74;
+        border: 1px solid #cd2f74;
+    }
+
+    .back_footer {
+        font - size: 9px;
+        text - align: center;
+        margin - top: 20px;
+        color: rgb(24, 58, 138);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* nav logo */
+
+
+    /* background section */
+    .nav_logo {
+        padding: 8px 0;
+        height: auto;
+        text - align: center;
+    }
+
+        .nav_logo img {
+            margin-left: 0;
+            width: 90px;
+            height: auto;
+        }
+
+    /* background section */
+    .background_section {
+        background-size: cover;
+        background - position: center;
+        background - repeat: no - repeat;
+        min - height: 100px;
+        padding: 15px 8px;
+        display: flex;
+        justify - content: center;
+        align - items: center;
+    }
+
+    .login_card {
+        flex-direction: column;
+        padding: 10px;
+        gap: 5px;
+        width: 80 %;
+        max - width: 100 %;
+        box - shadow: 1px 1px 6px rgba(0, 0, 0, 0.15);
+        border - radius: 12px;
+        background - color: #fff;
+        align - items: center;
+        justify - content: center;
+    }
+
+    .login_image {
+        text-align: center;
+        margin - bottom: 10px;
+    }
+
+        .login_image img {
+            height: 180px;
+            width: auto;
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+    .login_form {
+        width: 100 %;
+        max - width: 280px;
+        margin - top: 5px;
+    }
+
+        .login_form label {
+            font-size: 12px;
+        }
+
+        .login_form input[type = "text"],
+        .login_form input[type="password"] {
+            width: 90 %;
+            font - size: 13px;
+            padding: 8px;
+        }
+
+    .remember {
+        font-size: 11px;
+        margin - bottom: 10px;
+    }
+
+    .login - btn,
+    .forgot - btn {
+        width: 40 %;
+        padding: 5px;
+        font - size: 9px;
+        margin - bottom: 10px;
+    }
+
+    .login - btn {
+        background - color: #cd2f74;
+        color: white;
+        border: none;
+    }
+
+    .forgot - btn {
+        background - color: white;
+        color: #cd2f74;
+        border: 1px solid #cd2f74;
+    }
+
+    .back_footer {
+        font-size: 9px;
+        text - align: center;
+        margin - top: 20px;
+        color: rgb(24, 58, 138);
+    }
+}
+
+
+/* Login End Here */
+/* ---------------- */
+
+
+
+
+
+
+
+/* Employee Master Start Here */
+
+
+@media screen and (max-width: 768px) {
+    /* Base container with tighter constraints */
+    .container_emp {
+        width: 100 %;
+        padding: 0 5px;
+        box - sizing: border - box;
+    }
+
+    .nav_left img {
+        width: 85px;
+    }
+
+    .nav_right {
+        gap: 5px;
+        padding - right: 5px;
+    }
+
+    .profile - image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .logo a {
+        height: auto;
+        width: 100px;
+    }
+
+    .menubar_background {
+        height: auto;
+    }
+
+    .menubar_emp {
+        flex-direction: column;
+    }
+
+    .logout - icon {
+        display: none;
+    }
+
+    .mobile - menu {
+        display: block;
+    }
+
+    .user_info {
+        margin-right: 5px;
+    }
+
+    /* Table-specific optimizations with colored heading */
+    .emp_table_wrapper {
+        width: 100 %;
+        overflow - x: auto;
+        -webkit - overflow - scrolling: touch;
+        margin: 10px 0;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        box - shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .emp_table {
+        width: max - content;
+        min - width: 100 %;
+        font - size: 12px;
+        margin: 0;
+        white - space: nowrap;
+        border - collapse: collapse;
+    }
+
+        /* Colored table heading */
+        .emp_table thead th {
+            background-color: #cd2f74; /* Your brand pink color */
+            color: white;
+            font - weight: 500;
+            padding: 8px 10px;
+            position: sticky;
+            top: 0;
+            z - index: 2;
+        }
+
+        .emp_table td {
+            padding: 6px 8px;
+            min-width: 70px;
+            max-width: 150px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+    /* Remove calendar icon from date inputs */
+    input[type = "date"]::- webkit - calendar - picker - indicator {
+        display: none;
+    }
+
+    input[type = "date"] {
+        -webkit - appearance: none;
+        appearance: none;
+    }
+
+    /* Form adjustments */
+    .empmaster_card {
+        width: 100 %;
+        padding: 30px 15px;
+    }
+
+    .form_group input,
+    .form_group select {
+        font-size: 13px;
+        height: 35px;
+        padding: 6px 8px;
+    }
+
+
+    /* Action buttons in tables */
+    .action - buttons {
+        white - space: nowrap;
+    }
+
+        .action - buttons button {
+            padding: 4px 6px;
+            font - size: 11px;
+            margin - right: 3px;
+            background - color: #f0f0f0;
+        }
+
+    /* Responsive form layout */
+    .form_row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .form_group {
+        min-width: 100 %;
+    }
+}
+
+
+/* Responsive adjustments for table at 480px */
+@media(max - width: 480px) {
+    .emp_table {
+        font - size: 8px;
+        padding: 5px;
+        width: 100 %;
+        border - collapse: collapse;
+    }
+
+        .emp_table th, .emp_table td {
+            padding: 8px 12px;
+        }
+
+        .emp_table th {
+            font - size: 10px;
+        }
+
+        .emp_table tbody tr: nth - child(odd) {
+            background - color: #f6f6f6 !important;
+        }
+
+        .emp_table tbody tr: nth - child(even) {
+            background - color: #ffffff !important;
+        }
+
+    .form_row {
+        flex - direction: column; /* Stacked layout for smaller screens */
+        gap: 10px;
+    }
+
+    .form_group {
+        width: 100 %;
+        flex - direction: column;
+    }
+
+        .form_group label {
+            width: 100 %;
+            margin - bottom: 5px;
+        }
+
+        .form_group input,
+        .form_group select {
+            width: 100 %;
+            height: 30px;
+            padding: 8px;
+            font - size: 12px;
+        }
+
+    .entries - select {
+        flex - direction: column;
+    }
+
+        .entries - select label {
+            font - size: 8px;
+        }
+
+    .entries - dropdown {
+        width: 100 %;
+        font - size: 8px;
+    }
+
+    .search - button {
+        width: 100 %;
+        padding: 8px;
+        font - size: 12px;
+    }
+
+    .emp_head h3 {
+        font - size: 16px;
+        padding - left: 10px;
+    }
+}
+
+/* Adjust the header font sizes and padding for better visibility */
+.emp_head h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #727272;
+    padding-left: 10px;
+}
+
+/* Ensure that state and district fields are visible */
+.form_group input[placeholder = "Enter the State"],
+.form_group input[placeholder="Enter the District"] {
+    width: 90 %;
+}
+
+/* Clean up and remove extra space in the user_info */
+.user_info h6,
+.user_info p {
+    font-size: 10px;
+}
+
+/* Button styling */
+button[type = "submit"],
+button[type = "reset"] {
+    padding: 8px 20px;
+    font - size: 12px;
+    width: auto;
+    height: 35px;
+}
+
+/* Styling for the form and table to reduce unnecessary spacing */
+.emp_form {
+    padding: 15px 5px;
+    color: #868686;
+}
+
+
+
+
+
+@media(max - width: 768px) {
+    .container_emp {
+        width: 100 %;
+        padding: 0 5px;
+        box - sizing: border - box;
+    }
+
+    /* Navigation - more compact */
+
+    .nav_left img {
+        width: 85px;
+    }
+
+    .nav_right {
+        gap: 5px;
+        padding - right: 5px;
+    }
+
+    .hero_section {
+        flex - direction: column;
+        align - items: center;
+    }
+
+    .number_card {
+        flex - direction: column; /* Stack cards vertically */
+        align - items: center;
+        gap: 15px;
+        width: 100 %;
+    }
+
+    .card1, .card2, .card3 {
+        width: 100 %; /* Full width for each card */
+        padding: 15px;
+        box - sizing: border - box;
+        display: flex;
+        justify - content: space - between;
+    }
+
+        .card1 img, .card2 img, .card3 img {
+            width: 40px;
+        }
+
+    .card1_right, .card2_right, .card3_right {
+        text - align: left;
+        padding - left: 10px;
+    }
+
+        .card1_right h1, .card2_right h1, .card3_right h1 {
+            font - size: 20px;
+        }
+
+        .card1_right h6, .card2_right h6, .card3_right h6 {
+            font - size: 8px;
+        }
+
+    .motor_bar {
+        display: flex;
+        align - items: center;
+        justify - content: center;
+        gap: 8px;
+        margin - top: 5px;
+    }
+
+    .motor_text {
+        text - align: center;
+        margin - bottom: 20px;
+    }
+
+    .bar {
+        width: 40px;
+        height: 15px;
+        background - color: #ff6c03;
+    }
+
+    .chart - container {
+        position: relative;
+        width: 100 %; /* Full width */
+        height: 300px;
+        margin - left: 0; /* Remove left margin */
+        font - family: sans - serif;
+    }
+
+    .y - labels, .x - labels {
+        position: absolute;
+        font - size: 12px;
+    }
+
+    .y - labels {
+        left: -15px;
+        top: 0;
+        height: 100 %;
+        display: flex;
+        flex - direction: column;
+        justify - content: space - between;
+    }
+
+    .x - labels {
+        bottom: -20px;
+        left: 0;
+        width: 100 %;
+        display: flex;
+        justify - content: space - between;
+    }
+
+    svg {
+        width: 100 %;
+        height: 100 %;
+        border - left: 2px solid rgb(185, 185, 185);
+        border - bottom: 2px solid rgb(185, 185, 185);
+    }
+
+    .policy_card, .table_card {
+        display: flex;
+        justify - content: center;
+        flex - wrap: wrap;
+        gap: 20px;
+        width: 100 %;
+    }
+
+    .motor_card_box {
+        width: 100 %; /* Full width */
+        min - width: 300px;
+        background: #fff;
+        padding: 20px;
+        border - radius: 12px;
+        box - shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text - align: center;
+        display: flex;
+        flex - direction: column;
+        box - sizing: border - box;
+    }
+
+    /* Adjust chart container width and height */
+    .chart - container {
+        position: relative;
+        width: 100 %;
+        height: 300px;
+        margin - left: 0;
+    }
+
+    .details - header {
+        display: flex;
+        justify - content: space - between;
+        align - items: center;
+        margin - bottom: 10px;
+    }
+
+    .details h6 {
+        color: #d81b60;
+        margin: 0;
+        font - size: 14px;
+        font - weight: 600;
+    }
+
+    .pagination - info {
+        margin: 0;
+        font - size: 9px;
+        color: #858585;
+    }
+
+    .details table {
+        border: 1px solid #e0e0e0;
+        border - radius: 8px;
+    }
+
+        .details table th {
+            background - color: #f22772;
+            color: #ffffff;
+            padding: 8px 30px;
+            text - align: left;
+            border: none;
+            font - size: 10px;
+            font - weight: 500;
+        }
+
+        .details table td {
+            padding: 6px 10px;
+            background - color: #ffffff;
+            border: none;
+            font - size: 10px;
+            color: #353536;
+        }
+
+        .details table tr: hover td {
+            background - color: #ffffff;
+        }
+
+    .details {
+        border - radius: 8px;
+        overflow: hidden;
+    }
+
+    .pagination2 {
+        background - color: #ffffff;
+        padding: 6px 8px;
+        border: none;
+        border - radius: 0 0 8px 8px;
+        margin - top: 0;
+        font - size: 9px;
+        display: flex;
+        align - items: center;
+        justify - content: center;
+        gap: 2px;
+        color: #858585;
+    }
+
+        .pagination2 span {
+            margin: 0 2px;
+        }
+
+    .details h3 {
+        color: #d81b60;
+        margin - bottom: 8px;
+        font - size: 14px;
+    }
+
+    .details table img {
+        width: 12px;
+        height: 12px;
+    }
+
+    table {
+        border - collapse: collapse;
+        border: none;
+        width: 100 %;
+    }
+}
+
+@media(max - width: 480px) {
+    /* Container adjustments for very small screens */
+    .container_emp {
+        width: 100 %;
+        padding: 0 5px;
+        box - sizing: border - box;
+        overflow - x: hidden;
+    }
+
+    .hero_section {
+        flex - direction: column;
+        align - items: center;
+        padding: 8px;
+    }
+
+    .number_card {
+        flex - direction: column;
+        align - items: center;
+        gap: 10px;
+        width: 100 %;
+    }
+
+    .card1, .card2, .card3 {
+        width: 100 %; /* Full width for each card */
+        margin: 8px 0;
+        padding: 10px;
+        box - sizing: border - box;
+        display: flex;
+        justify - content: center;
+    }
+
+        .card1 img, .card2 img, .card3 img {
+            width: 35px;
+        }
+
+    .card1_right, .card2_right, .card3_right {
+        text - align: left;
+        padding - left: 8px;
+    }
+
+        .card1_right h1, .card2_right h1, .card3_right h1 {
+            font - size: 18px;
+        }
+
+        .card1_right h6, .card2_right h6, .card3_right h6 {
+            font - size: 7px;
+        }
+
+    .motor_bar {
+        display: flex;
+        align - items: center;
+        justify - content: center;
+        gap: 6px;
+        margin - top: 5px;
+    }
+
+    .motor_text {
+        text - align: center;
+        margin - bottom: 15px;
+    }
+
+    .bar {
+        width: 35px;
+        height: 12px;
+        background - color: #ff6c03;
+    }
+
+    .chart - container {
+        position: relative;
+        width: 100 %;
+        height: 250px; /* Reduced height */
+        margin - left: 0;
+    }
+
+    .policy_card, .table_card {
+        display: flex;
+        justify - content: center;
+        flex - wrap: wrap;
+        gap: 15px;
+        padding: 15px;
+        width: 100 %;
+    }
+
+    .motor_card_box {
+        width: 100 %; /* Full width */
+        min - width: 280px;
+        background: #fff;
+        padding: 15px;
+        border - radius: 12px;
+        box - shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text - align: center;
+        display: flex;
+        flex - direction: column;
+        box - sizing: border - box;
+    }
+
+    .details - header {
+        display: flex;
+        justify - content: space - between;
+        align - items: center;
+        margin - bottom: 8px;
+    }
+
+    .details h6 {
+        color: #d81b60;
+        margin: 0;
+        font - size: 12px;
+        font - weight: 600;
+    }
+
+    .pagination - info {
+        margin: 0;
+        font - size: 8px;
+        color: #858585;
+    }
+
+    .details table th {
+        padding: 6px 20px;
+        font - size: 9px;
+    }
+
+    .details table td {
+        padding: 5px 8px;
+        font - size: 9px;
+    }
+
+    .pagination2 {
+        padding: 5px 7px;
+        font - size: 8px;
+    }
+}

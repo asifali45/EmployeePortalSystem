@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+
+<div class="container">
+    <div class="dashboard-contents">
+        <div class="hero_section">
+            <div class="number_card">
+                <div class="card1">
+                    <div class="card1_left">
+                        <img src="~/img/Policies.png" />
+                    </div>
+                    <div class="card1_right">
+                        <h2>Total Awards</h2>
+                        <h1>3</h1>
+                    </div>
+                </div>
+                <div class="card2">
+                    <div class="card2_left">
+                        <img src="~/img/Claims.png" />
+                    </div>
+                    <div class="card2_right">
+                        <h2>Blogs Written</h2>
+                        <h1>5</h1>
+                    </div>
+                </div>
+                <div class="card3">
+                    <div class="card3_left">
+                        <img src="~/img/Settlement.png" />
+                    </div>
+                    <div class="card3_right">
+                        <h2>Polls Votted</h2>
+                        <h1>7</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="policy_card">
+            <div class="motor_card_box">
+                <div class="motor_text">
+                    <h2 style="font-weight: bold; font-size: 20px;">Activity Contribution</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="mychart1" style="width:100%; height: 100%;"></canvas>
+                    @* <script> *@
+                    @*     const ctx1 = document.getElementById('mychart1').getContext('2d'); *@
+                    @*     const mychart1 = new Chart(ctx1, { *@
+                    @*         type: 'bar', *@
+                    @*         data: { *@
+                    @*             labels: ["Active Policies", "Expired", "Pending", "Renewed", "Cancelled"], *@
+                    @*             datasets: [{ *@
+                    @*                 label: 'Sales', *@
+                    @*                 data: [300, 150, 50, 100, 30], *@
+                    @*                 backgroundColor: [ *@
+                    @*                     'rgba(255, 99, 132, 0.7)', *@
+                    @*                     'rgba(54, 162, 235, 0.7)', *@
+                    @*                     'rgba(255, 206, 86, 0.7)', *@
+                    @*                     'rgba(75, 192, 192, 0.7)', *@
+                    @*                     'rgba(153, 102, 255, 0.7)' *@
+                    @*                 ], *@
+                    @*                 borderColor: [ *@
+                    @*                     'rgba(255, 99, 132, 1)', *@
+                    @*                     'rgba(54, 162, 235, 1)', *@
+                    @*                     'rgba(255, 206, 86, 1)', *@
+                    @*                     'rgba(75, 192, 192, 1)', *@
+                    @*                     'rgba(153, 102, 255, 1)' *@
+                    @*                 ], *@
+                    @*                 borderWidth: 1 *@
+                    @*             }] *@
+                    @*         } *@
+                    @*     }); *@
+                    @* </script> *@
+                </div>
+            </div>
+
+            <div class="motor_card_box">
+                <h2 style="font-weight: bold; font-size: 20px;">Monthly Activity Trends</h2>
+                <div class="chart-container">
+                    <canvas id="mychart" style="width:100%; height: 100%;"></canvas>
+                    @* <script> *@
+                    @*     const ctx = document.getElementById('mychart').getContext('2d'); *@
+                    @*     const mychart = new Chart(ctx, { *@
+                    @*         type: 'pie', *@
+                    @*         data: { *@
+                    @*             labels: ["Active Policies", "Expired", "Pending", "Renewed", "Cancelled"], *@
+                    @*             datasets: [{ *@
+                    @*                 label: 'Sales', *@
+                    @*                 data: [300, 150, 50, 100, 30], *@
+                    @*                 backgroundColor: [ *@
+                    @*                     'rgba(255, 99, 132, 0.7)', *@
+                    @*                     'rgba(54, 162, 235, 0.7)', *@
+                    @*                     'rgba(255, 206, 86, 0.7)', *@
+                    @*                     'rgba(75, 192, 192, 0.7)', *@
+                    @*                     'rgba(153, 102, 255, 0.7)' *@
+                    @*                 ], *@
+                    @*                 borderColor: [ *@
+                    @*                     'rgba(255, 99, 132, 1)', *@
+                    @*                     'rgba(54, 162, 235, 1)', *@
+                    @*                     'rgba(255, 206, 86, 1)', *@
+                    @*                     'rgba(75, 192, 192, 1)', *@
+                    @*                     'rgba(153, 102, 255, 1)' *@
+                    @*                 ], *@
+                    @*                 borderWidth: 1 *@
+                    @*             }] *@
+                    @*         } *@
+                    @*     }); *@
+                    @* </script> *@
+                </div>
+            </div>
+        </div>
+
+        <div class="table_card">
+            <!-- First Table -->
+            <div class="motor_card_box">
+                <div class="details">
+                    <div class="details-header">
+                        <h6>Latest Blogs</h6>
+                    </div>
+                    <div class="table-responsive">
+                        @* <table class="table" id="table1"> *@
+                        @*     <thead> *@
+                        @*         <tr> *@
+                        @*             <th>Action</th> *@
+                        @*             <th>Quotation</th> *@
+                        @*             <th>Policy Issue</th> *@
+                        @*             <th>Policy End</th> *@
+                        @*             <th>Status</th> *@
+                        @*         </tr> *@
+                        @*     </thead> *@
+                        @*     <tbody> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/10/409</td><td>2023-01-01</td><td>2023-12-31</td><td>Building</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/10/410</td><td>2023-02-01</td><td>2023-12-31</td><td>Pending</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/10/411</td><td>2023-03-01</td><td>2023-12-31</td><td>Issued</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/10/412</td><td>2023-04-01</td><td>2023-12-31</td><td>Cancelled</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/10/413</td><td>2023-05-01</td><td>2023-12-31</td><td>Renewed</td></tr> *@
+                        @*     </tbody> *@
+                        @* </table> *@
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Table -->
+            <div class="motor_card_box">
+                <div class="details">
+                    <div class="details-header">
+                        <h6>Active Polls</h6>
+                    </div>
+                    <div class="table-responsive">
+                        @* <table class="table" id="table2"> *@
+                        @*     <thead> *@
+                        @*         <tr> *@
+                        @*             <th>Action</th> *@
+                        @*             <th>Quotation</th> *@
+                        @*             <th>Policy Issue</th> *@
+                        @*             <th>Policy End</th> *@
+                        @*             <th>Status</th> *@
+                        @*         </tr> *@
+                        @*     </thead> *@
+                        @*     <tbody> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/409</td><td>2023-06-10</td><td>2024-06-09</td><td>Pending</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/410</td><td>2023-07-12</td><td>2024-07-11</td><td>Issued</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/411</td><td>2023-08-05</td><td>2024-08-04</td><td>Cancelled</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/412</td><td>2023-09-12</td><td>2024-09-11</td><td>Renewed</td></tr> *@
+                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/413</td><td>2023-10-12</td><td>2024-10-11</td><td>Building</td></tr> *@
+                        @*     </tbody> *@
+                        @* </table> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="modal">
+            <h2>Edit Policy Details</h2>
+            <form>
+                <label>Quotation:</label>
+                <input type="text" id="quotation" name="quotation" />
+
+                <label>Policy Issue:</label>
+                <input type="date" id="policyIssue" name="policyIssue" />
+
+                <label>Policy End:</label>
+                <input type="date" id="policyEnd" name="policyEnd" />
+
+                <label>Status:</label>
+                <input type="text" id="status" name="status" />
+
+                <button type="submit" class="submit-button">Submit</button>
+                <button type="button" id="cancel-button">Cancel</button>
+            </form>
+        </div>
+
+        <script>
+            let selectedRow = null;
+            document.querySelectorAll('.edit-icon').forEach(icon => {
+                icon.addEventListener('click', function () {
+                    selectedRow = this.closest('tr');
+                    const cells = selectedRow.querySelectorAll('td');
+                    document.getElementById('quotation').value = cells[1].innerText;
+                    document.getElementById('policyIssue').value = cells[2].innerText;
+                    document.getElementById('policyEnd').value = cells[3].innerText;
+                    document.getElementById('status').value = cells[4].innerText;
+                    document.getElementById('edit-modal').style.display = 'block';
+                });
+            });
+
+            document.querySelector('.submit-button').addEventListener('click', function (event) {
+                event.preventDefault();
+                if (selectedRow) {
+                    const cells = selectedRow.querySelectorAll('td');
+                    cells[1].innerText = document.getElementById('quotation').value;
+                    cells[2].innerText = document.getElementById('policyIssue').value;
+                    cells[3].innerText = document.getElementById('policyEnd').value;
+                    cells[4].innerText = document.getElementById('status').value;
+                }
+                document.getElementById('edit-modal').style.display = 'none';
+            });
+
+            document.getElementById('cancel-button').addEventListener('click', function () {
+                document.getElementById('edit-modal').style.display = 'none';
+            });
+        </script>
+    </div>
+</div>
+

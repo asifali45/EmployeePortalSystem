@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+</head>
+<body>
+    <header class="login_header">
+        <div class="container">
+            <nav>
+                <div class="nav_logo">
+                    <img src="~/img/ai_2.png" alt="Logo" />
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="background_section">
+        <div class="login_card">
+            <div class="login_image">
+                <img src="~/img/login%20illustration.png" alt="Login Illustration" />
+            </div>
+            <div class="login_form">
+                <form asp-action="Login" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="remember">
+                        <input type="checkbox" />
+                        <label>Remember me in this machine</label>
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+
+                    <div class="button_group">
+                        <button type="submit" class="login-btn">Login</button>
+                        <button type="button" class="forgot-btn">Forgot Password</button>
+                    </div>
+                    <div class="signup">
+                        Create new ? <a href="#">Signup</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="back_footer">
+            <p>©2023 SMRT. All Rights Reserved | Developed by Alnsurtech</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>
+
+
