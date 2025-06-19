@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Employee";
+}
+<div class="text-center">
+    <h1 class="display-4">Add An Employee</h1>
+    <form asp-action="AddEmployee" method="post">
+
+        <div>
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Name" required>
+        </div>
+
+        <div>
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" required>
+        </div>
+
+        <div>
+            <label for="Password">Password:</label>
+            <input type="password" id="Password" name="Password" required>
+        </div>
+
+        <div>
+            <label for="Phone">Phone:</label>
+            <input type="text" id="Phone" name="Phone" required>
+        </div>
+
+        <div>
+            <label for="RoleId">Role:</label>
+            <select id="RoleId" name="RoleId" required>
+                <option value="">-- Select Role --</option>
+                <option value="1">Admin</option>
+                <option value="2">Developer</option>
+                <option value="3">HR Manager</option>
+               
+            </select>
+        </div>
+
+        <div>
+            <label for="DepartmentId">Department:</label>
+            <select id="DepartmentId" name="DepartmentId" required>
+                <option value="">-- Select Department --</option>
+                <option value="1">Software Development</option>
+                <option value="2">HR</option>
+                <option value="3">IT Support</option>
+               
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">Save</button>
+        </div>
+
+    </form>
+</div>
+
