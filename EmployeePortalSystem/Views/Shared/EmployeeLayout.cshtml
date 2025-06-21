@@ -49,7 +49,8 @@
         <div class="menubar_background">
 
 
-            <div class="container">
+            <div class="menubar_container">
+                <label class="open-btn" id="openSidebar">☰</label>
 
 
                 <ul class="menubar_emp">
@@ -62,7 +63,44 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            
+            <ul class="sidebar_menu">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">Employee</a></li>
+                <li><a href="#">Blogs</a></li>
+                <li><a href="#">Polls</a></li>
+                <li><a href="#">Announcements</a></li>
+                <li><a href="#">Departments</a></li>
+                <li><a href="#">Committee</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Logout</a></li>
+
+            </ul>
+        </div>
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('openSidebar');
+
+            openBtn.addEventListener('click', function (e) {
+                e.stopPropagation(); // prevent event from bubbling up
+                sidebar.classList.toggle('open');
+            });
+
+            sidebar.addEventListener('click', function (e) {
+                e.stopPropagation(); // prevent closing when clicking inside sidebar
+            });
+
+            document.addEventListener('click', function (e) {
+                sidebar.classList.remove('open');
+            });
+
+        </script>
     </header>
+
+   
 
     <main>
         @RenderBody()
