@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Departments\**" />
+    <Content Remove="Views\Departments\**" />
+    <EmbeddedResource Remove="Views\Departments\**" />
+    <None Remove="Views\Departments\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Departments\" />
     <Folder Include="Views\Awards\" />
   </ItemGroup>
 
