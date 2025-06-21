@@ -1,4 +1,6 @@
-﻿@{
+﻿@model EmployeePortalSystem.ViewModels.EmployeeCreationViewModel
+
+@{
     ViewData["Title"] = "Employee";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
@@ -14,16 +16,17 @@
 
         <div class="container_emp mb-20">
             <div class="empmaster_card">
-                <form asp-action="EmployeeMaster" asp-controller="Employee" method="post" class="emp_form">
+                <form asp-action="Employee" asp-controller="EmployeeCreation" method="post" class="emp_form">
                     <div class="form_row">
                         <div class="form_group">
                             <label>Name</label>
-                            <input name="Name" type="text" placeholder="Enter the Employee Name here" />
+                            <input asp-for="Employee.Name" type="text" placeholder="Enter the Employee Name here" class="form-control" />
+
                             @* <span asp-validation-for="EmployeeName" class="text-danger"></span> *@
                         </div>
                         <div class="form_group">
                             <label>Email</label>
-                            <input name="Email" type="text" placeholder="Enter the Email of the Employee" class="dob-input" />
+                            <input asp-for="Employee.Email" type="email" placeholder="Enter the Email of the Employee" class="dob-input" />
                             @* <span asp-validation-for="DateOfBirth" class="text-danger"></span> *@
                         </div>
                     </div>
@@ -31,24 +34,35 @@
                     <div class="form_row">
                         <div class="form_group">
                             <label>Phone</label>
-                            <input tyoe="text" name="Phone" type="tel" placeholder="Enter the Phone number of the Employee" />
+                            <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" />
                             @* <span asp-validation-for="Age" class="text-danger"></span> *@
                         </div>
                         <div class="form_group">
                             <label>Designation</label>
-                            <select name="Gender">
-                                <option value="">Choose the Designation of the Employee</option>
-                                <option>Software Engineer</option>
-                                <option>HR Manager</option>
-                                <option>Tester</option>
-                                <option>Product Manager</option>
-                                <option>Accountant</option>
-                                <option>QA Analyst</option>
-                                <option>DevOps Engineer</option>
-                                <option>UI/UX Designer</option>
-                                <option>IT Support</option>
+                            <select asp-for="Employee.RoleId" asp-items="@(new SelectList(Model.Roles, "RoleId", "RoleName"))">
+                                <option value="">Select Designation</option>
                             </select>
+
                             @* <span asp-validation-for="Gender" class="text-danger"></span> *@
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        
+                        <div class="form_group">
+                            <label>Department</label>
+                            <select asp-for="Employee.DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Name"))">
+                                <option value="">Select Department</option>
+                            </select>
+
+                            @* <span asp-validation-for="Gender" class="text-danger"></span> *@
+                        </div>
+                        <div class="form_group">
+                            <label>Role</label>
+                            <select name="Role">
+                                <option value="">Choose the Role of the Employee </option>
+                                <option>Admin</option>
+                                <option>Employee</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form_row">
@@ -57,34 +71,7 @@
                             <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" />
                             @* <span asp-validation-for="PhoneNumber" class="text-danger"></span> *@
                         </div>
-                        <div class="form_group">
-                            <label>Department</label>
-                            <select name="Department">
-                                <option value="">Choose the Department of the Employee </option>
-                                <option>Human Resource</option>
-                                <option>Software Development</option>
-                                <option>UI/UX Design</option>
-                                <option>Technical Support</option>
-                                <option>Finance & Accounts</option>
-                                <option>Marketing & Sales</option>
-                                <option>Software Testing</option>
-                                <option>Quality Assurance</option>
-                                <option>Product Management</option>
-                                <option>DevOps</option>
-                            </select>
-                            @* <span asp-validation-for="Gender" class="text-danger"></span> *@
-                        </div>
-                    </div>
-                    <div class="form_row">
-                        <div class="form_group">
-                            <label>Role</label>
-                            <select name="Department">
-                                <option value="">Choose the Role of the Employee </option>
-                                <option>Admin</option>
-                                <option>Employee</option>
-                            </select>
-                        </div>
-                        
+
                     </div>
                     
 
@@ -94,12 +81,12 @@
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-                    @if (TempData["Message"] != null)
-                    {
-                        <div class="alert-success">
-                            @TempData["Message"]
-                        </div>
-                    }
+                    @* @if (TempData["Message"] != null) *@
+                    @* { *@
+                    @*     <div class="alert-success"> *@
+                    @*         @TempData["Message"] *@
+                    @*     </div> *@
+                    @* } *@
                 </form>
             </div>
         </div>
