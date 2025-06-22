@@ -18,8 +18,8 @@ namespace EmployeePortalSystem.Repositories
             using (var conn = new MySqlConnection(_connection)) 
             {
                 conn.Open();
-                string sql = @"INSERT INTO employee (Name, Email, Phone, Photo, IsAdmin, DepartmentId, RoleId, CreatedAt, UpdatedAt)
-                VALUES (@Name, @Email, @Phone, @Photo, @IsAdmin, @DepartmentId, @RoleId, @CreatedAt, @UpdatedAt)";
+                string sql = @"INSERT INTO employee(Name, Email, Phone, Photo, IsAdmin, DepartmentId, RoleId, CreatedBy, CreatedAt, UpdatedAt) 
+                            VALUES (@Name, @Email, @Phone, @Photo, @IsAdmin, @DepartmentId, @RoleId, @CreatedBy, @CreatedAt, @UpdatedAt);";
 
 
 

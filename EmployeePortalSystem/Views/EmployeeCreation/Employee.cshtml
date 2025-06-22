@@ -16,7 +16,7 @@
 
         <div class="container_emp mb-20">
             <div class="empmaster_card">
-                <form asp-action="Employee" asp-controller="EmployeeCreation" method="post" class="emp_form">
+                <form asp-action="Employee" asp-controller="EmployeeCreation" method="post" enctype="multipart/form-data" class="emp_form">
                     <div class="form_row">
                         <div class="form_group">
                             <label>Name</label>
@@ -81,12 +81,12 @@
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-                    @* @if (TempData["Message"] != null) *@
-                    @* { *@
-                    @*     <div class="alert-success"> *@
-                    @*         @TempData["Message"] *@
-                    @*     </div> *@
-                    @* } *@
+                    @if (TempData["Message"] != null) 
+                     { 
+                        <div class="alert-success"> 
+                             @TempData["Message"] 
+                         </div> 
+                     }
                 </form>
             </div>
         </div>
