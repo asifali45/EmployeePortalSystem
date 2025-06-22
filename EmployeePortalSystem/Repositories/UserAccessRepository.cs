@@ -1,6 +1,6 @@
-﻿using EmployeePortalSystem.Models;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using Dapper;
+using EmployeePortalSystem.ViewModels;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -13,14 +13,19 @@ namespace EmployeePortalSystem.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public Employee EmployeeLogin(string email,string password)
+        public LoginViewModel EmployeeLogin(string email,string password)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "SELECT * FROM employee WHERE email=@Email AND password=@Password";
+                string query = @"
+                SELECT e.EmployeeId, e.Name, r.RoleName
+                FROM employee e
+                JOIN role r ON e.RoleId = r.RoleId
+                WHERE e.Email = @Email AND e.Password = @Password";
 
-                var employee = connection.QueryFirstOrDefault<Employee>(query, new { Email = email, Password = password });
+
+                var employee = connection.QueryFirstOrDefault<LoginViewModel>(query, new { Email = email, Password = password });
 
                 return employee;
 

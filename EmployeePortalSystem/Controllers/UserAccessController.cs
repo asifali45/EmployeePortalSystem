@@ -11,6 +11,8 @@ namespace EmployeePortalSystem.Controllers
         {
             _repository = repository;
         }
+       
+
 
         [HttpGet]
         public IActionResult Login()
@@ -26,8 +28,10 @@ namespace EmployeePortalSystem.Controllers
 
             if (employee != null)
             {
-                
-                
+                HttpContext.Session.SetInt32("EmployeeId", employee.EmployeeId);
+                HttpContext.Session.SetString("EmployeeName", employee.Name);
+                HttpContext.Session.SetString("Designation", employee.RoleName);
+
                 return RedirectToAction("Dashboard","UserAccess");
             }
             else

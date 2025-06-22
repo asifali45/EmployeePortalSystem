@@ -59,6 +59,9 @@ namespace EmployeePortalSystem.Controllers
             employee.CreatedAt = DateTime.Now;
             employee.UpdatedAt = DateTime.Now;
 
+            int? createdBy = HttpContext.Session.GetInt32("EmployeeId");
+            employee.CreatedBy = createdBy;
+
             _repo.AddEmployee(employee); // Use Dapper to insert employee with RoleId, DepartmentId, etc.
 
             TempData["Message"] = "Employee added successfully!";

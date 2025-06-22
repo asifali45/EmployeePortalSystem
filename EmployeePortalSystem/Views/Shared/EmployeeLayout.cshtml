@@ -1,5 +1,7 @@
 ﻿@{
     Layout = null;
+    var name = Context.Session.GetString("EmployeeName");
+    var designation = Context.Session.GetString("Designation");
 }
 
 <!DOCTYPE html>
@@ -30,8 +32,8 @@
                         <div class="profile">
                             <a href="#" class="profile-image"><img src="~/img/Profile Avatar.png" /></a>
                             <div class="user_info">
-                                <h6>Username</h6>
-                                <p>Asst.insurance officer</p>
+                                <h6>@name</h6>
+                                <p>@designation</p>
                                 <span id="username_display"></span>
                             </div>
                         </div>
