@@ -28,7 +28,7 @@ namespace EmployeePortalSystem.Controllers
             {
                 
                 
-                return RedirectToAction("Dashboard","UserAccess");
+                return RedirectToAction("DashboardAdmin","UserAccess");
             }
             else
             {
@@ -39,7 +39,13 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Dashboard()
+        public IActionResult DashboardAdmin()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DashboardEmployee()
         {
             return View();
         }
