@@ -1,0 +1,64 @@
+﻿@model List<EmployeePortalSystem.ViewModels.EmployeeDetailsViewModel>
+
+
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-contents">
+
+        <div class="container_emp mb-20"> 
+             <div class="emp_head"> 
+                 <h3>Employee List</h3> 
+             </div>
+            <div class="create_btn_container">
+                <form method="get" asp-action="Employee" asp-controller="EmployeeCreation">
+                    <button type="submit" class="create_emp_btn">Create new</button>
+                </form>
+             </div>
+             <div class="empmaster_card"> 
+                 <div class="table-responsive"> 
+                     <table class="emp_table table"> 
+                         <thead> 
+                             <tr> 
+                                 <th></th>
+                                 <th>Employee ID</th> 
+                                 <th>Employee Name</th> 
+                                 <th>Designation</th> 
+                                 <th>Email ID</th> 
+                                 <th>Phone Number</th> 
+                                 <th>Department</th> 
+                             </tr> 
+                         </thead>
+                        <tbody>
+                            @foreach (var emp in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("EditEmployee", "EmployeeCreation", new { id = emp.EmployeeId })" class="edit-icon">
+                                            <img src="~/img/edit Icon.png" width="15px" height="15px" />
+                                        </a>
+                                    </td>
+                                    <td>@emp.EmployeeId</td>
+                                    <td>@emp.Name</td>
+                                    <td>@emp.Designation</td>
+                                    <td>@emp.Email</td>
+                                    <td>@emp.Phone</td>
+                                    <td>@emp.DepartmentName</td>
+                                    
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table> 
+                 </div> 
+             </div> 
+         </div>
+
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

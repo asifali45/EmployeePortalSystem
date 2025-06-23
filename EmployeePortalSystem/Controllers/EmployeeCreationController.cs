@@ -18,6 +18,12 @@ namespace EmployeePortalSystem.Controllers
             _repo = new EmployeeCreationRepository(config);
             _env = env;
         }
+        [HttpGet]
+        public IActionResult EmployeeList()
+        {
+            var employeeList = _repo.GetAllEmployeeDetails();
+            return View("EmployeeDetails", employeeList); 
+        }
 
         [HttpGet]
         public IActionResult Employee()

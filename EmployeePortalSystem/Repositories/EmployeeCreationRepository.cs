@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Data;
 using EmployeePortalSystem.Models;
+using EmployeePortalSystem.ViewModels;
 
 
 namespace EmployeePortalSystem.Repositories
@@ -37,6 +38,25 @@ namespace EmployeePortalSystem.Repositories
             return conn.Query<Role>("SELECT RoleId, RoleName FROM role").ToList();
         }
 
+        public List<EmployeeDetailsViewModel> GetAllEmployeeDetails()
+        {
+            using var conn = new MySqlConnection(_connection);
+            
+                conn.Open();
+                string sql = @"
+                    SELECT 
+                        e.EmployeeId,
+                        e.Name,
+                        e.Email,
+                        e.Phone,
+                        r.RoleName AS Designation,
+                        d.Name AS DepartmentName
+                    FROM employee e
+                    LEFT JOIN role r ON e.RoleId = r.RoleId
+                    LEFT JOIN department d ON e.DepartmentId = d.DepartmentId";
+                return conn.Query<EmployeeDetailsViewModel>(sql).ToList();
+            
+        }
     }
 }
 
