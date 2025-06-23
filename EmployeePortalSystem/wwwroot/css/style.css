@@ -380,6 +380,15 @@ footer p {
         display: block;
     }
 
+.switch-button {
+    background-color: #9c2458;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .submenu {
     display: none;
     position: absolute;

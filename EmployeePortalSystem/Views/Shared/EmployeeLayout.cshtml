@@ -3,6 +3,7 @@
     var name = Context.Session.GetString("EmployeeName");
     var designation = Context.Session.GetString("Designation");
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html>
@@ -35,6 +36,7 @@
                                 <h6>@name</h6>
                                 <p>@designation</p>
                                 <span id="username_display"></span>
+                               
                             </div>
                         </div>
                         <div class="logout-icon">
@@ -63,6 +65,27 @@
                     <li class="menu_item"><a href="#">Awards</a></li>
                     <li class="menu_item"><a href="#">Help</a></li>
                 </ul>
+
+                @{
+                    var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
+                }
+                @if (HttpContextAccessor.HttpContext.Session.GetString("IsAdmin") == "True")
+                {
+                    
+
+                    if (currentDashboard == "Employee")
+                    {
+                        <form method="post" asp-action="SwitchToAdmin" asp-controller="UserAccess">
+                            <button type="submit" class="switch-button">Switch to Admin</button>
+                        </form>
+                    }
+                    else if (currentDashboard == "Admin")
+                    {
+                        <form method="post" asp-action="SwitchToEmployee" asp-controller="UserAccess">
+                            <button type="submit" class="switch-button">Switch to Employee</button>
+                        </form>
+                    }
+                }   
             </div>
         </div>
 
@@ -71,7 +94,7 @@
             
             <ul class="sidebar_menu">
                 <li><a href="#">My Profile</a></li>
-                <li><a href="#">Employee</a></li>
+                <li><a href="@Url.Action("Employee", "EmployeeCreation")">Employee</a></li>
                 <li><a href="#">Blogs</a></li>
                 <li><a href="#">Polls</a></li>
                 <li><a href="#">Announcements</a></li>
