@@ -433,6 +433,21 @@ footer p {
     margin-left: 0;
 }
 
+.create_btn_container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.create_emp_btn {
+    background-color: #9c2458;
+    border-radius: 10px;
+    color: #ffffff;
+    border-color: #9c2458;
+    margin-bottom: 10px;
+    justify-content:right;
+}
+
 .emp_form {
     display: flex;
     flex-direction: column;
