@@ -31,8 +31,9 @@ namespace EmployeePortalSystem.Controllers
                 HttpContext.Session.SetInt32("EmployeeId", employee.EmployeeId);
                 HttpContext.Session.SetString("EmployeeName", employee.Name);
                 HttpContext.Session.SetString("Designation", employee.RoleName);
+                HttpContext.Session.SetString("IsAdmin", employee.IsAdmin.ToString());
 
-                return RedirectToAction("Dashboard","UserAccess");
+                return RedirectToAction("DashboardEmployee", "UserAccess");
             }
             else
             {
@@ -43,10 +44,31 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Dashboard()
+        public IActionResult DashboardAdmin()
         {
+            HttpContext.Session.SetString("CurrentDashboard", "Admin");
             return View();
         }
+
+        [HttpGet]
+        public IActionResult DashboardEmployee()
+        {
+            HttpContext.Session.SetString("CurrentDashboard", "Employee");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SwitchToAdmin()
+        {
+            return RedirectToAction("DashboardAdmin", "UserAccess");
+        }
+
+        [HttpPost]
+        public IActionResult SwitchToEmployee()
+        {
+            return RedirectToAction("DashboardEmployee", "UserAccess");
+        }
+
 
 
 
