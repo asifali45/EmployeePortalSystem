@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Dapper;
 using EmployeePortalSystem.ViewModels;
+using System.Data.Common;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -29,9 +30,21 @@ namespace EmployeePortalSystem.Repositories
 
                 return employee;
 
-
-
             }
+        }
+
+        public DashboardCardViewModel GetCardCounts(int empid)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+            string sql = @"
+                SELECT 
+            (SELECT COUNT(*) FROM awards WHERE RecipientId = @EmpId) AS TotalAwards,
+            (SELECT COUNT(*) FROM blog WHERE AuthorId = @EmpId) AS BlogsWritten,
+            (SELECT COUNT(*) FROM poll_response WHERE EmployeeId = @EmpId) AS PollsVoted;
+             ";
+
+            return conn.QueryFirst<DashboardCardViewModel>(sql, new { EmpId = empid });
         }
     }
 
