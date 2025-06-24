@@ -9,6 +9,8 @@ builder.Services.AddScoped<EmployeeCreationRepository>();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
