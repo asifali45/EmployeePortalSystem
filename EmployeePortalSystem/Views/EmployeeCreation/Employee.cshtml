@@ -1,0 +1,218 @@
+﻿@model EmployeePortalSystem.ViewModels.EmployeeCreationViewModel
+
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-contents">
+
+        <div class="container_emp">
+            <div class="emp_head">
+                <h3>Employee Master</h3>
+            </div>
+        </div>
+
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="Employee" asp-controller="EmployeeCreation" method="post" enctype="multipart/form-data" class="emp_form">
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Name</label>
+                            <input asp-for="Employee.Name" type="text" placeholder="Enter the Employee Name here" class="form-control" />
+
+                            @* <span asp-validation-for="EmployeeName" class="text-danger"></span> *@
+                        </div>
+                        <div class="form_group">
+                            <label>Email</label>
+                            <input asp-for="Employee.Email" type="email" placeholder="Enter the Email of the Employee" class="dob-input" />
+                            @* <span asp-validation-for="DateOfBirth" class="text-danger"></span> *@
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Phone</label>
+                            <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" />
+                            @* <span asp-validation-for="Age" class="text-danger"></span> *@
+                        </div>
+                        <div class="form_group">
+                            <label>Designation</label>
+                            <select asp-for="Employee.RoleId" asp-items="@(new SelectList(Model.Roles, "RoleId", "RoleName"))">
+                                <option value="">Select Designation</option>
+                            </select>
+
+                            @* <span asp-validation-for="Gender" class="text-danger"></span> *@
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        
+                        <div class="form_group">
+                            <label>Department</label>
+                            <select asp-for="Employee.DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Name"))">
+                                <option value="">Select Department</option>
+                            </select>
+
+                            @* <span asp-validation-for="Gender" class="text-danger"></span> *@
+                        </div>
+                        <div class="form_group">
+                            <label>Role</label>
+                            <select name="Role">
+                                <option value="">Choose the Role of the Employee </option>
+                                <option>Admin</option>
+                                <option>Employee</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Photo</label>
+                            <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" />
+                            @* <span asp-validation-for="PhoneNumber" class="text-danger"></span> *@
+                        </div>
+
+                    </div>
+                    
+
+                    
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Save</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                    @if (TempData["Message"] != null) 
+                     { 
+                        <div class="alert-success"> 
+                             @TempData["Message"] 
+                         </div> 
+                     }
+                </form>
+            </div>
+        </div>
+
+        @* <div class="container_emp mb-20"> *@
+        @*     <div class="emp_head"> *@
+        @*         <h3>Employee List</h3> *@
+        @*     </div> *@
+        @*     <div class="empmaster_card"> *@
+        @*         <div class="table-responsive"> *@
+        @*             <table class="emp_table table"> *@
+        @*                 <thead> *@
+        @*                     <tr> *@
+        @*                         <th>Employee ID</th> *@
+        @*                         <th>Employee Name</th> *@
+        @*                         <th>Phone Number</th> *@
+        @*                         <th>Email ID</th> *@
+        @*                         <th>District</th> *@
+        @*                         <th>State</th> *@
+        @*                     </tr> *@
+        @*                 </thead> *@
+        @*                 <tbody> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee1</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employeel@companymail.com</td> *@
+        @*                         <td>District1</td> *@
+        @*                         <td>State1</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>2435356</td> *@
+        @*                         <td>Employee2</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee2@companymail.com</td> *@
+        @*                         <td>District2</td> *@
+        @*                         <td>State2</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee3</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee3@companymail.com</td> *@
+        @*                         <td>District3</td> *@
+        @*                         <td>State3</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee4</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee4@companymail.com</td> *@
+        @*                         <td>District4</td> *@
+        @*                         <td>State4</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee5</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee5@companymail.com</td> *@
+        @*                         <td>District5</td> *@
+        @*                         <td>State5</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee6</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee6@companymail.com</td> *@
+        @*                         <td>District6</td> *@
+        @*                         <td>State6</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee7</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee7@companymail.com</td> *@
+        @*                         <td>District7</td> *@
+        @*                         <td>State7</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee8</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee8@companymail.com</td> *@
+        @*                         <td>District8</td> *@
+        @*                         <td>State8</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee9</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee9@companymail.com</td> *@
+        @*                         <td>District9</td> *@
+        @*                         <td>State9</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee10</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee10@companymail.com</td> *@
+        @*                         <td>District10</td> *@
+        @*                         <td>State10</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee11</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee11@companymail.com</td> *@
+        @*                         <td>District11</td> *@
+        @*                         <td>State11</td> *@
+        @*                     </tr> *@
+        @*                     <tr> *@
+        @*                         <td>3435456</td> *@
+        @*                         <td>Employee12</td> *@
+        @*                         <td>9078563421</td> *@
+        @*                         <td>employee12@companymail.com</td> *@
+        @*                         <td>District12</td> *@
+        @*                         <td>State12</td> *@
+        @*                     </tr> *@
+        @*                 </tbody> *@
+        @*             </table> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
+
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

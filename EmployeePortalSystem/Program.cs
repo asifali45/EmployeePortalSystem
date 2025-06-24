@@ -1,7 +1,15 @@
+using EmployeePortalSystem.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<UserAccessRepository>();
+builder.Services.AddScoped<EmployeeCreationRepository>();
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 var app = builder.Build();
 
@@ -18,10 +26,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=UserAccess}/{action=Dashboard}/{id?}");
+    pattern: "{controller=UserAccess}/{action=Login}/{id?}");
 
 app.Run();

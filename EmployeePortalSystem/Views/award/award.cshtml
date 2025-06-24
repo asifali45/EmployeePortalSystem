@@ -1,0 +1,247 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Award Management";
+}
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+
+
+
+   
+        <div class="nav_background">
+            <div class="container">
+                <div class="nav_emp">
+                    <div class="logo">
+                        <a href="#">
+                            <img src="~/img/ai_2.png" asp-append-version="true" /></a>
+                    </div>
+                    <div class="nav_right">
+                        <div class="profile">
+                            <a href="#" class="profile-image"><img src="~/img/Profile Avatar.png" asp-append-version="true" /></a>
+                            <div class="user_info">
+                                <h6 id="username_display"></h6>
+                                <p>Asst.insurance officer</p>
+                            </div>
+                        </div>
+                        <div class="logout-icon">
+                            <a asp-controller="UserAccess" asp-action="Login"><img class="logout" src="~/img/Logout Icon.png" height="25px" asp-append-version="true" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menubar_background">
+            <div class="container">
+                <ul class="menubar_emp">
+                    <li class="menu_item"><a asp-controller="UserAccess" asp-action="Dashboard">Dashboard</a></li>
+                    <li class="menu_item">
+                        <a href="#">Masters</a>
+                        <ul class="submenu">
+                            <li><a href="#">Submenu item 1</a></li>
+                            <li><a href="#">Submenu item 2</a></li>
+                            <li><a href="#">Submenu item 3</a></li>
+                            <li><a href="#">Submenu item 4</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu_item"><a asp-controller="Award" asp-action="award">Award</a></li>
+                    <li class="menu_item"><a asp-controller="UserAccess" asp-action="Login">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    
+
+    <main>
+        <div class="container">
+            <div class="page-contents">
+                <div class="container_emp">
+                    <div class="emp_head">
+                        <h3>Award Management</h3>
+                    </div>
+                </div>
+
+                <div class="container_emp mb-20">
+                    <div class="empmaster_card">
+                        <form class="emp_form" id="awardForm">
+                            <div class="form_row">
+                                <div class="form_group">
+                                    <label>Type</label>
+                                    <input type="text" name="type" placeholder="Enter Award Type" required />
+                                </div>
+                                <div class="form_group">
+                                    <label>Event Date</label>
+                                    <input type="date" name="eventDate" required />
+                                </div>
+                            </div>
+
+                            <div class="form_row">
+                                <div class="form_group">
+                                    <label>Recipient Name</label>
+                                    <input type="text" id="recipientNameInput" placeholder="Enter employee name" required />
+                                    <input type="hidden" name="recipientId" id="recipientIdInput" />
+                                </div>
+                                <div class="form_group">
+                                    <label>Given By</label>
+                                    <input type="text" name="givenBy" placeholder="Awarded By" required />
+                                </div>
+                            </div>
+
+                            <div class="form_group">
+                                <label>Description</label>
+                                <input type="text" name="description" placeholder="Award Description" />
+                            </div>
+
+                            <div class="form_row">
+                                <div class="form_group">
+                                    <label>Display Order</label>
+                                    <input type="number" name="displayOrder" />
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="awardId" value="" />
+                            <input type="hidden" name="createdBy" value="1" />
+                            <input type="hidden" name="updatedBy" value="1" />
+
+                            <div class="form_row">
+                                <button type="submit" class="custom-button">Save</button>
+                                <button type="reset">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container_emp mb-20">
+                    <div class="emp_head">
+                        <h3>Award List</h3>
+                    </div>
+                    <div class="empmaster_card">
+                        <div class="table-responsive">
+                          
+                            <table class="table table-striped table-bordered" id="awardTable">
+
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Recipient</th>
+                                        <th>Given By</th>
+                                        <th>Description</th>
+                                        <th>Order</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const username = localStorage.getItem("username");
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("username_display").textContent = username ?? "";
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        let employeeList = [];
+        const employeeApi = "/api/employee";
+        const awardApi = "/api/award";
+
+        async function loadEmployees() {
+            const response = await fetch(employeeApi);
+            employeeList = await response.json();
+        }
+
+        async function loadAwards() {
+            const response = await fetch(awardApi);
+            const data = await response.json();
+            const tbody = document.querySelector("#awardTable tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(a => {
+                const row = `<tr>
+                    <td>${a.awardId}</td>
+                    <td>${a.type}</td>
+                    <td>${a.eventDate.split('T')[0]}</td>
+                    <td>${a.recipientName}</td>
+                    <td>${a.givenBy}</td>
+                    <td>${a.description}</td>
+                    <td>${a.displayOrder}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        document.getElementById("recipientNameInput").addEventListener("input", function () {
+            const name = this.value.trim().toLowerCase();
+            const match = employeeList.find(emp => emp.name.trim().toLowerCase() === name);
+            document.getElementById("recipientIdInput").value = match ? match.employeeId : "";
+        });
+
+        document.getElementById("awardForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const formObject = Object.fromEntries(formData.entries());
+            formObject.recipientId = parseInt(formObject.recipientId);
+            formObject.displayOrder = parseInt(formObject.displayOrder);
+            formObject.createdBy = parseInt(formObject.createdBy);
+            formObject.updatedBy = parseInt(formObject.updatedBy);
+
+            if (!formObject.recipientId) {
+                alert("Invalid recipient name!");
+                return;
+            }
+
+            await fetch(awardApi, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formObject)
+            });
+
+            this.reset();
+            loadAwards();
+        });
+
+        $(document).ready(function () {
+                    $('#awardTable').DataTable({
+            responsive: true,
+            paging: true,
+            pageLength: 10,
+            lengthChange: true,
+            searching: true
+        });
+
+        });
+
+        loadEmployees();
+        loadAwards();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
