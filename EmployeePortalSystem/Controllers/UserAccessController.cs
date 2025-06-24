@@ -54,7 +54,14 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DashboardEmployee()
         {
             HttpContext.Session.SetString("CurrentDashboard", "Employee");
-            return View();
+
+            int empid=Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+         
+
+
+            var model =_repository.GetCardCounts(empid);
+
+            return View(model);
         }
 
         [HttpPost]
