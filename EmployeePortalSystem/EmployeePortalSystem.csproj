@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,12 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Awards\**" />
+    <Content Remove="Views\Awards\**" />
+    <EmbeddedResource Remove="Views\Awards\**" />
+    <None Remove="Views\Awards\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="MySql.Data" Version="9.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\Departments\" />
-    <Folder Include="Views\Awards\" />
   </ItemGroup>
 
 </Project>
