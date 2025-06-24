@@ -293,6 +293,10 @@ footer p {
     cursor: pointer;
 }
 
+.dataTables_filter {
+    margin-bottom: 15px !important;
+}
+
 /* Sidebar styles */
 .sidebar {
     position: fixed;
@@ -443,7 +447,7 @@ footer p {
     background-color: #9c2458;
     border-radius: 10px;
     color: #ffffff;
-    border-color: #9c2458;
+    border:none;
     margin-bottom: 10px;
     justify-content:right;
 }

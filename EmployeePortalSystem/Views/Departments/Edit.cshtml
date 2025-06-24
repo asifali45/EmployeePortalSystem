@@ -3,54 +3,66 @@
 @{
     ViewData["Title"] = "Edit Department";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var parentDepartments = ViewBag.ParentDepartments as List<SelectListItem>;
+    var headName = ViewBag.HeadName as string;
 }
 
-<!-- Form Section -->
-<div class="container_emp mb-20">
-    <div class="empmaster_card">
-        <form asp-action="Edit" asp-controller="Departments" method="post">
-            <input type="hidden" asp-for="DepartmentId" />
+<div class="container">
+    <div class="page-contents">
 
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Department Name</label>
-                    <input asp-for="Name" class="" placeholder="Enter the Department Name here" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+        <div class="container_emp">
+            <div class="emp_head">
+                <h3>Edit Department</h3>
             </div>
+        </div>
 
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Description</label>
-                    <input asp-for="Description" class="" placeholder="Enter the description" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            </div>
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="Edit" asp-controller="Departments" method="post" class="emp_form">
+                    <input type="hidden" asp-for="DepartmentId" />
 
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Head ID</label>
-                    <input asp-for="HeadId" class="" placeholder="Enter the Head ID (Employee ID)" />
-                    <span asp-validation-for="HeadId" class="text-danger"></span>
-                </div>
-            </div>
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Department Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter the Department Name here" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Description</label>
+                            <input asp-for="Description" class="form-control" placeholder="Enter the description" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
 
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Parent Department ID</label>
-                    <input asp-for="ParentDepartmentId" class="" placeholder="Enter the Parent Department ID (if any)" />
-                    <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
-                </div>
-            </div>
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Head Name</label>
+                            <input type="text" value="@headName" disabled class="form-control" />
+                            <input type="hidden" asp-for="HeadId" />
+                        </div>
+                        <div class="form_group">
+                            <label>Parent Department</label>
+                            <select asp-for="ParentDepartmentId" asp-items="parentDepartments" class="form-control">
+                                <option value="">-- Select Parent Department --</option>
+                            </select>
+                            <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
+                        </div>
+                    </div>
 
-            <div class="form_row">
-                <button type="submit" class="custom-button">Save</button>
-                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Save</button>
+                        <a asp-action="Index" class="custom-button btn-cancel">Cancel</a>
+                    </div>
+
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert-success">
+                            @TempData["Message"]
+                        </div>
+                    }
+                </form>
             </div>
-        </form>
+        </div>
+
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

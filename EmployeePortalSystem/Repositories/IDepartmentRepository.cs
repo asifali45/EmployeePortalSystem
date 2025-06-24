@@ -1,15 +1,14 @@
 ﻿using EmployeePortalSystem.Models;
-using System.Collections.Generic;
+using EmployeePortalSystem.ViewModels;
 
-
-namespace EmployeePortalSystem.Repositories
+public interface IDepartmentRepository
 {
-    public interface IDepartmentRepository
-    {
-        IEnumerable<Department> GetAll();              
-        Department GetById(int id);                    
-        void Add(Department dept);                    
-        void Update(Department dept);                  
-        void Delete(int id);
-    }
+    IEnumerable<Department> GetAll();
+    List<DepartmentViewModel> GetAllWithDetails();
+    Department GetById(int id);
+    void Add(Department dept);
+    void Update(Department dept);
+    void Delete(int id);
+
+    string? GetHeadNameById(int? headId);
 }
