@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserAccessRepository>();
-builder.Services.AddScoped<EmployeeCreationRepository>();
+builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 

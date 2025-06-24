@@ -7,10 +7,10 @@ using EmployeePortalSystem.ViewModels;
 
 namespace EmployeePortalSystem.Repositories
 {
-    public class EmployeeCreationRepository
+    public class EmployeeRepository
     {
         private readonly string _connection; 
-        public EmployeeCreationRepository(IConfiguration config)
+        public EmployeeRepository(IConfiguration config)
         {
             _connection = config.GetConnectionString("DefaultConnection");
         }
@@ -57,6 +57,41 @@ namespace EmployeePortalSystem.Repositories
                 return conn.Query<EmployeeDetailsViewModel>(sql).ToList();
             
         }
+
+        public Employee GetEmployeeById(int id)
+        {
+            using var conn = new MySqlConnection(_connection);
+            string sql = "SELECT * FROM employee WHERE EmployeeId = @Id";
+            return conn.QueryFirstOrDefault<Employee>(sql, new { Id = id });
+        }
+        public void UpdateEmployee(Employee emp)
+        {
+            using var conn = new MySqlConnection(_connection);
+            string sql = @"
+        UPDATE employee SET 
+            Name = @Name,
+            Email = @Email,
+            Phone = @Phone,
+            Photo = @Photo,
+            IsAdmin = @IsAdmin,
+            DepartmentId = @DepartmentId,
+            RoleId = @RoleId,
+            UpdatedAt = @UpdatedAt,
+            UpdatedBy = @UpdatedBy
+        WHERE EmployeeId = @EmployeeId";
+
+            conn.Execute(sql, emp);
+        }
+
+        public void DeleteEmployee(int id)
+        {
+            using var conn = new MySqlConnection(_connection);
+            string sql = "DELETE FROM employee WHERE EmployeeId = @Id";
+            conn.Execute(sql, new { Id = id });
+        }
+
+
     }
+
 }
 

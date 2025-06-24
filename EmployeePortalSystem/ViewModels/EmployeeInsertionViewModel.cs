@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EmployeePortalSystem.ViewModels
 {
-    public class EmployeeCreationViewModel
+    public class EmployeeInsertionViewModel
     {
         public Employee Employee { get; set; }
 
