@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserAccessRepository>();
 
-builder.Services.AddScoped<EmployeeCreationRepository>();
+builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<AwardContext>();
 
