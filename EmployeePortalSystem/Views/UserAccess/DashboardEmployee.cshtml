@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Dashboard-Admin";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 
@@ -10,7 +10,7 @@
             <div class="number_card">
                 <div class="card1">
                     <div class="card1_left">
-                        <img src="~/img/Policies.png" />
+                        <img src="~/img/awards.png" />
                     </div>
                     <div class="card1_right">
                         <h2>Total Awards</h2>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="card2">
                     <div class="card2_left">
-                        <img src="~/img/Claims.png" />
+                        <img src="~/img/blogs.png" />
                     </div>
                     <div class="card2_right">
                         <h2>Blogs Written</h2>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="card3">
                     <div class="card3_left">
-                        <img src="~/img/Settlement.png" />
+                        <img src="~/img/polls.png" />
                     </div>
                     <div class="card3_right">
                         <h2>Polls Votted</h2>
@@ -45,34 +45,6 @@
                 </div>
                 <div class="chart-container">
                     <canvas id="mychart1" style="width:100%; height: 100%;"></canvas>
-                    @* <script> *@
-                    @*     const ctx1 = document.getElementById('mychart1').getContext('2d'); *@
-                    @*     const mychart1 = new Chart(ctx1, { *@
-                    @*         type: 'bar', *@
-                    @*         data: { *@
-                    @*             labels: ["Active Policies", "Expired", "Pending", "Renewed", "Cancelled"], *@
-                    @*             datasets: [{ *@
-                    @*                 label: 'Sales', *@
-                    @*                 data: [300, 150, 50, 100, 30], *@
-                    @*                 backgroundColor: [ *@
-                    @*                     'rgba(255, 99, 132, 0.7)', *@
-                    @*                     'rgba(54, 162, 235, 0.7)', *@
-                    @*                     'rgba(255, 206, 86, 0.7)', *@
-                    @*                     'rgba(75, 192, 192, 0.7)', *@
-                    @*                     'rgba(153, 102, 255, 0.7)' *@
-                    @*                 ], *@
-                    @*                 borderColor: [ *@
-                    @*                     'rgba(255, 99, 132, 1)', *@
-                    @*                     'rgba(54, 162, 235, 1)', *@
-                    @*                     'rgba(255, 206, 86, 1)', *@
-                    @*                     'rgba(75, 192, 192, 1)', *@
-                    @*                     'rgba(153, 102, 255, 1)' *@
-                    @*                 ], *@
-                    @*                 borderWidth: 1 *@
-                    @*             }] *@
-                    @*         } *@
-                    @*     }); *@
-                    @* </script> *@
                 </div>
             </div>
 
@@ -80,34 +52,6 @@
                 <h2 style="font-weight: bold; font-size: 20px;">Monthly Activity Trends</h2>
                 <div class="chart-container">
                     <canvas id="mychart" style="width:100%; height: 100%;"></canvas>
-                    @* <script> *@
-                    @*     const ctx = document.getElementById('mychart').getContext('2d'); *@
-                    @*     const mychart = new Chart(ctx, { *@
-                    @*         type: 'pie', *@
-                    @*         data: { *@
-                    @*             labels: ["Active Policies", "Expired", "Pending", "Renewed", "Cancelled"], *@
-                    @*             datasets: [{ *@
-                    @*                 label: 'Sales', *@
-                    @*                 data: [300, 150, 50, 100, 30], *@
-                    @*                 backgroundColor: [ *@
-                    @*                     'rgba(255, 99, 132, 0.7)', *@
-                    @*                     'rgba(54, 162, 235, 0.7)', *@
-                    @*                     'rgba(255, 206, 86, 0.7)', *@
-                    @*                     'rgba(75, 192, 192, 0.7)', *@
-                    @*                     'rgba(153, 102, 255, 0.7)' *@
-                    @*                 ], *@
-                    @*                 borderColor: [ *@
-                    @*                     'rgba(255, 99, 132, 1)', *@
-                    @*                     'rgba(54, 162, 235, 1)', *@
-                    @*                     'rgba(255, 206, 86, 1)', *@
-                    @*                     'rgba(75, 192, 192, 1)', *@
-                    @*                     'rgba(153, 102, 255, 1)' *@
-                    @*                 ], *@
-                    @*                 borderWidth: 1 *@
-                    @*             }] *@
-                    @*         } *@
-                    @*     }); *@
-                    @* </script> *@
                 </div>
             </div>
         </div>
@@ -225,4 +169,5 @@
         </script>
     </div>
 </div>
+
 

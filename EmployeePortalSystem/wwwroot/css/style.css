@@ -72,7 +72,6 @@ body {
 
 .login_image img {
     height: 400px;
-    ;
     width: 350px;
 }
 
@@ -270,16 +269,74 @@ footer p {
     }
 
 .menubar_background {
-    background-color: #cd2f74;
-    display: flex;
+    background-color: #9c2458;
     width: 100%;
     height: 35px;
 }
+
+.menubar_container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center the menubar_emp */
+    height: 35px;
+    padding: 0 10px;
+}
+
+
+
+.open-btn {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hidden by default */
+    width: 250px;
+    height: 100%;
+    background-color: #9c2458;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.sidebar_menu {
+    list-style-type: none;
+    padding: 0;
+}
+
+    .sidebar_menu li a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        display: block;
+    }
+
+        .sidebar_menu li a:hover {
+            background-color: #660240;
+        }
+
+/* When sidebar is open */
+.sidebar.open {
+    left: 0;
+}
+
+
 
 .menubar_emp {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-grow: 1; /* let it fill remaining space */
+    margin: 0;
+    padding: 0;
 }
 
     .menubar_emp a img {
@@ -323,6 +380,15 @@ footer p {
         display: block;
     }
 
+.switch-button {
+    background-color: #9c2458;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .submenu {
     display: none;
     position: absolute;
@@ -365,6 +431,21 @@ footer p {
     padding: 30px 30px;
     width: 100%;
     margin-left: 0;
+}
+
+.create_btn_container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.create_emp_btn {
+    background-color: #9c2458;
+    border-radius: 10px;
+    color: #ffffff;
+    border-color: #9c2458;
+    margin-bottom: 10px;
+    justify-content:right;
 }
 
 .emp_form {
@@ -645,7 +726,7 @@ main {
     .card1 img,
     .card2 img,
     .card3 img {
-        width: 50px;
+        width: 60px;
     }
 
 .card1_right,
@@ -934,7 +1015,7 @@ table .edit-icon img {
                 background-color: white;
                 color: #f22772;
                 border: 1px solid #f22772;
-                ;
+                
             }
 
             #edit-modal form button:hover {
