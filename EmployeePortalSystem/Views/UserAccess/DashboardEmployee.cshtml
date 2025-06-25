@@ -2,6 +2,7 @@
     ViewData["Title"] = "Dashboard-Admin";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
+@model EmployeePortalSystem.ViewModels.DashboardCardViewModel
 
 
 <div class="container">
@@ -14,7 +15,7 @@
                     </div>
                     <div class="card1_right">
                         <h2>Total Awards</h2>
-                        <h1>3</h1>
+                        <h1>@Model.TotalAwards</h1>
                     </div>
                 </div>
                 <div class="card2">
@@ -23,7 +24,7 @@
                     </div>
                     <div class="card2_right">
                         <h2>Blogs Written</h2>
-                        <h1>5</h1>
+                        <h1>@Model.BlogsWritten</h1>
                     </div>
                 </div>
                 <div class="card3">
@@ -32,7 +33,7 @@
                     </div>
                     <div class="card3_right">
                         <h2>Polls Votted</h2>
-                        <h1>7</h1>
+                        <h1>@Model.PollsVoted</h1>
                     </div>
                 </div>
             </div>
