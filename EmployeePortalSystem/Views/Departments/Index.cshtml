@@ -53,13 +53,15 @@
                                     <td>@dept.Description</td>
                                     <td>@dept.HeadName</td>
                                     <td>@dept.ParentDepartmentName</td>
-                                    <td class="action-icons">
+                                    <td>
+                                        <span style="display: flex; gap: 20px;">
                                         <a href="@Url.Action("Edit", "Departments", new { id = dept.DepartmentId })" title="Edit">
                                             <img src="~/img/edit Icon.png" width="20" height="20" />
                                         </a>
                                         <a href="@Url.Action("Delete", "Departments", new { id = dept.DepartmentId })" title="Delete">
                                             <img src="~/img/trash-xmark (1).png" width="20" height="20" />
                                         </a>
+                                        </span>
                                     </td>
 
                                 </tr>
