@@ -14,7 +14,38 @@ namespace EmployeePortalSystem.Repositories
         public AwardRepository(AwardContext context)
         {
             _context = context;
+
         }
+        public async Task<int> GetEmployeeIdByNameAsync(string name)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
+                var result = await connection.QueryFirstOrDefaultAsync<int?>(query, new { Name = name });
+                return result ?? 0; 
+            }
+        }
+        public async Task<string> GetEmployeeNameByIdAsync(int employeeId)
+        {
+            var query = "SELECT Name FROM Employee WHERE EmployeeId = @EmployeeId LIMIT 1";
+            using var connection = _context.CreateConnection();
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { EmployeeId = employeeId });
+            return result ?? string.Empty;
+        }
+        public async Task<int> CreateAsync(Award award)
+        {
+            var query = @"INSERT INTO Awards (Type, EventDate, RecipientId, GivenBy, Description, DisplayOrder, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
+                  VALUES (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
+                  SELECT LAST_INSERT_ID();";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var id = await connection.ExecuteScalarAsync<int>(query, award);
+                return id;
+            }
+        }
+
+
         public async Task<IEnumerable<Award>> GetAllAsync()
         {
             var query = @"SELECT  a.AwardId, a.Type, a.EventDate, 
@@ -35,20 +66,7 @@ namespace EmployeePortalSystem.Repositories
             return await connection.QueryFirstOrDefaultAsync<Award>(query, new { Id = id });
         }
 
-        public async Task<int> CreateAsync(Award award)
-        {
-            Console.WriteLine($"Inserting Award: Type={award.Type}, EventDate={award.EventDate}, RecipientId={award.RecipientId}, CreatedBy={award.CreatedBy}, UpdatedBy={award.UpdatedBy}");
- 
-
-            var query = @"INSERT INTO Awards 
-                (Type, EventDate, RecipientId, GivenBy, Description, DisplayOrder, CreatedBy, UpdatedBy)
-                 VALUES 
-                (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @UpdatedBy);
-                 SELECT LAST_INSERT_ID();";
-
-            using var connection = _context.CreateConnection();
-            return await connection.ExecuteScalarAsync<int>(query, award);
-        }
+        
 
 
         public async Task<bool> UpdateAsync(Award award)
