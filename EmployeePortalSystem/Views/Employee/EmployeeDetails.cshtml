@@ -31,25 +31,20 @@
                      <table class="emp_table table"> 
                          <thead> 
                              <tr> 
-                                 <th></th>
+                                 
                                  <th>Employee ID</th> 
                                  <th>Employee Name</th> 
                                  <th>Designation</th> 
                                  <th>Email ID</th> 
                                  <th>Phone Number</th> 
                                  <th>Department</th> 
-                                 <th></th>
+                                 <th>Action</th>
                              </tr> 
                          </thead>
                         <tbody>
                             @foreach (var emp in Model)
                             {
                                 <tr>
-                                    <td>
-                                        <a href="@Url.Action("EditEmployee", "Employee", new { id = emp.EmployeeId })" class="edit-icon">
-                                            <img src="~/img/edit Icon.png" width="15px" height="15px" />
-                                        </a>
-                                    </td>
                                     <td>@emp.EmployeeId</td>
                                     <td>@emp.Name</td>
                                     <td>@emp.Designation</td>
@@ -57,11 +52,17 @@
                                     <td>@emp.Phone</td>
                                     <td>@emp.DepartmentName</td>
                                     <td>
-                                        <a href="@Url.Action("EmployeeDelete", "Employee", new { id = emp.EmployeeId })" class="delete-icon">
-                                            <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
-                                        </a>
+                                        <span style="display: flex; gap: 20px;">
+                                            <a href="@Url.Action("EditEmployee", "Employee", new { id = emp.EmployeeId })">
+                                                <img src="~/img/edit Icon.png" width="15px" height="15px" />
+                                            </a>
+                                            <a href="@Url.Action("EmployeeDelete", "Employee", new { id = emp.EmployeeId })">
+                                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                            </a>
+                                        </span>
                                     </td>
-                                    
+
+
                                 </tr>
                             }
                         </tbody>
