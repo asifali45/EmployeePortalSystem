@@ -24,7 +24,9 @@ namespace EmployeePortalSystem.Repositories
 
 
 
-                conn.Execute(sql, emp);
+               
+                    conn.Execute(sql, emp);
+                
             }
         }
         public List<Department> GetDepartments()

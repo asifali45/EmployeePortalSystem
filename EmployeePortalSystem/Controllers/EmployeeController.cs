@@ -88,10 +88,26 @@ namespace EmployeePortalSystem.Controllers
 
 
         [HttpPost]
-        public IActionResult EmployeeInsertion(Employee employee, IFormFile Photo, IFormCollection form)
+        public IActionResult EmployeeInsertion(Employee employee, IFormFile? Photo, IFormCollection form)
         {
+
             string selectedRole = form["Role"]; 
             employee.IsAdmin = selectedRole == "Admin";
+
+            
+
+            if (!ModelState.IsValid)
+            {
+
+                var vm = new EmployeeInsertionViewModel
+                {
+                    Employee = employee,
+                    Departments = _repo.GetDepartments(),
+                    Roles = _repo.GetRoles()
+                };
+
+                return View("EmployeeInsertion", vm);
+            }
             if (Photo != null && Photo.Length > 0)
             {
                 var uploads = Path.Combine(_env.WebRootPath, "uploads");
@@ -110,7 +126,12 @@ namespace EmployeePortalSystem.Controllers
             {
                 // Preserve existing photo if no new one uploaded
                 var existing = _repo.GetEmployeeById(employee.EmployeeId);
-                employee.Photo = existing.Photo;
+                employee.Photo = existing?.Photo;
+            }
+            else
+            {
+                // insert mode and no photo uploaded
+                employee.Photo = null; // or "" depending on DB schema
             }
 
             int? userId = HttpContext.Session.GetInt32("EmployeeId");
