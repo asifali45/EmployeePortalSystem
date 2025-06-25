@@ -59,10 +59,10 @@
 
                 <ul class="menubar_emp">
 
-                    <li class="menu_item"><a href="@Url.Action("Dashboard", "UserAccess")">Dashboard</a></li>
+                    <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index","Departments")">Departments</a></li>
                     <li class="menu_item"><a href="#">Announcements</a></li>
-                    <li class="menu_item"><a href="#">Awards</a></li>
+                    <li class="menu_item"><a href="@Url.Action("award","award")">Awards</a></li>
                     <li class="menu_item"><a href="#">Help</a></li>
                 </ul>
 
@@ -94,7 +94,10 @@
             
             <ul class="sidebar_menu">
                 <li><a href="#">My Profile</a></li>
-                <li><a href="@Url.Action("EmployeeList", "EmployeeCreation")">Employee</a></li>
+
+
+                <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employee</a></li>
+
                 <li><a href="#">Blogs</a></li>
                 <li><a href="#">Polls</a></li>
                 <li><a href="#">Announcements</a></li>

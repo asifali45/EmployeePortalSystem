@@ -420,11 +420,32 @@ footer p {
             background: #a1024c17;
         }
 
+.emp_btn {
+    display: flex;
+    justify-content: space-between; /* pushes buttons to opposite ends */
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-.emp_head h3 {
+.left_btn,
+.right_btn {
+    display: flex;
+}
+
+.create_emp_btn {
+    background-color: #9c2458;
+    border-radius: 10px;
+    color: #ffffff;
+    border-color: #9c2458;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+
+.emp_head h2 {
     color: #727272;
     padding-left: 10px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 15px;
 }
 
@@ -437,11 +458,6 @@ footer p {
     margin-left: 0;
 }
 
-.create_btn_container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
 
 .create_emp_btn {
     background-color: #9c2458;
@@ -1025,3 +1041,68 @@ table .edit-icon img {
             #edit-modal form button:hover {
                 opacity: 0.9;
             }
+
+.dataTables_filter {
+    margin-bottom: 15px; 
+}
+.photo_name {
+    color: #a8a8a8;
+    font-size: 12px;
+}
+.truncated-filename {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.del_emp {
+    text-align: center;
+    padding: 40px;
+}
+
+    .del_emp h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .del_emp p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .del_emp form {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+.employee_deletion {
+    display: flex;
+    justify-content: center;
+    gap: 20px; 
+    margin-top: 30px;
+}
+
+    .employee_deletion .del_button,
+    .employee_deletion .cancel_button {
+        padding: 10px 25px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #fff;
+        min-width: 120px;
+    }
+
+    /* Red delete button */
+    .employee_deletion .del_button {
+        background-color: #d9534f;
+    }
+
+    /* Green cancel button */
+    .employee_deletion .cancel_button {
+        background-color: #5cb85c;
+    }
