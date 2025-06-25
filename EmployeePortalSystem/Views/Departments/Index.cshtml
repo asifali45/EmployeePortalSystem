@@ -1,71 +1,78 @@
-﻿@model IEnumerable<EmployeePortalSystem.Models.Department>
+﻿@model List<EmployeePortalSystem.ViewModels.DepartmentViewModel>
 
 @{
     ViewData["Title"] = "Department";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 
-<!-- Department Directory Heading -->
-<h2 class="text-center mb-4">DEPARTMENT DIRECTORY</h2>
+<div class="container">
+    <div class="page-contents">
 
-<!-- Add Department Button -->
-<div style="width: 100%; text-align: right; margin-bottom: 1rem;">
-    <form asp-action="Create" method="get" style="display: inline-block;">
-        <button type="submit" class="btn btn-success btn-sm px-3 py-2">
-            + Add Department
-        </button>
-    </form>
-</div>
+      
+
+        <div class="container_emp mb-20">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="DashboardAdmin" asp-controller="UserAccess">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+                </div>
+                <div class="right_btn">
+                    <form method="get" asp-action="Create" asp-controller="Departments">
+                        <button type="submit" class="create_emp_btn">Add Department</button>
+                    </form>
+                </div>
+            </div>
+            <div class="emp_head">
+                <h2>Department List</h2>
+            </div>
 
 
-<!-- Department Table View -->
-<div class="container_emp mb-5">
-    <div class="emp_head">
-        <h3>Department Table</h3>
-    </div>
-    <div class="empmaster_card">
-        <div class="table-responsive">
-            <table class="emp_table table table-striped">
-                <thead>
-                    <tr>
-                        <th>Department ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Head Name</th> <!-- Changed -->
-                        <th>Parent Dept ID</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var dept in Model)
-                    {
-                        <tr>
-                            <td>@dept.DepartmentId</td>
-                            <td>@dept.Name</td>
-                            <td>@dept.Description</td>
-                            <td>@dept.HeadId</td> <!-- Changed -->
-                            <td>@dept.ParentDepartmentId</td>
-                            <td style="white-space: nowrap;">
-                                <!-- Edit button form (GET) -->
-                                <form asp-action="Edit" asp-route-id="@dept.DepartmentId" method="get" class="d-inline-block" style="display: inline;">
-                                    <button type="submit" class="btn btn-warning btn-sm me-2" style="padding: 4px 12px;">
-                                        Edit
-                                    </button>
-                                </form>
 
-                                <!-- Delete button form (POST) -->
-                                <form asp-action="Delete" asp-route-id="@dept.DepartmentId" method="post" class="d-inline-block" style="display: inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm" style="padding: 4px 12px;"
-                                            onclick="return confirm('Are you sure you want to delete this department?');">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
+            <div class="empmaster_card">
+                <div class="table-responsive">
+                    <table class="emp_table table">
+                        <thead>
+                            <tr>
+                               
+                                <th>Department ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Head Name</th>
+                                <th>Parent Department</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var dept in Model)
+                            {
+                                <tr>
+                                    
+                                    <td>@dept.DepartmentId</td>
+                                    <td>@dept.Name</td>
+                                    <td>@dept.Description</td>
+                                    <td>@dept.HeadName</td>
+                                    <td>@dept.ParentDepartmentName</td>
+                                    <td class="action-icons">
+                                        <a href="@Url.Action("Edit", "Departments", new { id = dept.DepartmentId })" title="Edit">
+                                            <img src="~/img/edit Icon.png" width="20" height="20" />
+                                        </a>
+                                        <a href="@Url.Action("Delete", "Departments", new { id = dept.DepartmentId })" title="Delete">
+                                            <img src="~/img/trash-xmark (1).png" width="20" height="20" />
+                                        </a>
+                                    </td>
 
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                </tr>
+                            }   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
