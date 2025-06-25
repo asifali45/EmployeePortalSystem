@@ -520,9 +520,19 @@ footer p {
     }
 
         .form_group input::placeholder {
-            color: #a8a8a8;
+            color: #000;
             font-size: 12px;
         }
+    .form_group input {
+        color: #000; 
+        font-size: 12px; 
+    }
+
+    .form_group select {
+        color: #000; 
+        font-size: 12px; 
+        
+    }
 
 .dob-input {
     padding: 8px;
@@ -1047,17 +1057,6 @@ table .edit-icon img {
 .dataTables_filter {
     margin-bottom: 15px!important; 
 }
-.photo_name {
-    color: #a8a8a8;
-    font-size: 12px;
-}
-.truncated-filename {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
-}
 
 .del_emp {
     text-align: center;
@@ -1109,13 +1108,23 @@ table .edit-icon img {
         background-color: #5cb85c;
     }
 
-/* edit and delete icon spacing in index*/
-.action-icons {
-    text-align: center;
+.photo-preview {
+    margin-bottom: 15px;
 }
 
-    .action-icons a {
-        display: inline-block;
-        margin: 0 10px;
-    }
+.employee-photo-frame {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+}
+
+.text-danger {
+    color: #d9534f;
+    font-size: 10px;
+    margin-top: 4px;
+    display: block !important;
+    select option:first-child select option:first-child
+}
 
