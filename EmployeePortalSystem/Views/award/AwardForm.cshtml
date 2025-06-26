@@ -3,76 +3,90 @@
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
     ViewData["Title"] = "Add Award";
 }
-<div class="container_emp mb-20">
-    <div class="emp_btn">
-        <div class="left_btn">
-            <form method="get" asp-action="Index" asp-controller="Award">
-                <button type="submit" class="create_emp_btn">Back</button>
-            </form>
+
+<div class="container">
+    <div class="page-contents">
+
+        <div class="container_emp">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="Index" asp-controller="Award">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="emp_head">
+                <h3>Add Award</h3>
+            </div>
+        </div>
+
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="Create" method="post" class="emp_form">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Type</label>
+                            <input asp-for="Type" class="form-control" placeholder="Enter Award Type" />
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Event Date</label>
+                            <input asp-for="EventDate" class="form-control" type="date"
+                                   value="@(Model.EventDate.HasValue ? Model.EventDate.Value.ToString("yyyy-MM-dd") : "")" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Recipient Name</label>
+                            <input asp-for="RecipientName" class="form-control" placeholder="Enter Recipient Name" />
+                            <span asp-validation-for="RecipientName" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Given By</label>
+                            <input asp-for="GivenBy" class="form-control" placeholder="Enter Giver Name" />
+                            <span asp-validation-for="GivenBy" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Description</label>
+                            <input asp-for="Description" class="form-control" placeholder="Enter Description" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Display Order</label>
+                            <input asp-for="DisplayOrder" class="form-control" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="AwardId" />
+                    <input type="hidden" asp-for="CreatedBy" value="1" />
+                    <input type="hidden" asp-for="UpdatedBy" value="1" />
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Save</button>
+                        <a asp-action="Index" class="custom-button">Cancel</a>
+                    </div>
+
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert-success mt-2">
+                            @TempData["Message"]
+                        </div>
+                    }
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<h3 class="text-center mb-4">Add Award</h3>
-
-<div class="container_emp mb-5">
-    <div class="empmaster_card">
-        <form asp-action="Create" method="post" class="emp_form">
-            @Html.AntiForgeryToken()
-
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Type</label>
-                    <input asp-for="Type" class="form-control" />
-                    <span asp-validation-for="Type" class="text-danger"></span>
-                </div>
-                <div class="form_group">
-                    <label>Event Date</label>
-                    <input asp-for="EventDate" class="form-control" type="date"
-                           value="@(Model.EventDate.HasValue ? Model.EventDate.Value.ToString("yyyy-MM-dd") : "")" />
-
-                    <span asp-validation-for="EventDate" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form_row">
-                <div class="form_group">
-                    <label>Recipient Name</label>
-                    <input asp-for="RecipientName" class="form-control" />
-                    <span asp-validation-for="RecipientName" class="text-danger"></span>
-                </div>
-                <div class="form_group">
-                    <label>Given By</label>
-                    <input asp-for="GivenBy" class="form-control" />
-                    <span asp-validation-for="GivenBy" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <label>Description</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form_group">
-                <label>Display Order</label>
-                <input asp-for="DisplayOrder" class="form-control" />
-                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
-            </div>
-
-            <input type="hidden" asp-for="AwardId" />
-            <input type="hidden" asp-for="CreatedBy" value="1" />
-            <input type="hidden" asp-for="UpdatedBy" value="1" />
-
-            <div class="form_row mt-3">
-                <button type="submit" class="btn btn-success">Save</button>
-                <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
-            </div>
-
-            @if (TempData["Message"] != null)
-            {
-                <div class="alert alert-success mt-2">@TempData["Message"]</div>
-            }
-        </form>
-    </div>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

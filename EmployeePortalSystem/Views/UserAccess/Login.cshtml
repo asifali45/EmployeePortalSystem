@@ -1,4 +1,7 @@
-﻿@{
+﻿@model EmployeePortalSystem.ViewModels.LoginViewModel
+
+
+@{
     ViewData["Title"] = "Login";
     Layout = null;
 }
@@ -34,21 +37,21 @@
             <div class="login_form">
                 <form asp-action="Login" method="post">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" class="form-control" />
-                        <span class="text-danger"></span>
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email"  class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" />
-                        <span class="text-danger"></span>
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password"  class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="remember">
                         <input type="checkbox" />
                         <label>Remember me in this machine</label>
                     </div>
-                    @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+                    
 
                     <div class="button_group">
                         <button type="submit" class="login-btn">Login</button>
@@ -63,6 +66,7 @@
                             @ViewBag.ErrorMessage
                         </div>
                     }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 </form>
 
             </div>
