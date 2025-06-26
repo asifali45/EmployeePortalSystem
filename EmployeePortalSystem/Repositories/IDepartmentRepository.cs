@@ -9,9 +9,6 @@ public interface IDepartmentRepository
     void Add(Department dept);
     void Update(Department dept);
     void Delete(int id);
-
     IEnumerable<Employee> SearchEmployeesByName(string namePart);
-
-
     string? GetHeadNameById(int? headId);
 }
