@@ -95,9 +95,9 @@ body {
         width: 200px;
         /* consistent width */
     }
-
-    .login_form input[type="text"],
-    .login_form input[type="password"] {
+    .login_form input[type="password"],
+    .login_form input[type="email"],
+    .login_form input[type="text"] {
         background-color: #f2f2f2;
         border: 1px solid #E2E2E2;
         border-radius: 16px;

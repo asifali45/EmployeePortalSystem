@@ -1,4 +1,5 @@
 ﻿using EmployeePortalSystem.Repositories;
+using EmployeePortalSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeePortalSystem.Controllers
@@ -21,27 +22,35 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpPost]
-
-        public IActionResult Login(string email,string password)
+        public IActionResult Login(LoginViewModel loginVM)
         {
-            var employee = _repository.EmployeeLogin(email, password);
+            
+            if (!ModelState.IsValid)
+            {
+
+                return View(loginVM);
+            }
+
+
+            var employee = _repository.EmployeeLogin(loginVM.Email, loginVM.Password);
 
             if (employee != null)
             {
+
                 HttpContext.Session.SetInt32("EmployeeId", employee.EmployeeId);
                 HttpContext.Session.SetString("EmployeeName", employee.Name);
                 HttpContext.Session.SetString("Designation", employee.RoleName);
                 HttpContext.Session.SetString("IsAdmin", employee.IsAdmin.ToString());
 
                 return RedirectToAction("DashboardEmployee", "UserAccess");
-            }
+            }   
             else
             {
                 ViewBag.ErrorMessage = "Invalid email or password.";
-                
+                return View(loginVM);
             }
-            return View();
         }
+
 
         [HttpGet]
         public IActionResult DashboardAdmin()
