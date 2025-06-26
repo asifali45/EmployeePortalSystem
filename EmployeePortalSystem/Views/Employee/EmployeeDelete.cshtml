@@ -1,4 +1,4 @@
-﻿@model EmployeePortalSystem.Models.Department
+﻿@model EmployeePortalSystem.Models.Employee
 
 @{
     ViewData["Title"] = "Confirm Delete";
@@ -8,18 +8,18 @@
 <div class="container">
     <div class="empmaster_card">
         <div class="del_emp">
-            <h3>Are you sure you want to delete department: @Model.Name?</h3>
+            <h3>Are you sure you want to delete employee: @Model.Name?</h3>
             <p>This action cannot be undone.</p>
 
             <div class="employee_deletion">
                 <div class="left_del">
-                    <form method="post" asp-action="DeleteConfirmed" asp-controller="Departments">
-                        <input type="hidden" name="id" value="@Model.DepartmentId" />
+                    <form method="post" asp-action="EmployeeDeleteConfirmed" asp-controller="Employee">
+                        <input type="hidden" name="id" value="@Model.EmployeeId" />
                         <button type="submit" class="del_button">Delete</button>
                     </form>
                 </div>
                 <div class="right_cancel">
-                    <form method="get" asp-action="Index" asp-controller="Departments">
+                    <form method="get" asp-action="EmployeeDetails" asp-controller="Employee">
                         <button type="submit" class="cancel_button">Cancel</button>
                     </form>
                 </div>
