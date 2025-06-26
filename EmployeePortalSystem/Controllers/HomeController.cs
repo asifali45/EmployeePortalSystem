@@ -23,6 +23,7 @@ namespace EmployeePortalSystem.Controllers
         }
 
 
+
         public IActionResult Privacy()
         {
             return View();

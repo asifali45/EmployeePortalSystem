@@ -293,6 +293,10 @@ footer p {
     cursor: pointer;
 }
 
+.dataTables_filter {
+    margin-bottom: 15px !important;
+}
+
 /* Sidebar styles */
 .sidebar {
     position: fixed;
@@ -418,7 +422,7 @@ footer p {
 
 .emp_btn {
     display: flex;
-    justify-content:space-between; /* pushes buttons to opposite ends */
+    justify-content: space-between; 
     align-items: center;
     margin-bottom: 20px;
 }
@@ -433,9 +437,9 @@ footer p {
     border-radius: 10px;
     color: #ffffff;
     border: none;
-    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
     padding: 8px 16px;
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 
@@ -456,6 +460,15 @@ footer p {
 }
 
 
+.create_dep_btn {
+    background-color: #9c2458;
+    border-radius: 10px;
+    color: #ffffff;
+    border:none;
+    margin-bottom: 10px;
+    justify-content:flex-end;
+    
+}
 
 .emp_form {
     display: flex;
@@ -507,9 +520,19 @@ footer p {
     }
 
         .form_group input::placeholder {
-            color: #a8a8a8;
+            color: #000;
             font-size: 12px;
         }
+    .form_group input {
+        color: #000; 
+        font-size: 12px; 
+    }
+
+    .form_group select {
+        color: #000; 
+        font-size: 12px; 
+        
+    }
 
 .dob-input {
     padding: 8px;
@@ -1032,18 +1055,7 @@ table .edit-icon img {
             }
 
 .dataTables_filter {
-    margin-bottom: 15px; 
-}
-.photo_name {
-    color: #a8a8a8;
-    font-size: 12px;
-}
-.truncated-filename {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
+    margin-bottom: 15px!important; 
 }
 
 .del_emp {
@@ -1095,3 +1107,24 @@ table .edit-icon img {
     .employee_deletion .cancel_button {
         background-color: #5cb85c;
     }
+
+.photo-preview {
+    margin-bottom: 15px;
+}
+
+.employee-photo-frame {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+}
+
+.text-danger {
+    color: #d9534f;
+    font-size: 10px;
+    margin-top: 4px;
+    display: block !important;
+    select option:first-child select option:first-child
+}
+

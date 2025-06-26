@@ -1,11 +1,26 @@
 using EmployeePortalSystem.Repositories;
-
+using EmployeePortalSystem.Context;
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserAccessRepository>();
+
 builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<AwardRepository>();
+builder.Services.AddScoped<AwardContext>();
+
+
+
+builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<AwardRepository>();
+builder.Services.AddScoped<AwardContext>();
+
+
+
+builder.Services.AddScoped<EmployeeRepository>();
+
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
