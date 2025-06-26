@@ -93,7 +93,6 @@ namespace EmployeePortalSystem.Repositories
                 "SELECT Name FROM employee WHERE EmployeeId = @id", new { id = headId });
         }
 
-
         public IEnumerable<Employee> SearchEmployeesByName(string term)
         {
             using var db = Connection;
