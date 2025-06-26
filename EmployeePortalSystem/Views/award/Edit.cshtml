@@ -1,0 +1,45 @@
+﻿@model EmployeePortalSystem.Models.Award
+
+@{
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    ViewData["Title"] = "Edit Award";
+}
+
+<h3>Edit Award</h3>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="AwardId" />
+
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        <input asp-for="Type" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventDate"></label>
+        <input asp-for="EventDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RecipientName"></label>
+        <input asp-for="RecipientName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GivenBy"></label>
+        <input asp-for="GivenBy" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DisplayOrder"></label>
+        <input asp-for="DisplayOrder" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,79 @@
+﻿@model EmployeePortalSystem.ViewModels.AwardViewModel
+@{
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    ViewData["Title"] = "Award List";
+}
+
+<h3 class="text-center mb-4">Award List</h3>
+
+<div class="container_emp mb-20">
+    <div class="emp_btn">
+        <div class="right_btn" style="text-align: right;">
+            <form method="get" asp-action="Create" asp-controller="Award">
+                <button type="submit" class="create_emp_btn">+ Add Award</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container_emp mb-5">
+    <div class="empmaster_card">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="awardTable">
+                <thead class="bg-pink text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Recipient</th>
+                        <th>Given By</th>
+                        <th>Description</th>
+                        <th>Order</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var award in Model.AwardList)
+                    {
+                        <tr>
+                            <td>@award.AwardId</td>
+                            <td>@award.Type</td>
+                            <td>@award.EventDate?.ToShortDateString()</td>
+
+                            <td>@award.RecipientName</td>
+                            <td>@award.GivenBy</td>
+                            <td>@award.Description</td>
+                            <td>@award.DisplayOrder</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@award.AwardId" title="Edit" style="margin-right: 10px;">
+                                    <img src="~/img/edit Icon.png" alt="Edit" width="20" height="20" />
+                                </a>
+
+                                <form asp-action="Delete" asp-route-id="@award.AwardId" method="post" style="display:inline;">
+                                    <button type="submit" style="background: none; border: none; padding: 0;" title="Delete" onclick="return confirm('Are you sure you want to delete this award?');">
+                                        <img src="~/img/trash-xmark (1).png" alt="Delete" width="20" height="20" />
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#awardTable').DataTable();
+        });
+    </script>
+}

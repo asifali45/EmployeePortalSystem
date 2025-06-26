@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
+using EmployeePortalSystem.ViewModels;
 
 namespace EmployeePortalSystem.Controllers
 {
-    [Route("api/[controller]")]
-    public class AwardController : Controller  
+    public class AwardController : Controller
     {
         private readonly AwardRepository _repository;
 
@@ -16,62 +16,141 @@ namespace EmployeePortalSystem.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Award>>> GetAll()
+        // Show Award List
+        public async Task<IActionResult> Index()
         {
-            var awards = await _repository.GetAllAsync();
-            return Ok(awards);
+            var model = new AwardViewModel();
+            model.AwardList = (await _repository.GetAllAsync()).ToList();
+            return View("AwardList", model);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Award>> Get(int id)
+        // Show Add Form
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new AwardViewModel
+            {
+                EventDate = DateTime.Today
+            };
+            return View("AwardForm", model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
             var award = await _repository.GetByIdAsync(id);
             if (award == null)
+            {
                 return NotFound();
+            }
 
-            return Ok(award);
+            var recipientName = await _repository.GetEmployeeNameByIdAsync(award.RecipientId);
+
+            var model = new AwardViewModel
+            {
+                AwardId = award.AwardId,
+                Type = award.Type,
+                EventDate = award.EventDate,
+                RecipientName = recipientName,
+                GivenBy = award.GivenBy,
+                Description = award.Description,
+                DisplayOrder = award.DisplayOrder,
+                CreatedBy = award.CreatedBy,
+                UpdatedBy = award.UpdatedBy
+            };
+
+            return View("AwardForm", model); // ✅ reuse AwardForm.cshtml
+        }
+
+
+        // Save Award
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AwardViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("AwardForm", model);
+            }
+
+            int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
+            if (recipientId == 0)
+            {
+                ModelState.AddModelError("RecipientName", "Invalid employee name.");
+                return View("AwardForm", model);
+            }
+
+            var award = new Award
+            {
+                Type = model.Type,
+                EventDate = model.EventDate.Value,
+
+                RecipientId = recipientId,
+                GivenBy = model.GivenBy,
+                Description = model.Description,
+                DisplayOrder = model.DisplayOrder,
+                CreatedBy = model.CreatedBy,
+                UpdatedBy = model.UpdatedBy,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+            await _repository.CreateAsync(award);
+            TempData["Message"] = "Award successfully added.";
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AwardViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("AwardForm", model);
+            }
+
+            int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
+            if (recipientId == 0)
+            {
+                ModelState.AddModelError("RecipientName", "Invalid employee name.");
+                return View("AwardForm", model);
+            }
+
+            var award = await _repository.GetByIdAsync(model.AwardId);
+            if (award == null)
+            {
+                return NotFound();
+            }
+
+            // Update fields
+            award.Type = model.Type;
+            award.EventDate = model.EventDate.Value;
+            award.RecipientId = recipientId;
+            award.GivenBy = model.GivenBy;
+            award.Description = model.Description;
+            award.DisplayOrder = model.DisplayOrder;
+            award.UpdatedBy = model.UpdatedBy;
+            award.UpdatedAt = DateTime.Now;
+
+            await _repository.UpdateAsync(award);
+
+            TempData["Message"] = "Award successfully updated.";
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(Award award)
-        {
-            try
-            {
-                var newId = await _repository.CreateAsync(award);
-                return Ok(newId);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Insert failed: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Award award)
-        {
-            award.AwardId = id;
-            var updated = await _repository.UpdateAsync(award);
-            if (!updated)
-                return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _repository.DeleteAsync(id);
-            if (!deleted)
+            var award = await _repository.GetByIdAsync(id);
+            if (award == null)
+            {
                 return NotFound();
+            }
 
-            return NoContent();
+            await _repository.DeleteAsync(id);
+            TempData["Message"] = "Award successfully deleted.";
+            return RedirectToAction("Index");
         }
 
-        [HttpGet("/Award/award")]
-        public IActionResult award ()
-        {
-            return View();
-        }
     }
+
 }
