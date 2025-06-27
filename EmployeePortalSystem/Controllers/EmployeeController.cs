@@ -82,7 +82,7 @@ namespace EmployeePortalSystem.Controllers
             }
 
             _repo.DeleteEmployee(id);
-            TempData["Message"] = "Employee deleted successfully!";
+            TempData["Messages"] = "Employee deleted successfully!";
             return RedirectToAction("EmployeeDetails");
         }
 
@@ -144,7 +144,7 @@ namespace EmployeePortalSystem.Controllers
 
                 _repo.UpdateEmployee(employee);
 
-                TempData["Message"] = "Employee updated successfully!";
+                TempData["Message1"] = "Employee updated successfully!";
             }
             else
             {
@@ -155,7 +155,7 @@ namespace EmployeePortalSystem.Controllers
 
                 _repo.AddEmployee(employee);
 
-                TempData["Message"] = "Employee added successfully!";
+                TempData["Message1"] = "Employee added successfully!";
             }
             return RedirectToAction("EmployeeInsertion");
         }
