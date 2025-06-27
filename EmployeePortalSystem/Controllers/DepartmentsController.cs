@@ -18,7 +18,7 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult Index()
         {
-            var departments = _repo.GetAllWithDetails(); // Returns List<DepartmentViewModel>
+            var departments = _repo.GetAllWithDetails(); 
             return View(departments);
         }
 
