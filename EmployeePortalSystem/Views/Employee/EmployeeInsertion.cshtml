@@ -30,76 +30,85 @@
                         <div class="form_group">
                             <input type="hidden" asp-for="Employee.EmployeeId" />
 
-                            <label>Name</label>
+                            <label>Name<span class="imp_field">*</span></label>
+                            <div class="val">
                             <input asp-for="Employee.Name" type="text" placeholder="Enter the Employee Name here" class="form-control" />
                             <span asp-validation-for="Employee.Name" class="text-danger"></span>
-
+                            </div>
                            
                         </div>
                         <div class="form_group">
-                            <label>Email</label>
-                            <input asp-for="Employee.Email" type="email" placeholder="Enter the Email of the Employee" class="dob-input" />
+                            <label>Email<span class="imp_field">*</span></label>
+                            <div class="val">
+                            <input asp-for="Employee.Email" type="email" placeholder="Enter the Email of the Employee" class="form-control" />
                             <span asp-validation-for="Employee.Email" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Phone</label>
-                            <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" />
+                            <label>Phone<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" class="form-control" />
                             <span asp-validation-for="Employee.Phone" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
-                            <label>Designation</label>
-                            <select asp-for="Employee.RoleId" asp-items="@(new SelectList(Model.Roles, "RoleId", "RoleName"))">
+                            <label>Designation<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="Employee.RoleId" asp-items="@(new SelectList(Model.Roles, "RoleId", "RoleName"))" class="form-control">
                                 <option value="" disabled selected hidden>Select Designation</option>
                             </select>
 
                             <span asp-validation-for="Employee.RoleId" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="form_row">
                         
                         <div class="form_group">
-                            <label>Department</label>
-                            <select asp-for="Employee.DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Name"))" >
+                            <label>Department<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="Employee.DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Name"))" class="form-control">
                                 <option value="" disabled selected hidden >Select Department</option>
-                            </select><br />
+                            </select>
                             <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
                             <label>Role</label>
-                            <select name="Role" class="form-control">
-                                <option value="" disabled selected hidden>Choose the role of the employee</option>
-                                @if (Model.Employee.IsAdmin)
-                                {
-                                    <option value="Admin" selected>Admin</option>
-                                    <option value="Employee">Employee</option>
-                                }
-                                else
-                                {
-                                    <option value="Admin">Admin</option>
-                                    <option value="Employee" selected>Employee</option>
-                                }
-                            </select>
-
+                           
+                                <select name="Role" class="form-control">
+                                    <option value="" disabled selected hidden>Choose the role of the employee</option>
+                                    @if (Model.Employee.IsAdmin)
+                                    {
+                                        <option value="Admin" selected>Admin</option>
+                                        <option value="Employee">Employee</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Admin">Admin</option>
+                                        <option value="Employee" selected>Employee</option>
+                                    }
+                                </select>
+                            
                         </div>
+
                     </div>
                     <div class="form_row">
                         <div class="form_group">
+                            
                             <label>Photo</label>
-
+                            <div class="photo_edit">
+                            <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" class="form-control" />
                             @if (!string.IsNullOrEmpty(Model.Employee.Photo))
                             {
                                 <div class="photo-preview">
                                     <img src="@Model.Employee.Photo" alt="Employee Photo" class="employee-photo-frame" />
                                 </div>
                             }
-
-                            
-                            <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee"  />
-                           
-                            
+                            </div>
                         </div>
 
                     </div>

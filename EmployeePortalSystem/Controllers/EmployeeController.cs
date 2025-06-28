@@ -124,21 +124,21 @@ namespace EmployeePortalSystem.Controllers
             }
             else if (employee.EmployeeId > 0)
             {
-                // Preserve existing photo if no new one uploaded
+                
                 var existing = _repo.GetEmployeeById(employee.EmployeeId);
                 employee.Photo = existing?.Photo;
             }
             else
             {
-                // insert mode and no photo uploaded
-                employee.Photo = null; // or "" depending on DB schema
+               
+                employee.Photo = null;
             }
 
             int? userId = HttpContext.Session.GetInt32("EmployeeId");
 
             if (employee.EmployeeId > 0)
             {
-                // Edit operation
+               
                 employee.UpdatedAt = DateTime.Now;
                 employee.UpdatedBy = userId;
 
@@ -148,7 +148,6 @@ namespace EmployeePortalSystem.Controllers
             }
             else
             {
-                // New record
                 employee.CreatedAt = DateTime.Now;
                 employee.UpdatedAt = DateTime.Now;
                 employee.CreatedBy = userId;

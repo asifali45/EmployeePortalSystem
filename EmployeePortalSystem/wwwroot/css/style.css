@@ -504,7 +504,7 @@ footer p {
         margin-right: 5px;
     }
 
-    .form_group input,
+/*    .form_group input,
     .form_group select {
         flex: 1;
         padding: 8px;
@@ -517,22 +517,28 @@ footer p {
         box-sizing: border-box;
         margin-left: 0;
         color: #a8a8a8;
+    }*/
+    .form_group input,
+    .form_group select {
+        flex: 1;
+        padding: 7px;
+        border-radius: 4px;
+        border: 1px solid #cbcbcb;
+        font-size: 12px;
+        width: 430px;
+        height: 30px;
+        margin-left: 0;
+        box-sizing: border-box;
+        color: #454444;
     }
+
+
 
         .form_group input::placeholder {
-            color: #000;
+            color: #454444;
             font-size: 12px;
         }
-    .form_group input {
-        color: #000; 
-        font-size: 12px; 
-    }
 
-    .form_group select {
-        color: #000; 
-        font-size: 12px; 
-        
-    }
 
 .dob-input {
     padding: 8px;
@@ -1129,3 +1135,28 @@ table .edit-icon img {
 }
 
 
+.val {
+    display:flex;
+    flex-direction:column;
+}
+    .val input,
+    .val select {
+        width: 430px;
+    }
+
+.imp_field {
+    color: #d9534f;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.photo_edit {
+    display: block;
+    width: 100%;
+}
+
+    .photo_edit input {
+        width: 99%;
+        margin-bottom: 10px; 
+        margin-left: 11px;
+    }
