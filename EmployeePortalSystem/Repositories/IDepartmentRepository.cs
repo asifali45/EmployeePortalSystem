@@ -11,4 +11,6 @@ public interface IDepartmentRepository
     void Delete(int id);
     IEnumerable<Employee> SearchEmployeesByName(string namePart);
     string? GetHeadNameById(int? headId);
+
+    IEnumerable<Employee> GetAllEmployees();
 }

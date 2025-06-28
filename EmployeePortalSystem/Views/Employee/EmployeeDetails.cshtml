@@ -67,7 +67,13 @@
                             }
                         </tbody>
 
-                    </table> 
+                    </table>
+                    @if (TempData["Messages"] != null)
+                    {
+                        <div class="alert alert-success mt-2">
+                            @TempData["Messages"]
+                        </div>
+                    }
                  </div> 
              </div> 
          </div>

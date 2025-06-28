@@ -13,13 +13,18 @@
 
             <div class="employee_deletion">
                 <div class="left_del">
+
                     <form method="post" asp-action="EmployeeDeleteConfirmed" asp-controller="Employee">
+
                         <input type="hidden" name="id" value="@Model.EmployeeId" />
                         <button type="submit" class="del_button">Delete</button>
                     </form>
                 </div>
                 <div class="right_cancel">
+
+
                     <form method="get" asp-action="EmployeeDetails" asp-controller="Employee">
+
                         <button type="submit" class="cancel_button">Cancel</button>
                     </form>
                 </div>
