@@ -1,0 +1,160 @@
+﻿
+@{
+	ViewData["Title"] = "Create Committee";
+	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+@model EmployeePortalSystem.Models.Committee
+
+
+
+
+<div class="container">
+    <div class="page-contents">
+
+        <div class="container_emp">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="CommitteeDetails" asp-controller="Committee">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+                </div>
+            </div>
+            <div class="emp_head">
+                <h2>Add Committee</h2>
+            </div>
+        </div>
+
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="CreateCommittee" asp-controller="Committee" method="post" class="emp_form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form_row">
+                        <div class="form_group">
+         
+                            <label>Name<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Name" type="text" placeholder="Enter the Committee Name here" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="form_group">
+                            <label>Type<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Type" type="text" placeholder="Enter the type of the Committee" class="form-control" />
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>HeadId<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="HeadId" type="number" placeholder="Enter the Head id" class="form-control" />
+                                <span asp-validation-for="HeadId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <label>Logo<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Logo" type="image" placeholder="Logo Url" class="form-control" />
+                                <span asp-validation-for="Logo" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        
+                        @* <div class="form_group"> *@
+                        @*     <label>Description<span class="imp_field">*</span></label> *@
+                        @*     <div class="val"> *@
+                        @*         <select asp-for="Description" asp-items="@(new SelectList(Model.Roles, "RoleId", "RoleName"))" class="form-control"> *@
+                        @*             <option value="" disabled selected hidden>Select Designation</option> *@
+                        @*         </select> *@
+
+                        @*         <span asp-validation-for="" class="text-danger"></span> *@
+                        @*     </div> *@
+                        @* </div> *@
+                    </div>
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Description<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Description" type="text" placeholder="Committee Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    @* <div class="form_row"> *@
+
+                    @*     <div class="form_group"> *@
+                    @*         <label>Department<span class="imp_field">*</span></label> *@
+                    @*         <div class="val"> *@
+                    @*             <select asp-for="Employee.DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "Name"))" class="form-control"> *@
+                    @*                 <option value="" disabled selected hidden>Select Department</option> *@
+                    @*             </select> *@
+                    @*             <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span> *@
+                    @*         </div> *@
+                    @*     </div> *@
+                    @*     <div class="form_group"> *@
+                    @*         <label>Role</label> *@
+
+                    @*         <select name="Role" class="form-control"> *@
+                    @*             <option value="" disabled selected hidden>Choose the role of the employee</option> *@
+                    @*             @if (Model.Employee.IsAdmin) *@
+                    @*             { *@
+                    @*                 <option value="Admin" selected>Admin</option> *@
+                    @*                 <option value="Employee">Employee</option> *@
+                    @*             } *@
+                    @*             else *@
+                    @*             { *@
+                    @*                 <option value="Admin">Admin</option> *@
+                    @*                 <option value="Employee" selected>Employee</option> *@
+                    @*             } *@
+                    @*         </select> *@
+
+                    @*     </div> *@
+
+                    @* </div> *@
+                    @* <div class="form_row"> *@
+                    @*     <div class="form_group"> *@
+
+                    @*         <label>Logo</label> *@
+                    @*         <div class="photo_edit"> *@
+                    @*             <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" class="form-control" /> *@
+                    @*             @if (!string.IsNullOrEmpty(Model.Employee.Photo)) *@
+                    @*             { *@
+                    @*                 <div class="photo-preview"> *@
+                    @*                     <img src="@Model.Employee.Photo" alt="Employee Photo" class="employee-photo-frame" /> *@
+                    @*                 </div> *@
+                    @*             } *@
+                    @*         </div> *@
+                    @*     </div> *@
+
+                    @* </div> *@
+
+
+
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Save</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                    @if (TempData["Message1"] != null)
+                    {
+                        <div class="alert-success">
+                            @TempData["Message1"]
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
