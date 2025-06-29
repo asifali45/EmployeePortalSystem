@@ -17,7 +17,7 @@
                     </form>
                 </div>
                 <div class="right_btn">
-                    <form method="get" asp-action="EmployeeInsertion" asp-controller="Employee">
+                    <form method="get" asp-action="CreateCommittee" asp-controller="Committee">
                         <button type="submit" class="create_emp_btn">Create new</button>
                     </form>
                 </div>
@@ -54,10 +54,10 @@
                                         <td>
                                             @if (!string.IsNullOrEmpty(item.Logo))
                                             {
-                                                <img src="@item.Logo" alt="Logo" width="60" height="60" />
+                                                <img src="/uploads/@item.Logo" alt="Logo" class="comm-logo" width="60" height="60"  />
                                             }
                                             else
-                                            {
+                                            {   
                                                 <span>No Logo</span>
                                             }
                                         </td>

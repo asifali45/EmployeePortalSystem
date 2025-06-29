@@ -1160,3 +1160,9 @@ table .edit-icon img {
         margin-bottom: 10px; 
         margin-left: 11px;
     }
+
+
+.comm-logo {
+    border-radius: 50%; 
+    object-fit: cover;
+}

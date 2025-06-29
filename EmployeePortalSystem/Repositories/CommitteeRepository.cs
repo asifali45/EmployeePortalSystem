@@ -31,6 +31,13 @@ namespace EmployeePortalSystem.Repositories
             return connection.Query<CommitteeViewModel>(sql).ToList();
         }
 
+        public List<Employee> GetAllEmployees()
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "SELECT EmployeeId,Name FROM Employee";
+            return connection.Query<Employee>(sql).ToList();
+        }
+
         public void CreateCommittee(Committee committee)
         {
             using var connection = _context.CreateConnection();
