@@ -11,11 +11,13 @@ builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<AwardContext>();
 
-
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+
 
 var app = builder.Build();
 
