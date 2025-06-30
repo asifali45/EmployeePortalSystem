@@ -79,11 +79,11 @@ namespace EmployeePortalSystem.Controllers
 
                 _repository.CreateCommittee(committee);
 
+                TempData["Success"] = "Committee Added Successfully";
                 return RedirectToAction("CommitteeDetails");
             }
 
-            // if model validation fails
-            TempData["Error"] = "Validation failed. Please check all fields.";
+            
             ViewBag.Employees = _repository.GetAllEmployees();
             return View(model);
         }
