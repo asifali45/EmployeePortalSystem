@@ -48,5 +48,23 @@ namespace EmployeePortalSystem.Repositories
             connection.Execute(sql, committee);
 
         }
+
+        public List<CommitteeMemberViewModel> GetCommitteeMembersByCommitteeId(int CommitteeId)
+        { 
+            using var connection = _context.CreateConnection();
+            string sql = @"
+                SELECT 
+                    cm.CommitteeMemberId,
+                    e.EmployeeId,
+                    e.Name AS EmployeeName,
+                    r.RoleName,
+                    d.Name AS DepartmentName
+                FROM committee_member cm
+                INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
+                INNER JOIN Role r ON cm.RoleId = r.RoleId
+                INNER JOIN Department d ON e.DepartmentId = d.DepartmentId
+                WHERE cm.CommitteeId = @committeeId";
+            return connection.Query<CommitteeMemberViewModel>(sql, new {CommitteeId}).ToList();
+        }
     }
 }
