@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.ViewModels;
+using System.Xml.Linq;
 
 namespace EmployeePortalSystem.Controllers
 {
@@ -86,6 +87,15 @@ namespace EmployeePortalSystem.Controllers
             TempData["Error"] = "Validation failed. Please check all fields.";
             ViewBag.Employees = _repository.GetAllEmployees();
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult CommitteeMembers (int id, string name)
+        {
+            var members= _repository.GetCommitteeMembersByCommitteeId(id);
+            ViewBag.CommitteeId = id;
+            ViewBag.CommitteeName = name;
+            return View("CommitteeMemberDetails", members);
         }
 
 
