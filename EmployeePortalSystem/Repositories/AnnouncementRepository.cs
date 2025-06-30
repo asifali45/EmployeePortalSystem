@@ -32,13 +32,34 @@ namespace EmployeePortalSystem.Repositories
         public void Add(Announcement announcement)
         {
             using var db = Connection;
+
             string sql = @"
-                INSERT INTO announcement
-                (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
-                VALUES
-                (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
-            db.Execute(sql, announcement);
+        INSERT INTO announcement
+        (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
+        VALUES
+        (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+
+            var parameters = new
+            {
+                announcement.Title,
+                announcement.Message,
+                PostDate = DateTime.Now,
+                announcement.VisibleTo,
+                announcement.DisplayOrder,
+                IsEvent = (announcement.IsEvent ?? false) ? 1 : 0,
+                EventDate = (announcement.IsEvent ?? false) ? announcement.EventDate : null,
+                EventTime = (announcement.IsEvent ?? false) ? announcement.EventTime : null,
+
+                announcement.Location,
+                announcement.CreatedBy
+            };
+
+            var rows = db.Execute(sql, parameters);
+
+            Console.WriteLine($"✅ Rows inserted: {rows}");
         }
+
+
 
         public void Update(Announcement announcement)
         {

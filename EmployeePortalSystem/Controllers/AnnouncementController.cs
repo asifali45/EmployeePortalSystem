@@ -20,26 +20,44 @@ namespace EmployeePortalSystem.Controllers
             return View(announcements);
      
         }
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.VisibleToOptions = GetVisibleToOptions();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Announcement model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Announcement announcement)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.VisibleToOptions = GetVisibleToOptions();
-                return View(model);
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        Console.WriteLine($"❌ {key}: {error.ErrorMessage}");
+                    }
+                }
+                return View(announcement);
             }
 
-            model.CreatedBy = 1;
-            model.PostDate ??= DateTime.Now;
-            _repo.Add(model);
+            announcement.PostDate = DateTime.Now;
+            announcement.CreatedBy = 1;
+
+            // Debug log
+            Console.WriteLine("📌 DEBUG - IsEvent: " + announcement.IsEvent);
+            Console.WriteLine("📌 DEBUG - EventDate: " + announcement.EventDate);
+            Console.WriteLine("📌 DEBUG - EventTime: " + announcement.EventTime);
+
+            _repo.Add(announcement);
+
+            TempData["Message"] = "Announcement created successfully!";
             return RedirectToAction("Index");
         }
+
+
 
         public IActionResult Edit(int id)
         {
