@@ -17,7 +17,7 @@
                     </form>
                 </div>
                 <div class="right_btn">
-                    <form method="get" asp-action="CreateCommittee" asp-controller="Committee">
+                    <form method="get" asp-action="CreateEditCommittee" asp-controller="Committee">
                         <button type="submit" class="create_emp_btn">Create new</button>
                     </form>
                 </div>
@@ -64,14 +64,14 @@
                                         <td>@item.Description</td>
                                         <td>
                                             <span style="display: flex; gap: 20px;">
-                                                <a href="#">
+                                                <a href="@Url.Action("EditCommittee", "Committee", new { id = item.CommitteeId })">
                                                     <img src="~/img/edit Icon.png" width="15px" height="15px" />
                                                 </a>
-                                                <a href="#">
+                                                <a href="@Url.Action("CommitteeDelete", "Committee", new { cid = item.CommitteeId })">
                                                     <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
                                                 </a>
                                                 <a href="@Url.Action("CommitteeMembers", "Committee", new { id = item.CommitteeId, name = item.Name })">
-                                                    <img src="~/img/cmembers_logo.png" width="15px" height="15px" />
+                                                    <img src="~/img/team.png" width="15px" height="15px" />
                                                 </a>
                                             </span>
                                         </td>
