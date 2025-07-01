@@ -1,6 +1,6 @@
 ﻿
 @{
-	ViewData["Title"] = "Create Committee";
+	ViewData["Title"] = "Create and Edit Committee";
 	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 @model EmployeePortalSystem.ViewModels.CommitteeViewModel
@@ -23,10 +23,11 @@
                 <h2>Add Committee</h2>
             </div>
         </div>
+        
 
         <div class="container_emp mb-20">
             <div class="empmaster_card">
-                <form asp-action="CreateCommittee" asp-controller="Committee" method="post" class="emp_form" enctype="multipart/form-data">
+                <form asp-action="CreateEditCommittee" asp-controller="Committee" method="post" class="emp_form" enctype="multipart/form-data">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                     <div class="form_row">
@@ -51,25 +52,18 @@
                                     <option value="Technology">Technology</option>
                                     <option value="Business">Business</option>
                                 </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>HeadId<span class="imp_field">*</span></label>
+                            <label>HeadName<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="HeadId" list="headList" class="form-control" placeholder="Select Head by Name or ID" />
-
-                                @if (ViewBag.Employees is List<EmployeePortalSystem.Models.Employee> employees)
-                                {
-                                    <datalist id="headList">
-                                        @foreach (var emp in employees)
-                                        {
-                                            <option value="@emp.EmployeeId">@emp.Name</option>
-                                        }
-                                    </datalist>
-                                }
+                                <select asp-for="HeadId" asp-items="@(new SelectList(ViewBag.Employees, "EmployeeId", "Name"))" class="form-control">
+                                    <option value="">-- Select Head --</option>
+                                </select>
 
                                 <span asp-validation-for="HeadId" class="text-danger"></span>
                             </div>
@@ -90,6 +84,7 @@
                             <div class="val">
                                 <input asp-for="Description" type="text" placeholder="Committee Description" class="form-control" />
                                 <span asp-validation-for="Description" class="text-danger"></span>
+                                <input type="hidden" asp-for="CommitteeId" />
                             </div>
                         </div>
                     </div>
@@ -99,15 +94,10 @@
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-                    @if (TempData["Message1"] != null)
+                    
+                    @if (TempData["Success"] != null)
                     {
-                        <div class="alert-success">
-                            @TempData["Message1"]
-                        </div>
-                    }
-                    @if (TempData["Error"] != null)
-                    {
-                        <div class="alert alert-danger">@TempData["Error"]</div>
+                        <div class="alert alert-danger">@TempData["Success"]</div>
                     }
                 </form>
             </div>
