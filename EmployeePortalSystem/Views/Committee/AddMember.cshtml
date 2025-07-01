@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Create Committee Member";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+@model EmployeePortalSystem.ViewModels.CommitteeMemberInsertionViewModel
+
+
+
+
+<div class="container">
+    <div class="page-contents">
+
+        <div class="container_emp">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="CommitteeMembers" asp-controller="Committee" asp-route-id="@Model.CommitteeId">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="emp_head">
+                <h2>Add Committee</h2>
+            </div>
+        </div>
+
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="AddMember" asp-controller="Committee" method="post" class="emp_form" enctype="multipart/form-data">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <input type="hidden" asp-for="CommitteeId" />
+                    
+                        <div class="form_row">
+                        <div class="form_group">
+                            <label>Employee<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="EmployeeId" list="employeeList" class="form-control" placeholder="Select Employee by Name or ID" />
+
+                                <datalist id="employeeList">
+                                    @foreach (var emp in Model.Employees)
+                                    {
+                                        <option value="@emp.EmployeeId">@emp.Name</option>
+                                    }
+                                </datalist>
+
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        </div>
+
+
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Save</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                    @if (TempData["Message1"] != null)
+                    {
+                        <div class="alert-success">
+                            @TempData["Message1"]
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
