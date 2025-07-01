@@ -28,9 +28,6 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
-
-
-
         public IActionResult CreateEditCommittee()
         {
             
@@ -144,6 +141,7 @@ namespace EmployeePortalSystem.Controllers
                 Type = committee.Type,
                 HeadId = committee.HeadId,
                 Description = committee.Description,
+                Logo = committee.Logo
                 // Don't assign logoPath here — let them re-upload if needed
             };
 
