@@ -16,6 +16,9 @@ builder.Services.AddScoped<AwardContext>();
 builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<AwardContext>();
+builder.Services.AddScoped<SupportTicketRepository>();
+
+
 
 
 
