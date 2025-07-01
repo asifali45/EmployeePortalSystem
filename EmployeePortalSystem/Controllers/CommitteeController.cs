@@ -123,7 +123,7 @@ namespace EmployeePortalSystem.Controllers
         {
             _repository.DeleteCommittee(cid);
 
-            TempData["Messages"] = "Employee deleted successfully!";
+            TempData["Messages"] = "Committee deleted successfully!";
 
             return RedirectToAction("CommitteeDetails","Committee");
         }
