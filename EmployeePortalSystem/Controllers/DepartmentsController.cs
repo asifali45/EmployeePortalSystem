@@ -96,7 +96,7 @@ namespace EmployeePortalSystem.Controllers
                 }).ToList();
         }
 
-        // 👇 Supports JavaScript-based HeadName search
+        //  Supports JavaScript-based HeadName search
         [HttpGet]
         public JsonResult SearchEmployees(string term)
         {

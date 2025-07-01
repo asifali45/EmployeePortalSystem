@@ -9,7 +9,15 @@ builder.Services.AddScoped<UserAccessRepository>();
 
 builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
+builder.Services.AddScoped<CommitteeRepository>();
+
 builder.Services.AddScoped<AwardContext>();
+
+
+//Trying to inject connections to all repositories
+builder.Services.AddScoped<AppDbContext>();
+
+
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
