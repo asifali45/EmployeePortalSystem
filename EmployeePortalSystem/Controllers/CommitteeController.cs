@@ -144,10 +144,10 @@ namespace EmployeePortalSystem.Controllers
                 Type = committee.Type,
                 HeadId = committee.HeadId,
                 Description = committee.Description,
-                // Don't assign logoPath here — let them re-upload if needed
+               
             };
 
-            ViewBag.Employees = _repository.GetAllEmployees();            // For head list
+            ViewBag.Employees = _repository.GetAllEmployees();           
             return View("CreateEditCommittee", model); 
         }
 

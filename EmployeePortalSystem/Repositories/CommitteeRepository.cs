@@ -97,16 +97,12 @@ namespace EmployeePortalSystem.Repositories
                 WHERE cm.CommitteeId = @committeeId";
             return connection.Query<CommitteeMemberViewModel>(sql, new {CommitteeId}).ToList();
         }
-        public Committee GetCommitteeById(int id)
-        {
-            using var conn = _context.CreateConnection();
-            return conn.QueryFirstOrDefault<Committee>("SELECT * FROM Committee WHERE CommitteeId = @id", new { id });
-        }
+       
 
         public void AddCommitteeMember(CommitteeMember member)
         {
             using var conn = _context.CreateConnection();
-            string sql = @"INSERT INTO CommitteeMember 
+            string sql = @"INSERT INTO committee_member 
                    (CommitteeId, EmployeeId, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
                    VALUES (@CommitteeId, @EmployeeId, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt)";
             conn.Execute(sql, member);
