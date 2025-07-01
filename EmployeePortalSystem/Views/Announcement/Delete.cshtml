@@ -1,0 +1,29 @@
+﻿@model EmployeePortalSystem.Models.Announcement
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container">
+    <div class="empmaster_card">
+        <div class="del_emp">
+            <h3>Are you sure you want to delete Announcement: @Model.Title?</h3>
+
+
+            <div class="employee_deletion">
+                <div class="left_del">
+                    <form method="post" asp-action="Delete" asp-controller="Announcement">
+                        <input type="hidden" name="id" value="@Model.AnnouncementId" />
+                        <button type="submit" class="del_button">Delete</button>
+                    </form>
+                </div>
+                <div class="right_cancel">
+                    <form method="get" asp-action="Index" asp-controller="Announcement">
+                        <button type="submit" class="cancel_button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

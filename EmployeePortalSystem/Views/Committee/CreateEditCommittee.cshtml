@@ -1,7 +1,7 @@
 ﻿
 @{
-	ViewData["Title"] = "Create and Edit Committee";
-	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    ViewData["Title"] = "Create and Edit Committee";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 @model EmployeePortalSystem.ViewModels.CommitteeViewModel
 
@@ -20,7 +20,11 @@
                 </div>
             </div>
             <div class="emp_head">
-                <h2>Add Committee</h2>
+
+                <h2>@(Model?.CommitteeId == null || Model.CommitteeId == 0 ? "Add Committee" : "Edit Committee")</h2>
+               
+           
+                
             </div>
         </div>
         
@@ -59,26 +63,28 @@
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>HeadName<span class="imp_field">*</span></label>
+                            <label>Head Id<span class="imp_field">*</span></label>
                             <div class="val">
-                                <select asp-for="HeadId" asp-items="@(new SelectList(ViewBag.Employees, "EmployeeId", "Name"))" class="form-control">
-                                    <option value="">-- Select Head --</option>
-                                </select>
+                                @* <select asp-for="HeadId" asp-items="@(new SelectList(ViewBag.Employees, "EmployeeId", "Name"))" class="form-control"> *@
+                                @*     <option value="">-- Select Head --</option> *@
+                                @* </select> *@
 
+                                @* <span asp-validation-for="HeadId" class="text-danger"></span> *@
+
+                                <input asp-for="HeadId" class="form-control" list="headList" placeholder="Select Head by ID or Name" />
+                                <datalist id="headList">
+                                    @if (ViewBag.Employees is List<EmployeePortalSystem.Models.Employee> employees)
+                                    {
+                                        foreach (var emp in employees)
+                                        {
+                                            <option value="@emp.EmployeeId">@emp.Name</option>
+                                        }
+                                    }
+                                </datalist>
                                 <span asp-validation-for="HeadId" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <div class="form_group">
-                            <label>Logo</label>
-                            <div class="val">
-                                <input asp-for="LogoFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
-                                <span asp-validation-for="LogoFile" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="form_row">
                         <div class="form_group">
                             <label>Description</label>
                             <div class="val">
@@ -87,6 +93,28 @@
                                 <input type="hidden" asp-for="CommitteeId" />
                             </div>
                         </div>
+
+
+
+                    </div>
+                    <div class="form_row">
+
+                        <div class="form_group">
+                            <label>Logo</label>
+                            <div class="val">
+                                <input asp-for="LogoFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+                                <span asp-validation-for="LogoFile" class="text-danger"></span>
+
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Logo))
+                                {
+                                    <div style="margin-top:10px;">
+                                        <label>Existing Logo:</label><br />
+                                        <img src="~/uploads/@Model.Logo" alt="Logo" class="comm-logo" width="80" height="80" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                       
                     </div>
 
 

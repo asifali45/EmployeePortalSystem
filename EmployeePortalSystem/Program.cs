@@ -12,15 +12,23 @@ builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<CommitteeRepository>();
 
 builder.Services.AddScoped<AwardContext>();
+builder.Services.AddScoped<SupportTicketRepository>();
+
+
+
 
 //Trying to inject connections to all repositories
 builder.Services.AddScoped<AppDbContext>();
+
 
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+
+
 
 var app = builder.Build();
 
