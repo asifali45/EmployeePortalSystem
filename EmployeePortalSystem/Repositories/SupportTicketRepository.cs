@@ -16,7 +16,7 @@ namespace EmployeePortalSystem.Repositories
 
         public async Task<int> CreateAsync(SupportTicket ticket)
         {
-            var query = @"INSERT INTO SupportTickets (EmployeeId, IssueTitle, Description, Status, CreatedAt)
+            var query = @"INSERT INTO support_tickets (EmployeeId, IssueTitle, Description, Status, CreatedAt)
                           VALUES (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
                           SELECT LAST_INSERT_ID();";
 
@@ -28,7 +28,7 @@ namespace EmployeePortalSystem.Repositories
         {
             var query = @"SELECT st.TicketId, st.IssueTitle, st.Description, st.Status, st.Response, st.CreatedAt,
                           emp.Name AS EmployeeName
-                          FROM SupportTickets st
+                          FROM support_tickets st
                           JOIN Employee emp ON emp.EmployeeId = st.EmployeeId";
 
             using var connection = _context.CreateConnection();
@@ -39,7 +39,7 @@ namespace EmployeePortalSystem.Repositories
         {
             var query = @"SELECT st.TicketId, st.IssueTitle, st.Description, st.Status, st.Response, st.CreatedAt,
                           emp.Name AS EmployeeName
-                          FROM SupportTickets st
+                          FROM support_tickets st
                           JOIN Employee emp ON emp.EmployeeId = st.EmployeeId
                           WHERE st.EmployeeId = @EmployeeId";
 
