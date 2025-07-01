@@ -50,12 +50,17 @@
                                     <td>@member.DepartmentName</td>
                                     <td>
                                         <span style="display: flex; gap: 20px;">
-                                        <a href="#">
-                                            <img src="~/img/edit Icon.png" width="15px" height="15px" />
-                                        </a>
-                                        <a href="#">
-                                            <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
-                                        </a>
+                                            <a asp-action="EditMember" asp-controller="Committee" asp-route-id="@member.CommitteeMemberId">
+                                                <img src="~/img/edit Icon.png" width="15px" height="15px" />
+                                            </a>
+
+                                            <a asp-action="DeleteCommitteeMember"
+                                               asp-controller="Committee"
+                                               asp-route-committeeMemberId="@member.CommitteeMemberId">
+                                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                            </a>
+
+
                                         </span>
                                     </td>
                                     

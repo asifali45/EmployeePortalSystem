@@ -187,23 +187,77 @@ namespace EmployeePortalSystem.Controllers
                 return View("AddMember", model);
             }
 
+
             int? UserId = HttpContext.Session.GetInt32("EmployeeId");
 
-            var newMember = new CommitteeMember
+            var existingMember = _repository.GetCommitteeMember(model.CommitteeId, model.EmployeeId);
+
+            if (existingMember != null)
             {
-                CommitteeId = model.CommitteeId,
-                EmployeeId = model.EmployeeId,  // now this is directly bound from input
-                CreatedBy = UserId ?? 0,
-                UpdatedBy = UserId ?? 0,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            };
+                // It's an edit
+                existingMember.UpdatedAt = DateTime.Now;
+                existingMember.UpdatedBy = UserId;
+                _repository.UpdateCommitteeMember(existingMember);
 
-            _repository.AddCommitteeMember(newMember);
+                TempData["Messages"] = "Member updated successfully.";
+            }
+            else
+            {
+                // It's a new insert
+                var newMember = new CommitteeMember
+                {
+                    CommitteeId = model.CommitteeId,
+                    EmployeeId = model.EmployeeId,
+                    CreatedBy = UserId ,
+                    UpdatedBy = UserId,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
 
-            TempData["Messages"] = "Member added successfully.";
+                _repository.AddCommitteeMember(newMember);
+                TempData["Messages"] = "Member added successfully.";
+            }
             return RedirectToAction("CommitteeMembers", new { id = model.CommitteeId });
         }
+        [HttpGet]
+        public IActionResult EditMember(int id)
+        {
+            var member = _repository.GetCommitteeMemberById(id);
+            if (member == null)
+                return NotFound();
+
+            var committee = _repository.GetCommitteeById(member.CommitteeId);
+
+            var model = new CommitteeMemberInsertionViewModel
+            {
+                CommitteeId = member.CommitteeId,
+                EmployeeId = member.EmployeeId,
+                CommitteeName = committee?.Name,
+                Employees = _repository.GetAllEmployees()
+            };
+
+            return View("AddMember", model);
+
+        }
+
+        [HttpGet]
+        public IActionResult DeleteCommitteeMember(int committeeMemberId)
+        {
+            var member = _repository.GetCommitteeMemberById(committeeMemberId);
+            if (member == null) return NotFound();
+
+            return View("DeleteCommitteeMember", member);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCommitteeMemberConfirmed(int committeeMemberId, int committeeId)
+        {
+            _repository.DeleteCommitteeMember(committeeMemberId);
+            TempData["Messages"] = "Member deleted successfully.";
+            return RedirectToAction("CommitteeMembers", new { id = committeeId });
+        }
+
+
 
     }
 
