@@ -31,6 +31,21 @@ namespace EmployeePortalSystem.Repositories
             return connection.Query<CommitteeViewModel>(sql).ToList();
         }
 
+        public Committee GetCommitteeById(int cid)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "SELECT * FROM committee WHERE CommitteeId=@Id";
+            return connection.QueryFirstOrDefault<Committee>(sql, new { Id = cid });
+
+        }
+
+        public void DeleteCommittee(int cid)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "DELETE FROM committee WHERE CommitteeId=@Id";
+            connection.Execute(sql, new { Id = cid });
+        }
+
         public List<Employee> GetAllEmployees()
         {
             using var connection = _context.CreateConnection();
@@ -47,6 +62,24 @@ namespace EmployeePortalSystem.Repositories
                     VALUES(@Name,@Type,@HeadId,@Logo,@Description,@CreatedBy,@CreatedAt,@UpdatedBy,@UpdatedAt);";
             connection.Execute(sql, committee);
 
+        }
+
+        public void UpdateCommittee(Committee committee)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = @"
+        UPDATE Committee
+        SET Name = @Name,
+            Type = @Type,
+            HeadId = @HeadId,
+            Logo = @Logo,
+            Description = @Description,
+            UpdatedBy = @UpdatedBy,
+            UpdatedAt = @UpdatedAt
+        WHERE CommitteeId = @CommitteeId";
+
+            connection.Execute(sql, committee);
         }
 
         public List<CommitteeMemberViewModel> GetCommitteeMembersByCommitteeId(int CommitteeId)
