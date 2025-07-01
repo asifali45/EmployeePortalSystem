@@ -30,26 +30,15 @@ namespace EmployeePortalSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Announcement announcement)
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var key in ModelState.Keys)
-                {
-                    var state = ModelState[key];
-                    foreach (var error in state.Errors)
-                    {
-                        Console.WriteLine($"❌ {key}: {error.ErrorMessage}");
-                    }
-                }
-                return View(announcement);
-            }
+            // Remove AnnouncementId if posted accidentally
+            ModelState.Remove("AnnouncementId");
 
+            if (!ModelState.IsValid)
+                return View(announcement);
+
+            // Set server-side fields
             announcement.PostDate = DateTime.Now;
             announcement.CreatedBy = 1;
-
-            // Debug log
-            Console.WriteLine("📌 DEBUG - IsEvent: " + announcement.IsEvent);
-            Console.WriteLine("📌 DEBUG - EventDate: " + announcement.EventDate);
-            Console.WriteLine("📌 DEBUG - EventTime: " + announcement.EventTime);
 
             _repo.Add(announcement);
 
