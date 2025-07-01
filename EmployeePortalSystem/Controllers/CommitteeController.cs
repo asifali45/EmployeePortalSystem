@@ -88,16 +88,58 @@ namespace EmployeePortalSystem.Controllers
             ViewBag.Employees = _repository.GetAllEmployees();
             return View(model);
         }
-
         [HttpGet]
-        public IActionResult CommitteeMembers (int id, string name)
+        public IActionResult CommitteeMembers(int id)
         {
-            var members= _repository.GetCommitteeMembersByCommitteeId(id);
+            var committee = _repository.GetCommitteeById(id);
+            if (committee == null)
+                return NotFound("Committee not found");
+
+            var members = _repository.GetCommitteeMembersByCommitteeId(id);
             ViewBag.CommitteeId = id;
-            ViewBag.CommitteeName = name;
+            ViewBag.CommitteeName = committee.Name;
             return View("CommitteeMemberDetails", members);
         }
 
+        [HttpGet]
+        public IActionResult AddMember(int committeeId)
+        {
+            var committee = _repository.GetCommitteeById(committeeId); // for name
+            var model = new CommitteeMemberInsertionViewModel
+            {
+                CommitteeId = committeeId,
+                CommitteeName = committee.Name,
+                Employees = _repository.GetAllEmployees(),
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddMember(CommitteeMemberInsertionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Employees = _repository.GetAllEmployees();
+                return View("AddMember", model);
+            }
+
+            int? UserId = HttpContext.Session.GetInt32("EmployeeId");
+
+            var newMember = new CommitteeMember
+            {
+                CommitteeId = model.CommitteeId,
+                EmployeeId = model.EmployeeId,  // now this is directly bound from input
+                CreatedBy = UserId ?? 0,
+                UpdatedBy = UserId ?? 0,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+            _repository.AddCommitteeMember(newMember);
+
+            TempData["Messages"] = "Member added successfully.";
+            return RedirectToAction("CommitteeMembers", new { id = model.CommitteeId });
+        }
 
     }
 

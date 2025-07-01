@@ -57,14 +57,27 @@ namespace EmployeePortalSystem.Repositories
                     cm.CommitteeMemberId,
                     e.EmployeeId,
                     e.Name AS EmployeeName,
-                    r.RoleName,
                     d.Name AS DepartmentName
                 FROM committee_member cm
                 INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
-                INNER JOIN Role r ON cm.RoleId = r.RoleId
                 INNER JOIN Department d ON e.DepartmentId = d.DepartmentId
                 WHERE cm.CommitteeId = @committeeId";
             return connection.Query<CommitteeMemberViewModel>(sql, new {CommitteeId}).ToList();
         }
+        public Committee GetCommitteeById(int id)
+        {
+            using var conn = _context.CreateConnection();
+            return conn.QueryFirstOrDefault<Committee>("SELECT * FROM Committee WHERE CommitteeId = @id", new { id });
+        }
+
+        public void AddCommitteeMember(CommitteeMember member)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"INSERT INTO CommitteeMember 
+                   (CommitteeId, EmployeeId, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
+                   VALUES (@CommitteeId, @EmployeeId, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt)";
+            conn.Execute(sql, member);
+        }
+
     }
 }

@@ -9,12 +9,14 @@
     <div class="container_emp">
         <div class="emp_btn">
             <div class="left_btn">
-                <form method="get" asp-action="CommitteeDetails" asp-controller="Committee">
+                <form method="get" asp-action="CommitteeMembers" asp-controller="Committee">
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>
             <div class="right_btn">
-                <form method="get" asp-action="CreateCommittee" asp-controller="Committee">
+                <form method="get" asp-action="AddMember" asp-controller="Committee">
+                    <input type="hidden" name="committeeId" value="@ViewBag.CommitteeId" />
+
                     <button type="submit" class="create_emp_btn">Add Member</button>
                 </form>
             </div>
@@ -32,8 +34,8 @@
                         <tr>
                             <th>Member ID</th>
                             <th>Employee Name</th>
-                            <th>Role</th>
                             <th>Department</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,10 +44,21 @@
                             foreach (var member in Model)
                             {
                                 <tr>
+                                    
                                     <td>@member.CommitteeMemberId</td>
                                     <td>@member.EmployeeName</td>
-                                    <td>@member.RoleName</td>
                                     <td>@member.DepartmentName</td>
+                                    <td>
+                                        <span style="display: flex; gap: 20px;">
+                                        <a href="#">
+                                            <img src="~/img/edit Icon.png" width="15px" height="15px" />
+                                        </a>
+                                        <a href="#">
+                                            <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                        </a>
+                                        </span>
+                                    </td>
+                                    
                                 </tr>
                             }
                         }
