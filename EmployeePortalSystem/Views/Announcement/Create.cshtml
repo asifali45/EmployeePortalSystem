@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Create Announcement";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
-   
 }
 
 <div class="container">
@@ -24,86 +23,122 @@
         <div class="container_emp mb-20">
             <div class="empmaster_card">
                 <form asp-action="Create" asp-controller="Announcement" method="post" class="emp_form">
-                    <input type="hidden" asp-for="AnnouncementId" />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                   
+
+                    @* <input type="hidden" asp-for="AnnouncementId" /> *@
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Title</label>
-                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title here" />
+                            <label>Title <span class="imp_field">*</span></label>
+                            <div class="val">
+                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title" />
                             <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
                             <label>Message</label>
-                            <input asp-for="Message" class="form-control" placeholder="Enter the Message" maxlength="250" />
+                         
+                            <input asp-for="Message" class="form-control" maxlength="250" placeholder="Enter Message" />
                             <span asp-validation-for="Message" class="text-danger"></span>
+
                         </div>
                     </div>
 
                     <div class="form_row">
-                       
                         <div class="form_group">
-                            <label>Visible To</label>
-                            <select asp-for="VisibleTo"  class="form-control">
-                               
-                                    <option>All</option>
-                                    <option>Department</option>
-                                    <option>Committee</option>
-                               
+                            <label>Visible To <span class="imp_field">*</span></label>
+                            <div class="val">
+                            <select asp-for="VisibleTo" class="form-control">
+                                <option disabled selected value="">-- Select --</option>
+                                <option value="All">All</option>
+                                <option value="Department">Department</option>
+                                <option value="Committee">Committee</option>
                             </select>
                             <span asp-validation-for="VisibleTo" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
-                            <label>Display Order</label>
-                            <input asp-for="DisplayOrder" class="form-control" placeholder="Type to search Head Name" type="" />
-
+                            <label>Display Order <span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="DisplayOrder" class="form-control" type="number" min="1" value="1" />
                             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
 
-
-
                     <div class="form_row">
                         <div class="form_group">
-                        <label>Is Event</label>
-                        <select asp-for="IsEvent" class="form-control">
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
-                        </select>
-                        <span asp-validation-for="IsEvent" class="text-danger"></span>
+                            <label>Is Event <span class="imp_field">*</span></label>
+                            <div class="val">
+                            <select asp-for="IsEvent" class="form-control" id="isEventSelect">
+                                <option value="">-- Select --</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                            <span asp-validation-for="IsEvent" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
                             <label>Location</label>
+                           
                             <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+
                         </div>
                     </div>
 
                     <div class="form_row">
-                        <div class="form_group">
+                        <div class="form_group" id="eventDateGroup">
                             <label>Event Date</label>
-                            <input asp-for="EventDate" class="form-control" type="date" />
+                            <input asp-for="EventDate" class="form-control" type="date" id="eventDate" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
                         </div>
-                        <div class="form_group">
+                        <div class="form_group" id="eventTimeGroup">
                             <label>Event Time</label>
-                            <input asp-for="EventTime" class="form-control" type="time" />
+                            <input asp-for="EventTime" class="form-control" type="time" id="eventTime" />
+                            <span asp-validation-for="EventTime" class="text-danger"></span>
                         </div>
                     </div>
-
-
-
 
                     <div class="form_row">
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-
-                
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-success mt-2">
+                            @TempData["Message"]
+                        </div>
+                    }
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isEventSelect = document.getElementById("isEventSelect");
+            const eventDateGroup = document.getElementById("eventDateGroup");
+            const eventTimeGroup = document.getElementById("eventTimeGroup");
+
+            function toggleEventFields() {
+        const isEvent = isEventSelect.value.toLowerCase() === "true";
+                        eventDateGroup.style.display = isEvent ? "block" : "none";
+                eventTimeGroup.style.display = isEvent ? "block" : "none";
+            }
+
+            isEventSelect.addEventListener("change", toggleEventFields);
+            toggleEventFields(); // run on load
+
+
+
+             
+        });
+    </script>
 }

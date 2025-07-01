@@ -48,8 +48,8 @@
                                 <tr>
                                     <td>@a.Title</td>
                                     <td>@a.VisibleTo</td>
-                                    <td>@a.PostDate?.ToString("yyyy-MM-dd")</td>
-                                    <td>@(a.IsEvent ? "Yes" : "No")</td>
+                                    <td>@(a.PostDate.HasValue ? a.PostDate.Value.ToString("yyyy-MM-dd") : "NULL")</td>
+                                    <td>@(a.IsEvent == true ? "Yes" : "No")</td>
                                     <td>@a.EventDate?.ToString("yyyy-MM-dd")</td>
                                     <td>@a.EventTime?.ToString(@"hh\:mm")</td>
                                     <td>@a.Location</td>
