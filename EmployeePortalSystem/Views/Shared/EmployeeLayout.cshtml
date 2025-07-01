@@ -61,7 +61,7 @@
 
                     <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index","Departments")">Departments</a></li>
-                    <li class="menu_item"><a href="#">Announcements</a></li>
+                    <li class="menu_item"><a href="@Url.Action("Index","Announcement")">Announcements</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
 
@@ -104,7 +104,7 @@
                 <li><a href="#">Polls</a></li>
                 <li><a href="#">Announcements</a></li>
                 <li><a href="#">Departments</a></li>
-                <li><a href="#">Committee</a></li>
+                <li><a href="@Url.Action("CommitteeDetails","Committee")">Committee</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Logout</a></li>
 

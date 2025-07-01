@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
-using EmployeePortalSystem.ViewModels;
 using System.Linq;
 
 namespace EmployeePortalSystem.Controllers
@@ -18,24 +17,16 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult Index()
         {
-            var departments = _repo.GetAllWithDetails(); // Returns List<DepartmentViewModel>
+            var departments = _repo.GetAllWithDetails();
             return View(departments);
         }
 
-        public IActionResult Details(int id)
-        {
-            var dept = _repo.GetById(id);
-            return View(dept);
-        }
-
-        // GET: Create
         public IActionResult Create()
         {
             ViewBag.ParentDepartments = GetParentDepartmentsDropdown();
-            return View();
+            return View(new Department());
         }
 
-        // POST: Create
         [HttpPost]
         public IActionResult Create(Department model)
         {
@@ -45,56 +36,28 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
             }
 
-            Console.WriteLine("Received HeadId: " + model.HeadId);
-
             model.CreatedBy = 1;
             _repo.Add(model);
             return RedirectToAction("Index");
         }
 
-        // GET: Edit
-        [HttpGet]
         public IActionResult Edit(int id)
         {
             var dept = _repo.GetById(id);
             if (dept == null) return NotFound();
 
-            string headName = _repo.GetHeadNameById(dept.HeadId);
-            ViewBag.HeadName = headName;
-
-            ViewBag.ParentDepartments = _repo.GetAll()
-                .Where(d => d.DepartmentId != id)
-                .Select(d => new SelectListItem
-                {
-                    Value = d.DepartmentId.ToString(),
-                    Text = d.Name,
-                    Selected = d.DepartmentId == dept.ParentDepartmentId
-                }).ToList();
-
+            ViewBag.ParentDepartments = GetParentDepartmentsDropdown(dept.DepartmentId);
+            ViewBag.HeadName = _repo.GetHeadNameById(dept.HeadId);
             return View(dept);
         }
 
-        [HttpGet]
-        public JsonResult SearchEmployees(string term)
-        {
-            var employees = _repo.SearchEmployeesByName(term)
-                                 .Select(e => new {
-                                     employeeId = e.EmployeeId,
-                                     name = e.Name
-                                 }).ToList();
-
-            return Json(employees);
-        }
-
-
-        // POST: Edit
         [HttpPost]
         public IActionResult Edit(Department dept)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.HeadName = _repo.GetHeadNameById(dept.HeadId);
                 ViewBag.ParentDepartments = GetParentDepartmentsDropdown(dept.DepartmentId);
+                ViewBag.HeadName = _repo.GetHeadNameById(dept.HeadId);
                 return View(dept);
             }
 
@@ -103,7 +66,6 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
         public IActionResult Delete(int id)
         {
             var dept = _repo.GetById(id);
@@ -112,7 +74,7 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
-            return View(dept); // Shows confirmation view
+            return View(dept);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -123,7 +85,6 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        // 🔁 Helper method to generate dropdown list
         private List<SelectListItem> GetParentDepartmentsDropdown(int? excludeId = null)
         {
             return _repo.GetAll()
@@ -133,6 +94,19 @@ namespace EmployeePortalSystem.Controllers
                     Value = d.DepartmentId.ToString(),
                     Text = d.Name
                 }).ToList();
+        }
+
+        //  Supports JavaScript-based HeadName search
+        [HttpGet]
+        public JsonResult SearchEmployees(string term)
+        {
+            var employees = _repo.SearchEmployeesByName(term)
+                                 .Select(e => new {
+                                     employeeId = e.EmployeeId,
+                                     name = e.Name
+                                 }).ToList();
+
+            return Json(employees);
         }
     }
 }
