@@ -1,0 +1,100 @@
+﻿@model EmployeePortalSystem.Models.Announcement
+
+@{
+    ViewData["Title"] = "Edit Announcement";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-contents">
+        <div class="container_emp">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="Index" asp-controller="Announcement">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+                </div>
+            </div>
+            <div class="emp_head">
+                <h2>Edit Announcement</h2>
+            </div>
+        </div>
+
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="Edit" asp-controller="Announcement" method="post" class="emp_form">
+                    <input type="hidden" asp-for="AnnouncementId" />
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Message</label>
+                            <input asp-for="Message" class="form-control" placeholder="Enter the Message" maxlength="250" />
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Visible To</label>
+                            <select asp-for="VisibleTo" class="form-control">
+                                <option value="All">All</option>
+                                <option value="Department">Department</option>
+                                <option value="Committee">Committee</option>
+                            </select>
+                            <span asp-validation-for="VisibleTo" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Display Order</label>
+                            <input asp-for="DisplayOrder" class="form-control" placeholder="Enter Display Order" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Is Event</label>
+                            <select asp-for="IsEvent" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                            <span asp-validation-for="IsEvent" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Location</label>
+                            <input asp-for="Location" class="form-control" placeholder="Enter Location" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Event Date</label>
+                            <input asp-for="EventDate" class="form-control" type="date" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+                        <div class="form_group">
+                            <label>Event Time</label>
+                            <input asp-for="EventTime" class="form-control" type="time" />
+                            <span asp-validation-for="EventTime" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button">Update</button>
+                        <button type="reset" class="custom-button">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
