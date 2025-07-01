@@ -90,14 +90,55 @@ namespace EmployeePortalSystem.Repositories
                     cm.CommitteeMemberId,
                     e.EmployeeId,
                     e.Name AS EmployeeName,
-                    r.RoleName,
                     d.Name AS DepartmentName
                 FROM committee_member cm
                 INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
-                INNER JOIN Role r ON cm.RoleId = r.RoleId
                 INNER JOIN Department d ON e.DepartmentId = d.DepartmentId
                 WHERE cm.CommitteeId = @committeeId";
             return connection.Query<CommitteeMemberViewModel>(sql, new {CommitteeId}).ToList();
         }
+       
+
+        public void AddCommitteeMember(CommitteeMember member)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"INSERT INTO committee_member 
+                   (CommitteeId, EmployeeId, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
+                   VALUES (@CommitteeId, @EmployeeId, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt)";
+            conn.Execute(sql, member);
+        }
+
+        public CommitteeMember GetCommitteeMemberById(int id)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = "SELECT * FROM committee_member WHERE CommitteeMemberId = @id";
+            return conn.QueryFirstOrDefault<CommitteeMember>(sql, new { id });
+        }
+
+        public CommitteeMember? GetCommitteeMember(int committeeId, int employeeId)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = "SELECT * FROM committee_member WHERE CommitteeId = @committeeId AND EmployeeId = @employeeId";
+            return conn.QueryFirstOrDefault<CommitteeMember>(sql, new { committeeId, employeeId });
+        }
+
+        public void UpdateCommitteeMember(CommitteeMember member)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+                UPDATE committee_member 
+                SET UpdatedBy = @UpdatedBy, UpdatedAt = @UpdatedAt
+                WHERE CommitteeId = @CommitteeId AND EmployeeId = @EmployeeId";
+            conn.Execute(sql, member);
+        }
+
+        public void DeleteCommitteeMember(int committeeMemberId)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = "DELETE FROM committee_member WHERE CommitteeMemberId = @committeeMemberId";
+            conn.Execute(sql, new { committeeMemberId });
+        }
+
+
     }
 }
