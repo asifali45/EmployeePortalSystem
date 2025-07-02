@@ -45,7 +45,7 @@ namespace EmployeePortalSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                string? logoPath = null;
+                string? logoPath = model.Logo;
 
                 if (model.LogoFile != null && model.LogoFile.Length > 0)
                 {
