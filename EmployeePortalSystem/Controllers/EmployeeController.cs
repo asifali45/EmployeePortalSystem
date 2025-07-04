@@ -13,9 +13,9 @@ namespace EmployeePortalSystem.Controllers
         private readonly IWebHostEnvironment _env;
 
        
-        public EmployeeController(IConfiguration config, IWebHostEnvironment env)
+        public EmployeeController(EmployeeRepository repo, IWebHostEnvironment env)
         {
-            _repo = new EmployeeRepository(config);
+            _repo = repo;
             _env = env;
         }
         [HttpGet]

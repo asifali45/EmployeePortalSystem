@@ -103,6 +103,7 @@
                             <label>Logo</label>
                             <div class="val">
                                 <input asp-for="LogoFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+                                <input type="hidden" asp-for="Logo" />
                                 <span asp-validation-for="LogoFile" class="text-danger"></span>
 
                                 @if (Model != null && !string.IsNullOrEmpty(Model.Logo))

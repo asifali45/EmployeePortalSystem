@@ -22,25 +22,26 @@
                     </form>
                 </div>
             </div>
-             <div class="emp_head"> 
-                 <h2>Employee List</h2> 
-             </div>
-           
-             <div class="empmaster_card"> 
-                 <div class="table-responsive"> 
-                     <table class="emp_table table"> 
-                         <thead> 
-                             <tr> 
-                                 
-                                 <th>Employee ID</th> 
-                                 <th>Employee Name</th> 
-                                 <th>Designation</th> 
-                                 <th>Email ID</th> 
-                                 <th>Phone Number</th> 
-                                 <th>Department</th> 
-                                 <th>Action</th>
-                             </tr> 
-                         </thead>
+            <div class="emp_head">
+                <h2>Employee List</h2>
+            </div>
+
+            <div class="empmaster_card">
+                <div class="table-responsive">
+                    <table class="emp_table table">
+                        <thead>
+                            <tr>
+
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Designation</th>
+                                <th>Photo</th>
+                                <th>Email ID</th>
+                                <th>Phone Number</th>
+                                <th>Department</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach (var emp in Model)
                             {
@@ -48,6 +49,18 @@
                                     <td>@emp.EmployeeId</td>
                                     <td>@emp.Name</td>
                                     <td>@emp.Designation</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(emp.Photo))
+                                        {
+                                            <a href="javascript:void(0);" class="view-photo-link" onclick="openModal('@emp.Name', '@Url.Content(emp.Photo)')">View Photo</a>
+
+                                        }
+                                        else
+                                        {
+                                            <span>No Photo</span>
+                                        }
+                                    </td>
+
                                     <td>@emp.Email</td>
                                     <td>@emp.Phone</td>
                                     <td>@emp.DepartmentName</td>
@@ -66,20 +79,42 @@
                                 </tr>
                             }
                         </tbody>
-
+                       
                     </table>
+   
+
                     @if (TempData["Messages"] != null)
                     {
                         <div class="alert alert-success mt-2">
                             @TempData["Messages"]
                         </div>
                     }
-                 </div> 
-             </div> 
-         </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+</div>
+<div id="photoModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-close" onclick="closeModal()">&times;</span>
+        <h4 id="modalName" style="margin-bottom: 10px;"></h4>
+        <img id="modalPhoto" src="" alt="Employee Photo" style="max-width:100%; height:auto; border-radius:8px;" />
+        <button class="modal-close-btn" style="margin-top: 10px;" onclick="closeModal()">Close</button>
     </div>
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function openModal(name, photoUrl) {
+             console.log("Opening modal for:", name, photoUrl);
+            document.getElementById('modalName').innerText = name;
+            document.getElementById('modalPhoto').src = photoUrl;
+            document.getElementById('photoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('photoModal').style.display = 'none';
+        }
+    </script>
 }
