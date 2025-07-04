@@ -32,10 +32,14 @@
                     <div class="form_group">
                         <label>Issue Title</label>
                         <input asp-for="IssueTitle" class="form-control" readonly />
+                        <span style="min-height: 18px; display: block;"></span>
+
                     </div>
                     <div class="form_group">
                         <label>Description</label>
                         <input asp-for="Description" class="form-control" readonly />
+                        <span style="min-height: 18px; display: block;"></span>
+
                     </div>
                 </div>
 
@@ -45,19 +49,26 @@
 
                
                     <div class="form_group">
-                        <label>Status</label>
+                        <label>Status<span class="imp_field">*</span></label>
+                        <div class="val">
                         <select asp-for="Status" class="form-control" id="Status">
+                                
                             <option>Open</option>
                             <option>In Progress</option>
                             <option>Escalated</option>
                             <option>Resolved</option>
                         </select>
+                            <span asp-validation-for="Status" class="text-danger" style="min-height: 18px; display: block;"></span>
+                        </div>
+                        
                     </div>
                
                
                     <div class="form_group">
-                        <label>Department</label>
+                        <label>Department<span class="imp_field">*</span></label>
+                        <div class="val">
                         <select id="departmentSelect" asp-for="DepartmentId" class="form-control">
+                                
                             <option value="">-- Select Department --</option>
                             @foreach (var dept in Model.DepartmentList)
                             {
@@ -67,6 +78,9 @@
                             }
                         </select>
 
+                            <span asp-validation-for="DepartmentId" class="text-danger" style="min-height: 18px; display: block;"></span>
+
+                        </div>
 
 
                     </div>
@@ -74,16 +88,18 @@
 
                 <div class="form_row">
                     <div class="form_group">
-                        <label>Assign To</label>
-                        <select asp-for="AssignedTo" class="form-control" id="assignToSelect">
-                            <option value="">-- Select Employee --</option>
-                            @foreach (var emp in Model.FilteredEmployees)  // or EmployeeList
-                            {
-                                <option value="@emp.Value">@emp.Text</option>
-                            }
-
-
-                        </select>
+                        <label>Assign To<span class="imp_field">*</span></label>
+                        <div class="val">
+                            <select asp-for="AssignedTo" class="form-control" id="assignToSelect">
+                                <option value="">-- Select Employee --</option>
+                                @foreach (var emp in Model.FilteredEmployees)
+                                {
+                                    <option value="@emp.Value">@emp.Text</option>
+                                }
+                            </select>
+                            <span asp-validation-for="AssignedTo" class="text-danger" style="min-height: 18px; display: block;"></span>
+                        </div>
+                        
                     </div>
                
 
@@ -105,8 +121,12 @@
 
                 <div class="form_row">
                     <div class="form_group">
-                        <label>Response</label>
-                        <textarea asp-for="Response" class="form-control"></textarea>
+                        <label>Response<span class="imp_field">*</span></label>
+                        <div class="val">
+                        <input asp-for="Response" class="form-control">
+                            <span asp-validation-for="Response" class="text-danger" style="min-height: 18px; display: block;"></span>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -119,8 +139,11 @@
       
     </div>
 </div>
-
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const statusField = document.querySelector("#Status");
@@ -173,4 +196,4 @@
     </script>
 
 
-}
+

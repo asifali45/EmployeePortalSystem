@@ -10,11 +10,11 @@ namespace EmployeePortalSystem.Repositories
 {
     public class SupportTicketRepository
     {
-        private readonly AwardContext _context; 
+        private readonly string _connection; 
 
-        public SupportTicketRepository(AwardContext context)
+        public SupportTicketRepository(IConfiguration config)
         {
-            _context = context;
+            _connection = config.GetConnectionString("DefaultConnection");
         }
 
         //  Create Ticket
@@ -26,8 +26,8 @@ namespace EmployeePortalSystem.Repositories
                         (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
                         SELECT LAST_INSERT_ID();";
 
-            using var connection = _context.CreateConnection();
-            return await connection.ExecuteScalarAsync<int>(query, ticket);
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.ExecuteScalarAsync<int>(query, ticket);
         }
 
         //  Get All Tickets (Admin View)
@@ -44,16 +44,16 @@ namespace EmployeePortalSystem.Repositories
     LEFT JOIN Employee assign ON t.AssignedTo = assign.EmployeeId
     LEFT JOIN Employee escal ON t.EscalatedTo = escal.EmployeeId";
 
-            using var connection = _context.CreateConnection();
-            return await connection.QueryAsync<SupportTicket>(query);
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryAsync<SupportTicket>(query);
         }
 
         //  Get Tickets by Employee ID
         public async Task<IEnumerable<SupportTicket>> GetByEmployeeAsync(int employeeId)
         {
             var query = @"SELECT * FROM support_tickets WHERE EmployeeId = @EmployeeId";
-            using var connection = _context.CreateConnection();
-            return await connection.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
         }
 
         //  Update Ticket (Assign, Escalate, Respond)
@@ -69,32 +69,32 @@ namespace EmployeePortalSystem.Repositories
                             UpdatedAt = @UpdatedAt
                         WHERE TicketId = @TicketId";
 
-            using var connection = _context.CreateConnection();
-            return await connection.ExecuteAsync(query, ticket);
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.ExecuteAsync(query, ticket);
         }
 
         //  Get All Employee Names
         public async Task<IEnumerable<string>> GetAllEmployeeNamesAsync()
         {
             var query = "SELECT Name FROM Employee ORDER BY Name";
-            using var connection = _context.CreateConnection();
-            return await connection.QueryAsync<string>(query);
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryAsync<string>(query);
         }
 
         //  Get Ticket by ID
         public async Task<SupportTicket?> GetByIdAsync(int id)
         {
             var query = "SELECT * FROM support_tickets WHERE TicketId = @Id";
-            using var connection = _context.CreateConnection();
-            return await connection.QueryFirstOrDefaultAsync<SupportTicket>(query, new { Id = id });
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryFirstOrDefaultAsync<SupportTicket>(query, new { Id = id });
         }
 
         //  Get Employee ID from Name
         public async Task<int> GetEmployeeIdByNameAsync(string name)
         {
             var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
-            using var connection = _context.CreateConnection();
-            return await connection.QueryFirstOrDefaultAsync<int?>(query, new { Name = name }) ?? 0;
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryFirstOrDefaultAsync<int?>(query, new { Name = name }) ?? 0;
         }
 
         //  Get Employee Name by ID
@@ -104,34 +104,38 @@ namespace EmployeePortalSystem.Repositories
                 return "None";
 
             var query = "SELECT Name FROM Employee WHERE EmployeeId = @Id LIMIT 1";
-            using var connection = _context.CreateConnection();
-            return await connection.QueryFirstOrDefaultAsync<string>(query, new { Id = id }) ?? "None";
+            using (var conn = new MySqlConnection(_connection))
+                return await conn.QueryFirstOrDefaultAsync<string>(query, new { Id = id }) ?? "None";
         }
 
        
 
         public async Task<List<SelectListItem>> GetAllDepartmentsAsync()
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT DepartmentId, DepartmentName FROM Department";
-
-            var departments = await connection.QueryAsync<Department>(query);
-            var list = departments.Select(d => new SelectListItem
+            using (var conn = new MySqlConnection(_connection))
             {
-                Value = d.DepartmentId.ToString(),
-                Text = d.Name
-            }).ToList();
+                var query = "SELECT DepartmentId, DepartmentName FROM Department";
 
-            return list;
+                var departments = await conn.QueryAsync<Department>(query);
+                var list = departments.Select(d => new SelectListItem
+                {
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.Name
+                }).ToList();
+
+                return list;
+            }
         }
 
 
 
         public async Task<List<Employee>> GetEmployeesByDepartmentIdAsync(int departmentId)
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT EmployeeId, Name FROM Employee WHERE DepartmentId = @Id";
-            return (await connection.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
+            using (var conn = new MySqlConnection(_connection))
+            {
+                var query = "SELECT EmployeeId, Name FROM Employee WHERE DepartmentId = @Id";
+                return (await conn.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
+            }
         }
 
 
@@ -140,23 +144,29 @@ namespace EmployeePortalSystem.Repositories
 
         public async Task<Employee?> GetEmployeeByIdAsync(int employeeId)
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT * FROM Employee WHERE EmployeeId = @Id";
-            return await connection.QueryFirstOrDefaultAsync<Employee>(query, new { Id = employeeId });
+            using (var conn = new MySqlConnection(_connection))
+            {
+                var query = "SELECT * FROM Employee WHERE EmployeeId = @Id";
+                return await conn.QueryFirstOrDefaultAsync<Employee>(query, new { Id = employeeId });
+            }
         }
 
         public async Task<List<Department>> GetDepartmentsAsync()
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT * FROM Department";
-            return (await connection.QueryAsync<Department>(query)).ToList();
+            using (var conn = new MySqlConnection(_connection))
+            {
+                var query = "SELECT * FROM Department";
+                return (await conn.QueryAsync<Department>(query)).ToList();
+            }
         }
 
         public async Task<List<Employee>> GetEmployeesByDepartmentAsync(int departmentId)
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT * FROM Employee WHERE DepartmentId = @Id";
-            return (await connection.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
+            using (var conn = new MySqlConnection(_connection))
+            {
+                var query = "SELECT * FROM Employee WHERE DepartmentId = @Id";
+                return (await conn.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
+              }
         }
     }
 }
