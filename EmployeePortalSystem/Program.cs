@@ -10,6 +10,7 @@ builder.Services.AddScoped<UserAccessRepository>();
 builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<CommitteeRepository>();
+builder.Services.AddScoped<BlogsRepository>();
 
 builder.Services.AddScoped<AwardContext>();
 builder.Services.AddScoped<SupportTicketRepository>();
