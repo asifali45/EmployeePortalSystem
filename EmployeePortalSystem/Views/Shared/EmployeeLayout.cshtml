@@ -110,7 +110,19 @@
                     <li><a href="@Url.Action("EmployeeBlogDetails", "Blogs")">Blogs</a></li>
                 }
 
-                <li><a href="#">Polls</a></li>
+                @* <li><a href="#">Polls</a></li> *@
+                @if (currentDashboard == "Admin")
+                {
+                    <li><a href="@Url.Action("PollDetails", "Polls")">Polls</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("EmployeePollDetails", "Polls")">Polls</a></li>
+                }
+
+
+
+
                 <li><a href="#">Announcements</a></li>
                 <li><a href="#">Departments</a></li>
                 <li><a href="@Url.Action("CommitteeDetails","Committee")">Committee</a></li>

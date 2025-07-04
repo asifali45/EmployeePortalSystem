@@ -1,0 +1,79 @@
+﻿@model EmployeePortalSystem.Models.Poll
+@{
+    ViewData["Title"] = "Poll Results";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+
+    var results = ViewBag.Results as Dictionary<string, int>;
+    var responses = ViewBag.Responses as List<EmployeePortalSystem.ViewModels.PollResponseViewModel>;
+}
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Poll Results</h2>
+    </div>
+
+    <div class="blog-card">
+        <div class="blog-card-content">
+            <div class="blog-card-text">
+                <h3 class="blog-title">@Model.Question</h3>
+
+                <div class="blog-description">
+                    @* <h4>Option Summary:</h4> *@
+                    @* @if (!string.IsNullOrEmpty(Model.Option1)) *@
+                    @* { *@
+                    @*     var count = results != null && results.ContainsKey("1") ? results["1"] : 0; *@
+                    @*     <div><strong>@Model.Option1</strong>: @count vote(s)</div> *@
+                    @* } *@
+                    @* @if (!string.IsNullOrEmpty(Model.Option2)) *@
+                    @* { *@
+                    @*     var count = results != null && results.ContainsKey("2") ? results["2"] : 0; *@
+                    @*     <div><strong>@Model.Option2</strong>: @count vote(s)</div> *@
+                    @* } *@
+                    @* @if (!string.IsNullOrEmpty(Model.Option3)) *@
+                    @* { *@
+                    @*     var count = results != null && results.ContainsKey("3") ? results["3"] : 0; *@
+                    @*     <div><strong>@Model.Option3</strong>: @count vote(s)</div> *@
+                    @* } *@
+                    @* @if (!string.IsNullOrEmpty(Model.Option4)) *@
+                    @* { *@
+                    @*     var count = results != null && results.ContainsKey("4") ? results["4"] : 0; *@
+                    @*     <div><strong>@Model.Option4</strong>: @count vote(s)</div> *@
+                    @* } *@
+
+
+                    <h4>Individual Responses:</h4>
+                    @if (responses != null && responses.Count > 0)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Selected Option</th>
+                                    <th>Voted At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var r in responses)
+                                {
+                                    <tr>
+                                        <td>@r.EmployeeName</td>
+                                        <td>@r.SelectedOption</td>
+                                        <td>@r.CreatedAt.ToString("dd MMM yyyy HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No one has voted yet.</p>
+                    }
+                </div>
+
+                <div class="blog-actions">
+                    <a asp-action="PollDetails" class="comment-btn">⬅ Back to Polls</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

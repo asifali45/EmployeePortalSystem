@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Polls";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+
+    var resultsPollId = ViewBag.ResultsPollId as int?;
+    var results = ViewBag.Results as Dictionary<string, int>;
+}
+
+@model List<EmployeePortalSystem.ViewModels.PollViewModel>
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Polls</h2>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var poll in Model)
+        {
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <div class="blog-card-text">
+                        <!-- Question -->
+                        <h3 class="blog-title">@poll.Question</h3>
+
+                        <form asp-action="VoteFromList" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="pollId" value="@poll.PollId" />
+
+                            <!-- Options as radio -->
+                            <div class="blog-description">
+                                @foreach (var option in new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 })
+                                {
+                                    if (!string.IsNullOrEmpty(option))
+                                    {
+                                        <div>
+                                            <input type="radio" name="selectedOption" value="@option" required />
+                                            @option
+
+                                            @if (resultsPollId == poll.PollId && results != null && results.ContainsKey(option))
+                                            {
+                                                <span style="color: green; margin-left: 10px;">
+                                                    — @results[option] vote(s)
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <!-- Author & Date -->
+                            <div class="blog-meta">
+                                <span class="blog-author">By @poll.CreatedByName</span>
+                                <span class="blog-tags">@poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="blog-actions">
+                                <button type="submit" class="like-btn">🗳 Submit Vote</button>
+                                <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn">📊 View Results</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No polls available.</p>
+    }
+</div>
