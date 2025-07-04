@@ -68,6 +68,13 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             return View(award);
         }
+        [HttpGet]
+        public async Task<JsonResult> SearchEmployeeNames(string term)
+        {
+            var names = await _repository.SearchEmployeeNamesAsync(term);
+            return Json(names);
+        }
+
 
 
         // Save Award
