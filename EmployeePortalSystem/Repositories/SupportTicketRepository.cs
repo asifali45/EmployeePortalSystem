@@ -20,11 +20,13 @@ namespace EmployeePortalSystem.Repositories
         //  Create Ticket
         public async Task<int> CreateAsync(SupportTicket ticket)
         {
+
             var query = @"INSERT INTO support_tickets 
                         (EmployeeId, IssueTitle, Description, Status, CreatedAt)
                         VALUES 
                         (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
                         SELECT LAST_INSERT_ID();";
+
 
             using var connection = _context.CreateConnection();
             return await connection.ExecuteScalarAsync<int>(query, ticket);
@@ -76,10 +78,12 @@ namespace EmployeePortalSystem.Repositories
         //  Get All Employee Names
         public async Task<IEnumerable<string>> GetAllEmployeeNamesAsync()
         {
+
             var query = "SELECT Name FROM Employee ORDER BY Name";
             using var connection = _context.CreateConnection();
             return await connection.QueryAsync<string>(query);
         }
+
 
         //  Get Ticket by ID
         public async Task<SupportTicket?> GetByIdAsync(int id)
@@ -92,6 +96,7 @@ namespace EmployeePortalSystem.Repositories
         //  Get Employee ID from Name
         public async Task<int> GetEmployeeIdByNameAsync(string name)
         {
+
             var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
             using var connection = _context.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<int?>(query, new { Name = name }) ?? 0;
@@ -109,6 +114,7 @@ namespace EmployeePortalSystem.Repositories
         }
 
        
+
 
         public async Task<List<SelectListItem>> GetAllDepartmentsAsync()
         {
