@@ -3,54 +3,52 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.ViewModels;
+using EmployeePortalSystem.Context;
 
 
 namespace EmployeePortalSystem.Repositories
 {
     public class EmployeeRepository
     {
-        private readonly string _connection; 
-        public EmployeeRepository(IConfiguration config)
+        private readonly AppDbContext _context; 
+        public EmployeeRepository(AppDbContext context)
         {
-            _connection = config.GetConnectionString("DefaultConnection");
+            _context = context;
         }
+        
         public void AddEmployee(Employee emp)
         {
-            using (var conn = new MySqlConnection(_connection)) 
-            {
+            using var conn=_context.CreateConnection();
                 conn.Open();
                 string sql = @"INSERT INTO employee(Name, Email, Phone, Photo, IsAdmin, DepartmentId, RoleId, CreatedBy, CreatedAt, UpdatedAt) 
                             VALUES (@Name, @Email, @Phone, @Photo, @IsAdmin, @DepartmentId, @RoleId, @CreatedBy, @CreatedAt, @UpdatedAt);";
 
-
-
-               
-                    conn.Execute(sql, emp);
+                conn.Execute(sql, emp);
                 
-            }
         }
         public List<Department> GetDepartments()
         {
-            using var conn = new MySqlConnection(_connection);
+            using var conn = _context.CreateConnection();
             return conn.Query<Department>("SELECT DepartmentId, Name FROM department").ToList();
         }
         public List<Role> GetRoles()
         {
-            using var conn = new MySqlConnection(_connection);
+            using var conn = _context.CreateConnection();
             return conn.Query<Role>("SELECT RoleId, RoleName FROM role").ToList();
         }
 
         public List<EmployeeDetailsViewModel> GetAllEmployeeDetails()
         {
-            using var conn = new MySqlConnection(_connection);
-            
-                conn.Open();
+            using var conn = _context.CreateConnection();
+
+            conn.Open();
                 string sql = @"
                     SELECT 
                         e.EmployeeId,
                         e.Name,
                         e.Email,
                         e.Phone,
+                        e.Photo,
                         r.RoleName AS Designation,
                         d.Name AS DepartmentName
                     FROM employee e
@@ -62,13 +60,13 @@ namespace EmployeePortalSystem.Repositories
 
         public Employee GetEmployeeById(int id)
         {
-            using var conn = new MySqlConnection(_connection);
+            using var conn = _context.CreateConnection();
             string sql = "SELECT * FROM employee WHERE EmployeeId = @Id";
             return conn.QueryFirstOrDefault<Employee>(sql, new { Id = id });
         }
         public void UpdateEmployee(Employee emp)
         {
-            using var conn = new MySqlConnection(_connection);
+            using var conn = _context.CreateConnection();
             string sql = @"
         UPDATE employee SET 
             Name = @Name,
@@ -87,7 +85,7 @@ namespace EmployeePortalSystem.Repositories
 
         public void DeleteEmployee(int id)
         {
-            using var conn = new MySqlConnection(_connection);
+            using var conn = _context.CreateConnection();
             string sql = "DELETE FROM employee WHERE EmployeeId = @Id";
             conn.Execute(sql, new { Id = id });
         }

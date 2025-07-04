@@ -1,4 +1,4 @@
-﻿@model EmployeePortalSystem.Models.CommitteeMember
+﻿@model EmployeePortalSystem.ViewModels.CommitteeMemberViewModel
 
 @{
     ViewData["Title"] = "Delete Committee Member";
@@ -7,7 +7,7 @@
 <div class="container">
     <div class="empmaster_card">
         <div class="del_emp">
-            <h3>Are you sure you want to delete this committee member ?</h3>
+            <h3>Are you sure you want to delete @Model.EmployeeName from this committee?</h3>
             <p>This action cannot be undone.</p>
 
             <div class="employee_deletion">

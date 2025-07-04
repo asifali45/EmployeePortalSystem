@@ -8,5 +8,7 @@
         public string Phone { get; set; }
         public string Designation { get; set; }  
         public string DepartmentName { get; set; }
+        public string? Photo { get; set; }
+
     }
 }
