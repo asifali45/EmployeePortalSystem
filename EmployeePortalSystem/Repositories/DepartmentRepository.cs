@@ -93,7 +93,6 @@ namespace EmployeePortalSystem.Repositories
                 "SELECT Name FROM employee WHERE EmployeeId = @id", new { id = headId });
         }
 
-
         public IEnumerable<Employee> SearchEmployeesByName(string term)
         {
             using var db = Connection;
@@ -101,6 +100,12 @@ namespace EmployeePortalSystem.Repositories
                 "SELECT EmployeeId, Name FROM employee WHERE Name LIKE @term",
                 new { term = "%" + term + "%" });
         }
+        public IEnumerable<Employee> GetAllEmployees()
+        {
+            using var db = Connection;
+            return db.Query<Employee>("SELECT EmployeeId, Name FROM employee");
+        }
+
 
 
     }

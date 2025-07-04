@@ -82,7 +82,7 @@ namespace EmployeePortalSystem.Controllers
             }
 
             _repo.DeleteEmployee(id);
-            TempData["Message"] = "Employee deleted successfully!";
+            TempData["Messages"] = "Employee deleted successfully!";
             return RedirectToAction("EmployeeDetails");
         }
 
@@ -124,38 +124,37 @@ namespace EmployeePortalSystem.Controllers
             }
             else if (employee.EmployeeId > 0)
             {
-                // Preserve existing photo if no new one uploaded
+                
                 var existing = _repo.GetEmployeeById(employee.EmployeeId);
                 employee.Photo = existing?.Photo;
             }
             else
             {
-                // insert mode and no photo uploaded
-                employee.Photo = null; // or "" depending on DB schema
+               
+                employee.Photo = null;
             }
 
             int? userId = HttpContext.Session.GetInt32("EmployeeId");
 
             if (employee.EmployeeId > 0)
             {
-                // Edit operation
+               
                 employee.UpdatedAt = DateTime.Now;
                 employee.UpdatedBy = userId;
 
                 _repo.UpdateEmployee(employee);
 
-                TempData["Message"] = "Employee updated successfully!";
+                TempData["Message1"] = "Employee updated successfully!";
             }
             else
             {
-                // New record
                 employee.CreatedAt = DateTime.Now;
                 employee.UpdatedAt = DateTime.Now;
                 employee.CreatedBy = userId;
 
                 _repo.AddEmployee(employee);
 
-                TempData["Message"] = "Employee added successfully!";
+                TempData["Message1"] = "Employee added successfully!";
             }
             return RedirectToAction("EmployeeInsertion");
         }
