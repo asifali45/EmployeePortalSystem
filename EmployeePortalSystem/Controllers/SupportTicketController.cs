@@ -18,8 +18,19 @@ namespace EmployeePortalSystem.Controllers
         //  List All Tickets
         public async Task<IActionResult> Index()
         {
-            var tickets = await _repository.GetAllAsync(); // ✅ Uses the updated method with Include
-            return View("~/Views/Support/SupportTicketList.cshtml", tickets);
+            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+
+            if (isAdmin)
+            {
+                var allTickets = await _repository.GetAllAsync();
+                return View("~/Views/Support/SupportTicketList.cshtml", allTickets); // Admin full list
+            }
+            else
+            {
+                var empTickets = await _repository.GetTicketsByEmployeeIdAsync(employeeId);
+                return View("~/Views/Support/EmployeeTicket.cshtml", empTickets); // Employee-only tickets
+            }
         }
 
         // Show Raise Form
@@ -34,8 +45,9 @@ namespace EmployeePortalSystem.Controllers
                 model.EmployeeNameList = employeeNames.ToList();
             }
 
-            return View("~/Views/support/RaiseTicket.cshtml", model);
+            return View("~/Views/Support/RaiseTicket.cshtml", model);  // ✅ Shared by both
         }
+
 
         //  Submit Raised Ticket
         [HttpPost]

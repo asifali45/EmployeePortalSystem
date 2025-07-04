@@ -20,11 +20,8 @@ namespace EmployeePortalSystem.Repositories
         //  Create Ticket
         public async Task<int> CreateAsync(SupportTicket ticket)
         {
-<<<<<<<<< Temporary merge branch 1
-            var query = @"INSERT INTO support_tickets (EmployeeId, IssueTitle, Description, Status, CreatedAt)
-                          VALUES (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
-                          SELECT LAST_INSERT_ID();";
-=========
+
+
             var query = @"INSERT INTO support_tickets 
                         (EmployeeId, IssueTitle, Description, Status, CreatedAt)
                         VALUES 
@@ -146,6 +143,19 @@ namespace EmployeePortalSystem.Repositories
                 return (await conn.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
             }
         }
+
+        //for employee ticket history
+        public async Task<List<SupportTicket>> GetTicketsByEmployeeIdAsync(int empId)
+{
+    using (var conn = new MySqlConnection(_connection))
+    {
+        var query = "SELECT * FROM SupportTickets WHERE EmployeeId = @EmpId";
+        var tickets = await conn.QueryAsync<SupportTicket>(query, new { EmpId = empId });
+        return tickets.ToList();
+    }
+}
+
+
 
 
 
