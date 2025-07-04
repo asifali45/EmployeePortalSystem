@@ -58,6 +58,14 @@ namespace EmployeePortalSystem.Repositories
             using var connection = _context.CreateConnection();
             return await connection.QueryAsync<Award>(query);
         }
+        public async Task<List<string>> SearchEmployeeNamesAsync(string term)
+        {
+            var query = "SELECT Name FROM Employee WHERE Name LIKE @SearchTerm LIMIT 10";
+            using var connection = _context.CreateConnection();
+            var result = await connection.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
+            return result.ToList();
+        }
+
 
         public async Task<Award> GetByIdAsync(int id)
         {
