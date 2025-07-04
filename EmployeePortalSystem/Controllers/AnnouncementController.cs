@@ -1,4 +1,5 @@
-﻿using EmployeePortalSystem.Models;
+﻿using EmployeePortalSystem.Context;
+using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,12 +8,13 @@ namespace EmployeePortalSystem.Controllers
 {
     public class AnnouncementController : Controller
     {
-        private readonly IAnnouncementRepository _repo;
+        private readonly AnnouncementRepository _repo;
 
-        public AnnouncementController(IAnnouncementRepository repo)
+        public AnnouncementController(AnnouncementRepository repo)
         {
             _repo = repo;
         }
+
         public IActionResult Index()
         {
             var announcements = _repo.GetAll();

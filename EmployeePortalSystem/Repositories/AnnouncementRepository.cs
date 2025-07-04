@@ -1,43 +1,40 @@
 ﻿using EmployeePortalSystem.Models;
-using MySql.Data.MySqlClient;
-using System.Data;
+using EmployeePortalSystem.Context;
 using Dapper;
+using System.Data;
 
 namespace EmployeePortalSystem.Repositories
 {
-    public class AnnouncementRepository:IAnnouncementRepository
+    public class AnnouncementRepository
     {
-        private readonly string _connectionString;
+        private readonly AppDbContext _dbContext;
 
-        public AnnouncementRepository(IConfiguration config)
+        public AnnouncementRepository(AppDbContext dbContext)
         {
-            _connectionString = config.GetConnectionString("DefaultConnection");
+            _dbContext = dbContext;
         }
-
-        private IDbConnection Connection => new MySqlConnection(_connectionString);
 
         public IEnumerable<Announcement> GetAll()
         {
-            using var db = Connection;
+            using var db = _dbContext.CreateConnection();
             return db.Query<Announcement>("SELECT * FROM announcement ORDER BY DisplayOrder ASC");
         }
 
-
         public Announcement GetById(int id)
         {
-            using var db = Connection;
+            using var db = _dbContext.CreateConnection();
             return db.QueryFirstOrDefault<Announcement>("SELECT * FROM announcement WHERE AnnouncementId = @id", new { id });
         }
 
         public void Add(Announcement announcement)
         {
-            using var db = Connection;
+            using var db = _dbContext.CreateConnection();
 
             string sql = @"
-        INSERT INTO announcement
-        (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
-        VALUES
-        (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+                INSERT INTO announcement
+                (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
+                VALUES
+                (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
 
             var parameters = new
             {
@@ -49,21 +46,18 @@ namespace EmployeePortalSystem.Repositories
                 IsEvent = (announcement.IsEvent ?? false) ? 1 : 0,
                 EventDate = (announcement.IsEvent ?? false) ? announcement.EventDate : null,
                 EventTime = (announcement.IsEvent ?? false) ? announcement.EventTime : null,
-
                 announcement.Location,
                 announcement.CreatedBy
             };
 
             var rows = db.Execute(sql, parameters);
-
             Console.WriteLine($"✅ Rows inserted: {rows}");
         }
 
-
-
         public void Update(Announcement announcement)
         {
-            using var db = Connection;
+            using var db = _dbContext.CreateConnection();
+
             string sql = @"
                 UPDATE announcement SET
                     Title = @Title,
@@ -78,12 +72,13 @@ namespace EmployeePortalSystem.Repositories
                     UpdatedBy = @UpdatedBy,
                     UpdatedAt = NOW()
                 WHERE AnnouncementId = @AnnouncementId";
+
             db.Execute(sql, announcement);
         }
 
         public void Delete(int id)
         {
-            using var db = Connection;
+            using var db = _dbContext.CreateConnection();
             db.Execute("DELETE FROM announcement WHERE AnnouncementId = @id", new { id });
         }
     }
