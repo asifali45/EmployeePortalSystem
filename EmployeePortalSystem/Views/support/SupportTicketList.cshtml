@@ -1,0 +1,85 @@
+﻿@model List<EmployeePortalSystem.Models.SupportTicket>
+
+@{
+    ViewData["Title"] = "Support Tickets";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+
+<div class="container">
+    <div class="page-contents">
+        <div class="emp_btn">
+            <div class="left_btn">
+                <form method="get" asp-action="DashboardAdmin" asp-controller="UserAccess">
+                    <button type="submit" class="create_emp_btn">Back</button>
+                </form>
+            </div>
+            <div class="right_btn">
+                <form method="get" asp-action="RaiseTicket" asp-controller="SupportTicket">
+                    <button type="submit" class="create_emp_btn">Raise Ticket</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="emp_head">
+            <h2>Ticket List - Admin Panel</h2>
+        </div>
+
+        <div class="empmaster_card">
+            <table class="table emp_table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Employee</th>
+                        <th>Issue</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Response</th>
+                        <th>Assign</th>
+                        <th>Escalate</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model)
+                    {
+                        <tr>
+                            <form method="post" asp-action="UpdateTicket" asp-controller="SupportTicket">
+                                @Html.AntiForgeryToken()
+                            <td>@ticket.TicketId</td>
+                            <td>@ticket.EmployeeName</td>
+                            <td>@ticket.IssueTitle</td>
+                            <td>@ticket.Description</td>
+
+                            <td>@ticket.Status</td>
+
+                            <td>
+                               @ticket.Response
+                            </td>
+
+
+
+                            <td>
+                                    @ticket.EscalatedToName
+                            </td>
+                            <td>@ticket.AssignedToName</td>
+
+                            <td>
+                                <span style="display: flex; gap: 15px; justify-content: center;">
+                                    <!-- Edit icon -->
+                                    <a asp-action="Edit" asp-route-id="@ticket.TicketId" title="Edit">
+                                        <img src="~/img/edit Icon.png" width="20" height="20" />
+                                    </a>
+
+                                <input type="hidden" name="TicketId" value="@ticket.TicketId" />
+                                
+                                </span>
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

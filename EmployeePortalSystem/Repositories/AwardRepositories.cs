@@ -58,6 +58,14 @@ namespace EmployeePortalSystem.Repositories
             using var connection = _context.CreateConnection();
             return await connection.QueryAsync<Award>(query);
         }
+        public async Task<List<string>> SearchEmployeeNamesAsync(string term)
+        {
+            var query = "SELECT Name FROM Employee WHERE Name LIKE @SearchTerm LIMIT 10";
+            using var connection = _context.CreateConnection();
+            var result = await connection.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
+            return result.ToList();
+        }
+
 
         public async Task<Award> GetByIdAsync(int id)
         {
@@ -65,8 +73,16 @@ namespace EmployeePortalSystem.Repositories
             using var connection = _context.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<Award>(query, new { Id = id });
         }
+        // Get Award By ID
+        public async Task<Award> GetAwardByIdAsync(int id)
+        {
+            var query = "SELECT * FROM Awards WHERE AwardId = @AwardId";
+            using (var connection = _context.CreateConnection())
+            {
+                return await connection.QueryFirstOrDefaultAsync<Award>(query, new { AwardId = id });
+            }
+        }
 
-        
 
 
         public async Task<bool> UpdateAsync(Award award)
@@ -86,12 +102,14 @@ namespace EmployeePortalSystem.Repositories
             return rowsAffected > 0;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        // Delete Award By ID
+        public async Task<int> DeleteAwardAsync(int id)
         {
-            var query = "DELETE FROM Awards WHERE AwardId = @Id";
-            using var connection = _context.CreateConnection();
-            var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
-            return rowsAffected > 0;
+            var query = "DELETE FROM Awards WHERE AwardId = @AwardId";
+            using (var connection = _context.CreateConnection())
+            {
+                return await connection.ExecuteAsync(query, new { AwardId = id });
+            }
         }
     }
 }

@@ -60,6 +60,21 @@ namespace EmployeePortalSystem.Controllers
 
             return View("AwardForm", model); // ✅ reuse AwardForm.cshtml
         }
+        // GET: Show confirmation page
+        public async Task<IActionResult> Delete(int id)
+        {
+            var award = await _repository.GetAwardByIdAsync(id);
+            if (award == null)
+                return NotFound();
+            return View(award);
+        }
+        [HttpGet]
+        public async Task<JsonResult> SearchEmployeeNames(string term)
+        {
+            var names = await _repository.SearchEmployeeNamesAsync(term);
+            return Json(names);
+        }
+
 
 
         // Save Award
@@ -136,18 +151,12 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST: Final delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var award = await _repository.GetByIdAsync(id);
-            if (award == null)
-            {
-                return NotFound();
-            }
-
-            await _repository.DeleteAsync(id);
-            TempData["Message"] = "Award successfully deleted.";
+            await _repository.DeleteAwardAsync(id);
             return RedirectToAction("Index");
         }
 

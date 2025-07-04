@@ -1,0 +1,62 @@
+﻿
+@{
+	ViewData["Title"] = "Blog Details";
+	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+@model List<EmployeePortalSystem.ViewModels.BlogViewModel>
+
+
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Blogs</h2>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var blog in Model)
+        {
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <!-- Image -->
+                    <div class="blog-card-text">
+                        @if (!string.IsNullOrEmpty(blog.Image))
+                        {
+                            <img src="~/uploads/blogs/@blog.Image" class="blog-float-image" alt="Blog Image">
+                        }
+                       
+                        <!-- Title -->
+                        <h3 class="blog-title">@blog.Title</h3>
+
+                        <!-- Content -->
+                        <p class="blog-description">
+                            @blog.Content
+                        </p>
+
+                        <!-- Author & Tags -->
+                        <div class="blog-meta">
+                            <span class="blog-author">By @blog.AuthorName</span>
+                            <span class="blog-tags">#@blog.Tags</span>
+                        </div>
+
+                        <!-- Like & Comment -->
+                        <div class="blog-actions">
+                            <button class="like-btn">❤ Like</button>
+                            <button class="comment-btn">💬 Comment</button>
+                        </div>
+                        <a href="#">
+                            <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No blogs available.</p>
+    }
+</div>
+  
+  
