@@ -7,9 +7,9 @@ namespace EmployeePortalSystem.Repositories
 {
     public class CommitteeRepository
     {
-        private readonly AwardContext _context;
+        private readonly AppDbContext _context;
 
-        public CommitteeRepository(AwardContext context)
+        public CommitteeRepository(AppDbContext context)
         {
             _context = context;
         }
