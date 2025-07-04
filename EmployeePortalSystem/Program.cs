@@ -14,6 +14,7 @@ builder.Services.AddScoped<AnnouncementRepository>();
 builder.Services.AddScoped<DepartmentRepository>();
 builder.Services.AddScoped<AwardContext>();
 builder.Services.AddScoped<SupportTicketRepository>();
+builder.Services.AddScoped<BlogsRepository>();
 
 
 
