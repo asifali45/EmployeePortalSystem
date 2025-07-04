@@ -17,7 +17,7 @@
                 </div>
                 <div class="right_btn">
                     <form method="get" asp-action="Create" asp-controller="Award">
-                        <button type="submit" class="create_emp_btn">+ Add Award</button>
+                        <button type="submit" class="create_emp_btn"> Add Award </button>
                     </form>
                 </div>
             </div>
@@ -58,11 +58,10 @@
                                                 <img src="~/img/edit Icon.png" width="20" height="20" />
                                             </a>
 
-                                            <form asp-action="Delete" asp-route-id="@award.AwardId" method="post" onsubmit="return confirm('Are you sure you want to delete this award?');" style="margin: 0;">
-                                                <button type="submit" style="background: none; border: none; padding: 0;">
-                                                    <img src="~/img/trash-xmark (1).png" width="20" height="20" />
-                                                </button>
-                                            </form>
+                                            <a asp-action="Delete" asp-route-id="@award.AwardId" title="Delete">
+                                                <img src="~/img/trash-xmark (1).png" width="20" height="20" />
+                                            </a>
+
                                         </span>
                                     </td>
                                 </tr>

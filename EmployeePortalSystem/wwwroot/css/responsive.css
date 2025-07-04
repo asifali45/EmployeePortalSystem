@@ -849,3 +849,36 @@ button[type = "reset"] {
         font - size: 8px;
     }
 }
+/*Blogs*/
+
+@media (max-width: 768px) {
+    .blog-card-content {
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+    }
+
+    .blog-float-image {
+        float: none;
+        width: 100%;
+        margin: 0 0 15px 0;
+        display: block;
+        border-radius: 8px;
+    }
+
+    .blog-card-text {
+        width: 100%;
+        flex: none;
+    }
+
+    .blog-title,
+    .blog-description,
+    .blog-meta,
+    .blog-actions {
+        text-align: left;
+    }
+
+    .blog-description {
+        text-align: justify;
+    }
+}

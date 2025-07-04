@@ -13,6 +13,9 @@ builder.Services.AddScoped<CommitteeRepository>();
 builder.Services.AddScoped<AnnouncementRepository>();
 builder.Services.AddScoped<DepartmentRepository>();
 builder.Services.AddScoped<AwardContext>();
+builder.Services.AddScoped<SupportTicketRepository>();
+
+
 
 
 //Trying to inject connections to all repositories

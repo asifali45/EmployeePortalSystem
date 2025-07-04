@@ -2,6 +2,8 @@
     Layout = null;
     var name = Context.Session.GetString("EmployeeName");
     var designation = Context.Session.GetString("Designation");
+    var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
+    
 }
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
@@ -63,13 +65,11 @@
                     <li class="menu_item"><a href="@Url.Action("Index","Departments")">Departments</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index","Announcement")">Announcements</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
+                    <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
 
-                    <li class="menu_item"><a href="#">Help</a></li>
+                    
                 </ul>
 
-                @{
-                    var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
-                }
                 @if (HttpContextAccessor.HttpContext.Session.GetString("IsAdmin") == "True")
                 {
                     
@@ -99,7 +99,17 @@
 
                 <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employee</a></li>
 
-                <li><a href="#">Blogs</a></li>
+ 
+
+                @if (currentDashboard == "Admin")
+                {
+                    <li><a href="@Url.Action("BlogDetails", "Blogs")">Blogs</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("EmployeeBlogDetails", "Blogs")">Blogs</a></li>
+                }
+
                 <li><a href="#">Polls</a></li>
                 <li><a href="#">Announcements</a></li>
                 <li><a href="#">Departments</a></li>

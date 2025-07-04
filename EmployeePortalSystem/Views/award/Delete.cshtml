@@ -1,0 +1,18 @@
+﻿@model EmployeePortalSystem.Models.Award
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container del_emp">
+    <h3>Are you sure you want to delete award: <b>@Model.Type</b>?</h3>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="AwardId" />
+        <div class="employee_deletion">
+            <button type="submit" class="del_button">Delete</button>
+            <a asp-action="Index" class="cancel_button">Cancel</a>
+        </div>
+    </form>
+</div>

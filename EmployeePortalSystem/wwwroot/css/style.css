@@ -1168,3 +1168,83 @@ table .edit-icon img {
 }
 
 
+
+/*Blogs*/
+
+.blog-card {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+
+.blog-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap; /* prevent wrapping image above text */
+}
+
+.blog-float-image {
+    float: left;
+    width: 350px;
+    height: auto;
+    margin: 0 20px 10px 0;
+    border-radius: 8px;
+}
+
+
+.blog-card-text {
+    flex: 2 1 600px;
+}
+
+.blog-title {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.blog-description {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+    text-align: justify;
+}
+
+.blog-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+    .blog-meta .blog-tags {
+        margin-left: 15px;
+        color: #555;
+    }
+
+.blog-actions {
+    margin-top: 10px;
+}
+
+.like-btn, .comment-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    color: #007BFF;
+}
+
+    .like-btn:hover, .comment-btn:hover {
+        text-decoration: underline;
+    }
+
