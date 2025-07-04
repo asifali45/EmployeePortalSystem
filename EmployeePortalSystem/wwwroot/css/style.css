@@ -1141,7 +1141,7 @@ table .edit-icon img {
 }
     .val input,
     .val select {
-        width: 430px;
+        width: 435px;
     }
 
 .imp_field {
@@ -1166,3 +1166,5 @@ table .edit-icon img {
     border-radius: 50%; 
     object-fit: cover;
 }
+
+

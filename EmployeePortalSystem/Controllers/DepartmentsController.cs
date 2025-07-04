@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
 using System.Linq;
+using EmployeePortalSystem.Context;
 
 namespace EmployeePortalSystem.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly IDepartmentRepository _repo;
+        private readonly DepartmentRepository _repo;
 
-        public DepartmentsController(IDepartmentRepository repo)
+        public DepartmentsController(DepartmentRepository repo)
         {
             _repo = repo;
         }

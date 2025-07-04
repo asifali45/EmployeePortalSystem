@@ -62,8 +62,8 @@
                         <div class="form_group">
                             <label>Display Order <span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="DisplayOrder" class="form-control" type="number" min="1" value="1" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                                <input asp-for="DisplayOrder"  class="form-control" type="text" pattern="\d*" />
+                                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,6 @@
                         </div>
                         <div class="form_group">
                             <label>Location</label>
-                           
                             <input asp-for="Location" class="form-control" />
                             <span asp-validation-for="Location" class="text-danger"></span>
 
@@ -90,17 +89,23 @@
                     </div>
 
                     <div class="form_row">
-                        <div class="form_group" id="eventDateGroup">
-                            <label>Event Date</label>
-                            <input asp-for="EventDate" class="form-control" type="date" id="eventDate" />
-                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        <div class="form_group event-group" id="eventDateGroup">
+                            <label for="eventDate">Event Date</label>
+                            <div class="val">
+                                <input asp-for="EventDate" class="form-control" type="date" id="eventDate" />
+                                <span asp-validation-for="EventDate" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="form_group" id="eventTimeGroup">
-                            <label>Event Time</label>
-                            <input asp-for="EventTime" class="form-control" type="time" id="eventTime" />
-                            <span asp-validation-for="EventTime" class="text-danger"></span>
+
+                        <div class="form_group event-group" id="eventTimeGroup">
+                            <label for="eventTime">Event Time</label>
+                            <div class="val">
+                                <input asp-for="EventTime" class="form-control" type="time" id="eventTime" />
+                                <span asp-validation-for="EventTime" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="form_row">
                         <button type="submit" class="custom-button">Save</button>
@@ -120,25 +125,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const isEventSelect = document.getElementById("isEventSelect");
+
             const eventDateGroup = document.getElementById("eventDateGroup");
             const eventTimeGroup = document.getElementById("eventTimeGroup");
 
             function toggleEventFields() {
-        const isEvent = isEventSelect.value.toLowerCase() === "true";
-                        eventDateGroup.style.display = isEvent ? "block" : "none";
-                eventTimeGroup.style.display = isEvent ? "block" : "none";
+                const isEvent = isEventSelect.value.toLowerCase() === "true";
+
+                eventDateGroup.style.display = isEvent ? "flex" : "none";
+                eventTimeGroup.style.display = isEvent ? "flex" : "none";
             }
 
             isEventSelect.addEventListener("change", toggleEventFields);
-            toggleEventFields(); // run on load
-
-
-
-             
+            toggleEventFields(); // Run on page load
         });
     </script>
 }
+
