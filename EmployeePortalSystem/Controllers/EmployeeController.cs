@@ -24,6 +24,12 @@ namespace EmployeePortalSystem.Controllers
             var employeeList = _repo.GetAllEmployeeDetails();
             return View("EmployeeDetails", employeeList); 
         }
+        [HttpGet]
+        public IActionResult EmployeeDetailsForEmployee()
+        {
+            var employeeList = _repo.GetAllEmployeeDetails();
+            return View("EmployeeDetailsForEmployee", employeeList);
+        }
 
         [HttpGet]
         public IActionResult EmployeeInsertion()

@@ -26,7 +26,8 @@ namespace EmployeePortalSystem.Repositories
                         c.Type,
                         c.Logo,
                         c.Description,
-                        e.Name AS HeadName
+                        e.Name AS HeadName,
+                        (SELECT COUNT(*) FROM committee_member cm WHERE cm.CommitteeId = c.CommitteeId) AS MemberCount
                         FROM Committee c
                         LEFT JOIN Employee e ON c.HeadId=e.EmployeeId";
             return connection.Query<CommitteeViewModel>(sql).ToList();
@@ -91,6 +92,7 @@ namespace EmployeePortalSystem.Repositories
                     cm.CommitteeMemberId,
                     e.EmployeeId,
                     e.Name AS EmployeeName,
+                    e.Photo,
                     d.Name AS DepartmentName
                 FROM committee_member cm
                 INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
@@ -114,6 +116,25 @@ namespace EmployeePortalSystem.Repositories
             using var conn = _context.CreateConnection();
             string sql = "SELECT * FROM committee_member WHERE CommitteeMemberId = @id";
             return conn.QueryFirstOrDefault<CommitteeMember>(sql, new { id });
+        }
+
+        public CommitteeMemberViewModel? GetCommitteeMemberViewModelById(int id)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+        SELECT 
+            cm.CommitteeMemberId,
+            cm.CommitteeId,
+            e.EmployeeId,
+            e.Name AS EmployeeName,
+            d.Name AS DepartmentName,
+            e.Photo
+        FROM committee_member cm
+        INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
+        INNER JOIN Department d ON e.DepartmentId = d.DepartmentId
+        WHERE cm.CommitteeMemberId = @id";
+
+            return conn.QueryFirstOrDefault<CommitteeMemberViewModel>(sql, new { id });
         }
 
         public CommitteeMember? GetCommitteeMember(int committeeId, int employeeId)
