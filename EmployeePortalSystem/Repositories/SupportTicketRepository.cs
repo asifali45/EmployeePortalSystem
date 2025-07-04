@@ -20,6 +20,11 @@ namespace EmployeePortalSystem.Repositories
         //  Create Ticket
         public async Task<int> CreateAsync(SupportTicket ticket)
         {
+<<<<<<<<< Temporary merge branch 1
+            var query = @"INSERT INTO support_tickets (EmployeeId, IssueTitle, Description, Status, CreatedAt)
+                          VALUES (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
+                          SELECT LAST_INSERT_ID();";
+=========
             var query = @"INSERT INTO support_tickets 
                         (EmployeeId, IssueTitle, Description, Status, CreatedAt)
                         VALUES 
@@ -76,10 +81,12 @@ namespace EmployeePortalSystem.Repositories
         //  Get All Employee Names
         public async Task<IEnumerable<string>> GetAllEmployeeNamesAsync()
         {
+
             var query = "SELECT Name FROM Employee ORDER BY Name";
             using (var conn = new MySqlConnection(_connection))
                 return await conn.QueryAsync<string>(query);
         }
+
 
         //  Get Ticket by ID
         public async Task<SupportTicket?> GetByIdAsync(int id)
@@ -92,6 +99,7 @@ namespace EmployeePortalSystem.Repositories
         //  Get Employee ID from Name
         public async Task<int> GetEmployeeIdByNameAsync(string name)
         {
+
             var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
             using (var conn = new MySqlConnection(_connection))
                 return await conn.QueryFirstOrDefaultAsync<int?>(query, new { Name = name }) ?? 0;
@@ -109,6 +117,7 @@ namespace EmployeePortalSystem.Repositories
         }
 
        
+
 
         public async Task<List<SelectListItem>> GetAllDepartmentsAsync()
         {
