@@ -1249,6 +1249,58 @@ table .edit-icon img {
     }
 
 
+/*poll result */
+
+
+
+.option-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    width:400px;
+}
+
+.option-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: #e4e4e4;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.fill-low {
+    background-color: #f44336;
+}
+/* Red for <25% */
+.fill-medium {
+    background-color: #ff9800;
+}
+/* Orange for 25-49% */
+.fill-high {
+    background-color: #ffc107;
+}
+/* Yellow for 50-74% */
+.fill-top {
+    background-color: #4caf50;
+}
+/* Green for 75%+ */
+
+=======
+
 /* Modal container (already styled correctly) */
 .custom-modal {
     display: none;
@@ -1408,3 +1460,4 @@ table .edit-icon img {
     color: #cd2f74;
     gap:5px;
 }
+

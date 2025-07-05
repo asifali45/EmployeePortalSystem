@@ -1,0 +1,92 @@
+﻿@model List<EmployeePortalSystem.ViewModels.PollViewModel>
+@{
+    ViewData["Title"] = "Polls";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var allResults = ViewBag.Results as Dictionary<int, Dictionary<string, int>>; // PollId -> OptionId -> Count
+}
+
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Polls</h2>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var poll in Model)
+        {
+            var result = allResults != null && allResults.ContainsKey(poll.PollId)
+            ? allResults[poll.PollId]
+            : new Dictionary<string, int>();
+
+            int totalVotes = result.Values.Sum();
+
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <div class="blog-card-text">
+                        <!-- Question -->
+                        <h3 class="blog-title">@poll.Question</h3>
+
+                        <!-- Options and Vote Summary -->
+                        @{
+                            var options = new[]
+                            {
+                new { Key = "1", Text = poll.Option1 },
+                new { Key = "2", Text = poll.Option2 },
+                new { Key = "3", Text = poll.Option3 },
+                new { Key = "4", Text = poll.Option4 }
+                };
+                        }
+
+                        <div class="poll-options">
+                            @foreach (var option in options)
+                            {
+                                if (!string.IsNullOrEmpty(option.Text))
+                                {
+                                    var count = result.ContainsKey(option.Key) ? result[option.Key] : 0;
+                                    var percentage = totalVotes > 0 ? (count * 100 / totalVotes) : 0;
+
+                                    var fillClass = percentage switch
+                                    {
+                                        >= 75 => "fill-top",
+                                        >= 50 => "fill-high",
+                                        >= 25 => "fill-medium",
+                                        _ => "fill-low"
+                                    };
+
+                                    <div class="option-box">
+                                        <div class="option-label">
+                                            <span>@option.Text</span>
+                                            <span>@percentage% (@count vote@(count == 1 ? "" : "s"))</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill @fillClass" style="width: @percentage%"></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <!-- Metadata -->
+                        <div class="blog-meta">
+                            <span class="blog-author">Created by: @poll.CreatedByName</span>
+                            <span class="blog-tags">Created on: @poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="blog-actions">
+                            <a asp-action="Results" asp-route-id="@poll.PollId" class="comment-btn">📊 View Responses</a>
+                            <a asp-action="Delete" asp-route-id="@poll.PollId">
+                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No polls available.</p>
+    }
+</div>
