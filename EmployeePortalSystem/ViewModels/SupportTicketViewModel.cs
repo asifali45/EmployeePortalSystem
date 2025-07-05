@@ -23,14 +23,16 @@ namespace EmployeePortalSystem.ViewModels
         //  Assignment & Escalation
         public string AssignedTo { get; set; } = string.Empty; //  selected EmployeeId
         public string EscalationName { get; set; } = string.Empty; // selected EscalatedTo Id
-        public string EscalationLevel { get; set; } = string.Empty;
+        public string EscalationLevel { get; set; } = "0";
 
-        public string AssignedToName { get; set; } = string.Empty;
-        public string EscalatedToName { get; set; } = string.Empty;
+        public string? AssignedToName { get; set; } = string.Empty;
+        public string? EscalatedToName { get; set; } 
         public string EscalationLevelName { get; set; } = string.Empty;
 
         //  Employee Info
         public string EmployeeName { get; set; } = string.Empty;
+       
+
 
         // Dropdown Options
         public int DepartmentId { get; set; }

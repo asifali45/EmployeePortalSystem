@@ -10,28 +10,28 @@ namespace EmployeePortalSystem.Repositories
 {
     public class AwardRepository
     {
-        private readonly string _connection;
+        private readonly AppDbContext _context;
 
-        public AwardRepository(IConfiguration config)
+        public AwardRepository(AppDbContext context)
         {
-            _connection = config.GetConnectionString("DefaultConnection");
+            _context = context;
 
         }
         public async Task<int> GetEmployeeIdByNameAsync(string name)
         {
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
                 var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
-                var result = await conn.QueryFirstOrDefaultAsync<int?>(query, new { Name = name });
+                var result = await connection.QueryFirstOrDefaultAsync<int?>(query, new { Name = name });
                 return result ?? 0; 
             }
         }
         public async Task<string> GetEmployeeNameByIdAsync(int employeeId)
         {
             var query = "SELECT Name FROM Employee WHERE EmployeeId = @EmployeeId LIMIT 1";
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                var result = await conn.QueryFirstOrDefaultAsync<string>(query, new { EmployeeId = employeeId });
+                var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { EmployeeId = employeeId });
                 return result ?? string.Empty;
             }
         }
@@ -41,9 +41,9 @@ namespace EmployeePortalSystem.Repositories
                   VALUES (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
                   SELECT LAST_INSERT_ID();";
 
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                var id = await conn.ExecuteScalarAsync<int>(query, award);
+                var id = await connection.ExecuteScalarAsync<int>(query, award);
                 return id;
             }
         }
@@ -58,15 +58,15 @@ namespace EmployeePortalSystem.Repositories
                   JOIN Employee e ON a.RecipientId = e.EmployeeId
                   ORDER BY a.DisplayOrder";
 
-            using (var conn = new MySqlConnection(_connection))
-                return await conn.QueryAsync<Award>(query);
+            using var connection = _context.CreateConnection();
+            return await connection.QueryAsync<Award>(query);
         }
         public async Task<List<string>> SearchEmployeeNamesAsync(string term)
         {
             var query = "SELECT Name FROM Employee WHERE Name LIKE @SearchTerm LIMIT 10";
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                var result = await conn.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
+                var result = await connection.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
                 return result.ToList();
             }
         }
@@ -75,16 +75,16 @@ namespace EmployeePortalSystem.Repositories
         public async Task<Award> GetByIdAsync(int id)
         {
             var query = "SELECT * FROM Awards WHERE AwardId = @Id";
-            using (var conn = new MySqlConnection(_connection))
-                return await conn.QueryFirstOrDefaultAsync<Award>(query, new { Id = id });
+            using var connection = _context.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<Award>(query, new { Id = id });
         }
         // Get Award By ID
         public async Task<Award> GetAwardByIdAsync(int id)
         {
             var query = "SELECT * FROM Awards WHERE AwardId = @AwardId";
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                return await conn.QueryFirstOrDefaultAsync<Award>(query, new { AwardId = id });
+                return await connection.QueryFirstOrDefaultAsync<Award>(query, new { AwardId = id });
             }
         }
 
@@ -102,9 +102,9 @@ namespace EmployeePortalSystem.Repositories
                           UpdatedBy = @UpdatedBy
                           WHERE AwardId = @AwardId";
 
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                var rowsAffected = await conn.ExecuteAsync(query, award);
+                var rowsAffected = await connection.ExecuteAsync(query, award);
                 return rowsAffected > 0;
             }
         }
@@ -113,9 +113,9 @@ namespace EmployeePortalSystem.Repositories
         public async Task<int> DeleteAwardAsync(int id)
         {
             var query = "DELETE FROM Awards WHERE AwardId = @AwardId";
-            using (var conn = new MySqlConnection(_connection))
+            using var connection = _context.CreateConnection();
             {
-                return await conn.ExecuteAsync(query, new { AwardId = id });
+                return await connection.ExecuteAsync(query, new { AwardId = id });
             }
         }
     }

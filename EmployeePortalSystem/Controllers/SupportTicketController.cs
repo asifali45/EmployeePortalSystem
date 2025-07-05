@@ -117,6 +117,8 @@ namespace EmployeePortalSystem.Controllers
 
 
             };
+            viewModel.AssignedToName = await _repository.GetEmployeeNameById(ticket.AssignedTo);
+            viewModel.EscalatedToName = await _repository.GetEmployeeNameById(ticket.EscalatedTo);
 
             return View("~/Views/Support/EditTicket.cshtml", viewModel);
         }
@@ -146,6 +148,14 @@ namespace EmployeePortalSystem.Controllers
             if (!ModelState.IsValid)
             {
                 model.EmployeeNameList = (await _repository.GetAllEmployeeNamesAsync()).ToList();
+                model.DepartmentList = (await _repository.GetDepartmentsAsync())
+     .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name })
+     .ToList();
+
+                model.FilteredEmployees = (await _repository.GetEmployeesByDepartmentIdAsync(model.DepartmentId))
+    .Select(e => new SelectListItem { Value = e.EmployeeId.ToString(), Text = e.Name })
+    .ToList();
+                // depends on your logic
 
                 return View("~/Views/support/EditTicket.cshtml", model);
             }
@@ -158,12 +168,22 @@ namespace EmployeePortalSystem.Controllers
 
             ticket.Status = model.Status;
             ticket.Response = model.Response;
-            ticket.AssignedTo = int.TryParse(model.AssignedTo, out int assigneeId) ? assigneeId : null;
-            ticket.EscalatedTo = int.TryParse(model.EscalationName, out int escalateId) ? escalateId : null;
 
+            // ✅ FIXED AssignedTo
+            ticket.AssignedTo = int.TryParse(model.AssignedTo, out int assigneeId) ? assigneeId : null;
+
+
+            // ✅ FIXED EscalatedTo
+            ticket.EscalatedTo = !string.IsNullOrEmpty(model.EscalationName) && int.TryParse(model.EscalationName, out int escalateId)
+                ? escalateId
+                : ticket.EscalatedTo;
+
+            // ✅ FIXED EscalationLevel
             ticket.EscalationLevel = int.TryParse(model.EscalationLevel, out int level) ? level : 0;
+
             ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             ticket.UpdatedAt = DateTime.Now;
+
 
             await _repository.UpdateTicketAsync(ticket);
             TempData["Message"] = "Ticket updated successfully!";

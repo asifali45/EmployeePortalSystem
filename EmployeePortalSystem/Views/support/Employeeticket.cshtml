@@ -1,4 +1,5 @@
-﻿@model List<EmployeePortalSystem.Models.SupportTicket>
+﻿@model List<EmployeePortalSystem.ViewModels.SupportTicketViewModel>
+
 
 @{
     ViewData["Title"] = " My Support Tickets";
@@ -20,7 +21,7 @@
         </div>
 
         <div class="emp_head">
-            <h2>Ticket List - Employee Pane</h2>
+            <h2>Recent Ticket List </h2>
         </div>
 
         <div class="empmaster_card">
@@ -35,8 +36,8 @@
                         <th>Response</th>
                         <th>Assign</th>
                         <th>Escalate</th>
-                        <th>Update</th>
-                    </tr>
+                    
+                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var ticket in Model)
@@ -62,17 +63,7 @@
                             </td>
                             <td>@ticket.AssignedToName</td>
 
-                            <td>
-                                <span style="display: flex; gap: 15px; justify-content: center;">
-                                    <!-- Edit icon -->
-                                    <a asp-action="Edit" asp-route-id="@ticket.TicketId" title="Edit">
-                                        <img src="~/img/edit Icon.png" width="20" height="20" />
-                                    </a>
-
-                                    <input type="hidden" name="TicketId" value="@ticket.TicketId" />
-
-                                </span>
-                            </td>
+                           
                             </form>
                         </tr>
                     }

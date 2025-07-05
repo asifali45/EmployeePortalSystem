@@ -52,15 +52,16 @@
                         <label>Status<span class="imp_field">*</span></label>
                         <div class="val">
                         <select asp-for="Status" class="form-control" id="Status">
+
+                                <option value="Open">Open</option>
+                                <option value="In Progress">In Progress</option>
                                 
-                            <option>Open</option>
-                            <option>In Progress</option>
-                            <option>Escalated</option>
-                            <option>Resolved</option>
+                                <option value="Escalated">Escalated</option>
+                            <option value="Resolved">Resolved</option>
                         </select>
-                            <span asp-validation-for="Status" class="text-danger" style="min-height: 18px; display: block;"></span>
+                            
                         </div>
-                        
+                        <span asp-validation-for="Status" class="text-danger" style="min-height: 18px; display: block;"></span> 
                     </div>
                
                
@@ -96,25 +97,27 @@
                                 {
                                     <option value="@emp.Value">@emp.Text</option>
                                 }
+                                <span asp-validation-for="AssignedTo" class="text-danger" style="min-height: 18px; display: block;"></span>
                             </select>
-                            <span asp-validation-for="AssignedTo" class="text-danger" style="min-height: 18px; display: block;"></span>
+                            
                         </div>
                         
                     </div>
-               
 
-                 <div class="form_group">
-                    <label>Escalate To</label>
-                    <select asp-for="EscalationName" class="form-control" id="escalateToSelect">
-                        <option value="">-- Select Employee --</option>
-                        @foreach (var emp in Model.FilteredEmployees)
-                        {
-                            <option value="@emp.Value" selected="@(Model.EscalationName == emp.Value)">
-                                @emp.Text
-                            </option>
-                        }
-                    </select>
-                </div>
+
+                    <div class="form_group" id="escalatedToDiv">
+                        <label>Escalate To</label>
+                        <select asp-for="EscalationName" class="form-control" id="escalateToSelect">
+                            <option value="">-- Select Employee --</option>
+                            @foreach (var emp in Model.FilteredEmployees)
+                            {
+                                <option value="@emp.Value" selected="@(Model.EscalationName == emp.Value)">
+                                    @emp.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+
                 </div>
 
                
@@ -131,9 +134,13 @@
                 </div>
 
                 <div class="form_row">
+                    
+
                     <button type="submit" class="custom-button" id="submitBtn">Save</button>
                     <button type="reset" class="btn-cancel">Cancel</button>
                 </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
             </form>
          </div>
       
@@ -144,56 +151,77 @@
 }
 
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const statusField = document.querySelector("#Status");
-            const submitBtn = document.querySelector("#submitBtn");
+<script>
+    document.getElementById("departmentSelect").addEventListener("change", function () {
+        var deptId = this.value;
+        if (deptId) {
+            fetch(`/SupportTicket/GetEmployeesByDepartmentId/${deptId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const assignSelect = document.getElementById("assignToSelect");
+                    const escalateSelect = document.getElementById("escalateToSelect");
 
-            function checkStatus() {
-                // Enable for all statuses except Open
-                submitBtn.disabled = (statusField.value === "Open");
+                    // Clear both
+                    assignSelect.innerHTML = '<option value="">-- Select Employee --</option>';
+                    escalateSelect.innerHTML = '<option value="">-- Select Employee --</option>';
+
+                    if (data.length === 0) {
+                        // No employees available
+                        const emptyOption = new Option("No employees found", "");
+                        assignSelect.add(emptyOption.cloneNode(true));
+                        escalateSelect.add(emptyOption);
+                    } else {
+                        //  Add real employees
+                        data.forEach(emp => {
+                            const option1 = new Option(emp.name, emp.employeeId);
+                            const option2 = new Option(emp.name, emp.employeeId);
+                            assignSelect.add(option1);
+                            escalateSelect.add(option2);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching employees:", error);
+                    alert("Something went wrong while fetching employees.");
+                });
+        }
+    });
+</script>
+<!-- ✅ NEW Script: Show/Hide Assign & Escalate To -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusField = document.querySelector("#Status");
+        const submitBtn = document.querySelector("#submitBtn");
+
+        const assignRow = document.getElementById("assignToSelect").closest(".form_group");
+        const escalateRow = document.getElementById("escalatedToDiv");
+
+        function handleStatusUI() {
+            const status = statusField.value;
+
+            submitBtn.disabled = (status === "Open");
+
+            if (status === "Open" || status === "In Progress") {
+                assignRow.style.display = "block";
+                escalateRow.style.display = "none";
+            } else if (status === "Escalated") {
+                assignRow.style.display = "block";
+                escalateRow.style.display = "block";
+            } else if (status === "Resolved") {
+                assignRow.style.display = "block";
+                escalateRow.style.display = "block";
             }
+        }
 
-            statusField.addEventListener("change", checkStatus);
-            checkStatus(); // Initial check
-        });
-    </script>
-    <script>
-        document.getElementById("departmentSelect").addEventListener("change", function () {
-            var deptId = this.value;
-            if (deptId) {
-                fetch(`/SupportTicket/GetEmployeesByDepartmentId/${deptId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const assignSelect = document.getElementById("assignToSelect");
-                        const escalateSelect = document.getElementById("escalateToSelect");
+        statusField.addEventListener("change", handleStatusUI);
+        handleStatusUI();
+    });
+</script>
 
-                        // Clear both
-                        assignSelect.innerHTML = '<option value="">-- Select Employee --</option>';
-                        escalateSelect.innerHTML = '<option value="">-- Select Employee --</option>';
 
-                        if (data.length === 0) {
-                            // No employees available
-                            const emptyOption = new Option("No employees found", "");
-                            assignSelect.add(emptyOption.cloneNode(true));
-                            escalateSelect.add(emptyOption);
-                        } else {
-                            //  Add real employees
-                            data.forEach(emp => {
-                                const option1 = new Option(emp.name, emp.employeeId);
-                                const option2 = new Option(emp.name, emp.employeeId);
-                                assignSelect.add(option1);
-                                escalateSelect.add(option2);
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching employees:", error);
-                        alert("Something went wrong while fetching employees.");
-                    });
-            }
-        });
-    </script>
+
+
+
 
 
 
