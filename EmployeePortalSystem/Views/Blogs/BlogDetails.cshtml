@@ -9,7 +9,7 @@
 
 
 <div class="container">
-    <div class="emp_head">
+    <div class="emp_head1">
         <h2>Blogs</h2>
     </div>
 
@@ -38,16 +38,21 @@
                         <div class="blog-meta">
                             <span class="blog-author">By @blog.AuthorName</span>
                             <span class="blog-tags">#@blog.Tags</span>
+                        <p>Blog ID: @blog.BlogId</p>    
                         </div>
 
                         <!-- Like & Comment -->
                         <div class="blog-actions">
-                            <button class="like-btn">❤ Like</button>
+                            <span class="like-btn">❤ @blog.LikeCount</span>
                             <button class="comment-btn">💬 Comment</button>
+
+                            <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId })">
+                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                            </a>
                         </div>
-                        <a href="#">
-                            <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
-                        </a> 
+                        
+                        
+                       
 
                     </div>
                 </div>

@@ -8,7 +8,7 @@
 
 
 <div class="container">
-    <div class="emp_head">
+    <div class="emp_head1">
         <h2>Blogs</h2>
     </div>
 
@@ -41,9 +41,14 @@
 
                         <!-- Like & Comment -->
                         <div class="blog-actions">
-                            <button class="like-btn">❤ Like</button>
-                            <button class="comment-btn">💬 Comment</button>
+                            <form method="post" asp-controller="Blogs" asp-action="ToggleLike">
+                                <input type="hidden" name="blogId" value="@blog.BlogId" />
+                                <button type="submit" class="like-btn">
+                                    ❤  <span style="margin-left: 8px;">@blog.LikeCount</span>
+                                </button>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             </div>
