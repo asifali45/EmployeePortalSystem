@@ -1,0 +1,61 @@
+﻿@model EmployeePortalSystem.Models.Poll
+@{
+    ViewData["Title"] = "Poll Results";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+
+    var results = ViewBag.Results as Dictionary<string, int>;
+    int totalVotes = results?.Values.Sum() ?? 0;
+}
+
+
+
+<div class="container mt-4">
+    <div class="emp_head">
+        <h2 class="text-center text-primary">Poll Results</h2>
+    </div>
+
+    <div class="blog-card">
+        <div class="blog-card-content">
+            <div class="blog-card-text">
+                <!-- Poll Question -->
+                <h4 class="blog-title mb-4">@Model.Question</h4>
+
+                <!-- Option-wise Result Summary -->
+                <div class="blog-description">
+                    @{
+                        var options = new[] {
+                    new { Text = Model.Option1, Key = "1" },
+                    new { Text = Model.Option2, Key = "2" },
+                    new { Text = Model.Option3, Key = "3" },
+                    new { Text = Model.Option4, Key = "4" }
+                    };
+
+                        int index = 1;
+                    }
+
+                    @foreach (var option in options)
+                    {
+                        if (!string.IsNullOrWhiteSpace(option.Text))
+                        {
+                            var count = results != null && results.ContainsKey(option.Key) ? results[option.Key] : 0;
+                            var percent = totalVotes > 0 ? (int)((count * 100.0) / totalVotes) : 0;
+                            <div class="option-box">
+                                <div class="option-fill" style="width:@percent%"></div>
+                                <div class="option-content">
+                                    <span class="option-label">@index. @option.Text</span>
+                                    <span class="option-percentage">@percent% (@count votes)</span>
+                                </div>
+                            </div>
+                            index++;
+                        }
+                    }
+                </div>
+
+                <!-- Back Button -->
+                <div class="blog-actions mt-4 text-center">
+                    <a asp-action="EmployeePollDetails" class="btn btn-outline-secondary">⬅ Back to Polls</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
