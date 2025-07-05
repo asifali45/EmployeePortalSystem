@@ -1,0 +1,70 @@
+﻿@model List<EmployeePortalSystem.ViewModels.DepartmentViewModel>
+@{
+    ViewData["Title"] = "Department Details";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Departments</h2>
+    </div>
+
+    <div class="department-grid">
+        @foreach (var dept in Model)
+        {
+            <div class="department-card">
+                <div class="dcard-left">
+
+                    <div class="department-details">
+                        <h3>@dept.Name</h3>
+                        @if (!string.IsNullOrEmpty(dept.ParentDepartmentName))
+                        {
+                            <p><strong>Parent Department:</strong> @dept.ParentDepartmentName</p>
+                        }
+                        <p><strong>Head:</strong> @dept.HeadName</p>
+                        <p>
+                            <strong>Description:</strong>
+                            @if (!string.IsNullOrEmpty(dept.Description) && dept.Description.Length > 100)
+                            {
+                                var shortText = dept.Description.Substring(0, 100);
+                                <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                <span class="desc-full" style="display:none;">
+                                    @dept.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                </span>
+                            }
+                            else
+                            {
+                                @dept.Description
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="dcard-right">
+                    <a href="@Url.Action("DepartmentMembers", "Departments", new { id = dept.DepartmentId, name = dept.Name })"> 
+                        <img src="~/img/team.png" width="25px" height="25px" />
+                    </a>
+                    <span class="member-count">@dept.EmployeeCount</span>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+<script>
+    function toggleDescription(link) {
+        const shortSpan = link.closest("p").querySelector(".desc-short");
+        const fullSpan = link.closest("p").querySelector(".desc-full");
+
+        if (shortSpan.style.display === "none") {
+            shortSpan.style.display = "inline";
+            fullSpan.style.display = "none";
+        } else {
+            shortSpan.style.display = "none";
+            fullSpan.style.display = "inline";
+        }
+    }
+</script>

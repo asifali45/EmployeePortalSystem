@@ -60,6 +60,7 @@
 
 
                 <ul class="menubar_emp">
+
                     @if (currentDashboard == "Admin")
                     {
                         <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li>
@@ -68,8 +69,17 @@
                     {
                         <li class="menu_item"><a href="@Url.Action("DashboardEmployee", "UserAccess")">Dashboard</a></li>
                     }
-                    
-                    <li class="menu_item"><a href="@Url.Action("Index","Departments")">Departments</a></li>
+
+
+                    @if (currentDashboard == "Admin")
+                    {
+                        <li class="menu_item"><a href="@Url.Action("Index", "Departments")">Departments</a></li>
+                    }
+                    else
+                    {
+                        <li class="menu_item"><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
+                    }
+           
                     <li class="menu_item"><a href="@Url.Action("Index","Announcement")">Announcements</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
@@ -118,7 +128,16 @@
 
               
                 <li><a href="#">Announcements</a></li>
-                <li><a href="#">Departments</a></li>
+
+                @if (currentDashboard == "Admin")
+                {
+                    <li><a href="@Url.Action("Index", "Departments")">Departments</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
+                }
+
                 @if (currentDashboard == "Admin")
                 {
                     <li><a href="@Url.Action("CommitteeDetails", "Committee")">Committees</a></li>

@@ -22,6 +22,24 @@ namespace EmployeePortalSystem.Controllers
             return View(departments);
         }
 
+        public IActionResult EmployeeDepartmentDetails()
+        {
+            var departments = _repo.GetAllWithDetails();
+            return View(departments);
+        }
+
+        public IActionResult DepartmentMembers(int id)
+        {
+            var department = _repo.GetById(id);
+            if (department == null)
+                return NotFound();
+
+            ViewBag.DepartmentName = department.Name;
+            var employees = _repo.GetEmployeesByDepartmentId(id);
+            return View("DepartmentMembers", employees);
+        }
+
+
         public IActionResult Create()
         {
             ViewBag.ParentDepartments = GetParentDepartmentsDropdown();

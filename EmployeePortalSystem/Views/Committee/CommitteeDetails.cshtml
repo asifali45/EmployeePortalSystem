@@ -63,7 +63,20 @@
                                                 <span>No Logo</span>
                                             }
                                         </td>
-                                        <td>@item.Description</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 50)
+                                            {
+                                                var shortText = item.Description.Substring(0, 50);
+                                                <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                                <span class="desc-full" style="display:none;">
+                                                    @item.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                @item.Description
+                                            }
+                                        </td>
                                         <td>
                                             <span style="display: flex; gap: 20px;">
                                                 <a href="@Url.Action("EditCommittee", "Committee", new { id = item.CommitteeId })">
@@ -124,4 +137,19 @@
             document.getElementById('logoModal').style.display = 'none';
         }
     </script>
+    <script>
+        function toggleDescription(link) {
+            const shortSpan = link.closest("td").querySelector(".desc-short");
+            const fullSpan = link.closest("td").querySelector(".desc-full");
+
+            if (shortSpan.style.display === "none") {
+                shortSpan.style.display = "inline";
+                fullSpan.style.display = "none";
+            } else {
+                shortSpan.style.display = "none";
+                fullSpan.style.display = "inline";
+            }
+        }
+    </script>
+
 }

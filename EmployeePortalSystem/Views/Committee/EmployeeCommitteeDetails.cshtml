@@ -32,7 +32,22 @@
                         <h3>@item.Name</h3>
                         <p><strong>Type:</strong> @item.Type</p>
                         <p><strong>Head:</strong> @item.HeadName</p>
-                        <p><strong>Description:</strong> @item.Description</p>
+                        <p>
+                            <strong>Description:</strong>
+                            @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 100)
+                            {
+                                var shortText = item.Description.Substring(0, 100);
+                                <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                <span class="desc-full" style="display:none;">
+                                    @item.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                </span>
+                            }
+                            else
+                            {
+                                @item.Description
+                            }
+                        </p>
+
                     </div>
                 </div>
                 <div class="card-right">
@@ -48,3 +63,17 @@
 </div>
 
 
+<script>
+    function toggleDescription(link) {
+        const shortSpan = link.closest("p").querySelector(".desc-short");
+        const fullSpan = link.closest("p").querySelector(".desc-full");
+
+        if (shortSpan.style.display === "none") {
+            shortSpan.style.display = "inline";
+            fullSpan.style.display = "none";
+        } else {
+            shortSpan.style.display = "none";
+            fullSpan.style.display = "inline";
+        }
+    }
+</script>
