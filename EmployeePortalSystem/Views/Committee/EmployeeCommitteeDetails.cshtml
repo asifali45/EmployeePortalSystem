@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Committee Details";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+@model List<EmployeePortalSystem.ViewModels.CommitteeViewModel>
+
+
+
+<div class="container">
+    <div class="emp_head">
+        <h2>Committees</h2>
+    </div>
+
+    <div class="committee-grid">
+        @foreach (var item in Model)
+        {
+            <div class="committee-card">
+                <div class="card-left">
+                    <div class="committee-logo">
+                        @if (!string.IsNullOrEmpty(item.Logo))
+                        {
+                            <img src="/uploads/@item.Logo" alt="Logo" />
+                        }
+                   
+                    </div>
+                    <div class="committee-details">
+                        <h3>@item.Name</h3>
+                        <p><strong>Type:</strong> @item.Type</p>
+                        <p><strong>Head:</strong> @item.HeadName</p>
+                        <p><strong>Description:</strong> @item.Description</p>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <a href="@Url.Action("EmployeeCommitteeMembers", "Committee", new { id = item.CommitteeId, name = item.Name })">
+                        <img src="~/img/team.png" width="25px" height="25px" />
+                    </a>
+                    <span class="member-count">@item.MemberCount</span>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+

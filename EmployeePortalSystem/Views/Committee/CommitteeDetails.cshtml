@@ -54,7 +54,9 @@
                                         <td>
                                             @if (!string.IsNullOrEmpty(item.Logo))
                                             {
-                                                <img src="/uploads/@item.Logo" alt="Logo" class="comm-logo" width="60" height="60"  />
+                                                <a href="javascript:void(0);"
+                                                   class="view-photo-link"
+                                                   onclick="openLogoModal('@item.Name', '/uploads/@item.Logo')">View Logo</a>
                                             }
                                             else
                                             {   
@@ -98,6 +100,28 @@
 
     </div>
 </div>
+<div id="logoModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-close" onclick="closeLogoModal()">&times;</span>
+        <h4 id="logoModalName"></h4>
+        <img id="logoModalImg" src="" alt="Committee Logo" class="circle-image" />
+        <div style="margin-top: 10px;">
+            <button class="modal-close-btn" onclick="closeLogoModal()">Close</button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function openLogoModal(name, logoUrl) {
+            document.getElementById('logoModalName').innerText = name;
+            document.getElementById('logoModalImg').src = logoUrl;
+            document.getElementById('logoModal').style.display = 'flex';
+        }
+
+        function closeLogoModal() {
+            document.getElementById('logoModal').style.display = 'none';
+        }
+    </script>
 }

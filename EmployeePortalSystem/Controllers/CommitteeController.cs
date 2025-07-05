@@ -28,10 +28,20 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
+        public IActionResult EmployeeCommitteeDetails()
+        {
+
+            var committeeList = _repository.GetAllCommittees();
+
+
+            return View("EmployeeCommitteeDetails", committeeList);
+        }
+
+        [HttpGet]
         public IActionResult CreateEditCommittee()
         {
             
-            var employee=_repository.GetAllEmployees();// Retrieve all employees for the dropdown
+            var employee=_repository.GetAllEmployees();
             ViewBag.Employees = employee;
             return View();
         }
@@ -166,6 +176,20 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
+        public IActionResult EmployeeCommitteeMembers(int id)
+        {
+            var committee = _repository.GetCommitteeById(id);
+            if (committee == null)
+                return NotFound("Committee not found");
+
+            var members = _repository.GetCommitteeMembersByCommitteeId(id);
+            ViewBag.CommitteeId = id;
+            ViewBag.CommitteeName = committee.Name;
+            return View("EmployeeCommitteeMemberDetails", members);
+        }
+
+
+        [HttpGet]
         public IActionResult AddMember(int committeeId)
         {
             var committee = _repository.GetCommitteeById(committeeId); // for name
@@ -243,7 +267,7 @@ namespace EmployeePortalSystem.Controllers
         [HttpGet]
         public IActionResult DeleteCommitteeMember(int committeeMemberId)
         {
-            var member = _repository.GetCommitteeMemberById(committeeMemberId);
+            var member = _repository.GetCommitteeMemberViewModelById(committeeMemberId);
             if (member == null) return NotFound();
 
             return View("DeleteCommitteeMember", member);

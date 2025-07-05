@@ -96,10 +96,14 @@
             <ul class="sidebar_menu">
                 <li><a href="#">My Profile</a></li>
 
-
-                <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employee</a></li>
-
- 
+                @if (currentDashboard == "Admin")
+                {
+                    <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employees</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("EmployeeDetailsForEmployee", "Employee")">Employees</a></li>
+                }
 
                 @if (currentDashboard == "Admin")
                 {
@@ -125,7 +129,14 @@
 
                 <li><a href="#">Announcements</a></li>
                 <li><a href="#">Departments</a></li>
-                <li><a href="@Url.Action("CommitteeDetails","Committee")">Committee</a></li>
+                @if (currentDashboard == "Admin")
+                {
+                    <li><a href="@Url.Action("CommitteeDetails", "Committee")">Committees</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("EmployeeCommitteeDetails", "Committee")">Committees</a></li>
+                }
                 <li><a href="#">About</a></li>
                 <li><a href="#">Logout</a></li>
 
