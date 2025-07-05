@@ -74,13 +74,33 @@ namespace EmployeePortalSystem.Repositories
                     d.Name,
                     d.Description,
                     e.Name AS HeadName,
-                    pd.Name AS ParentDepartmentName
+                    pd.Name AS ParentDepartmentName,
+                    (SELECT COUNT(*) FROM employee emp WHERE emp.DepartmentId = d.DepartmentId) AS EmployeeCount
                 FROM department d
                 LEFT JOIN employee e ON d.HeadId = e.EmployeeId
                 LEFT JOIN department pd ON d.ParentDepartmentId = pd.DepartmentId";
 
             return db.Query<DepartmentViewModel>(sql).ToList();
         }
+
+        public List<EmployeeDetailsViewModel> GetEmployeesByDepartmentId(int departmentId)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+            SELECT 
+                e.EmployeeId,
+                e.Name,
+                e.Email,
+                e.Phone,
+                r.RoleName AS Designation,
+                e.Photo
+            FROM employee e
+            LEFT JOIN role r ON e.RoleId = r.RoleId
+            WHERE e.DepartmentId = @departmentId";
+
+            return conn.Query<EmployeeDetailsViewModel>(sql, new { departmentId }).ToList();
+        }
+
 
         public string? GetHeadNameById(int? headId)
         {

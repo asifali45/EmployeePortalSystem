@@ -50,7 +50,20 @@
                                     
                                     <td>@dept.DepartmentId</td>
                                     <td>@dept.Name</td>
-                                    <td>@dept.Description</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(dept.Description) && dept.Description.Length > 50)
+                                        {
+                                            var shortText = dept.Description.Substring(0, 50);
+                                            <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                            <span class="desc-full" style="display:none;">
+                                                @dept.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @dept.Description
+                                        }
+                                    </td>
                                     <td>@dept.HeadName</td>
                                     <td>@dept.ParentDepartmentName</td>
                                     <td>
@@ -61,6 +74,9 @@
                                         <a href="@Url.Action("Delete", "Departments", new { id = dept.DepartmentId })" title="Delete">
                                             <img src="~/img/trash-xmark (1).png" width="20" height="20" />
                                         </a>
+                                            <a href="@Url.Action("DepartmentMembers", "Departments", new { id = dept.DepartmentId, name = dept.Name })">
+                                                <img src="~/img/team.png" width="15px" height="15px" />
+                                            </a>
                                         </span>
                                     </td>
 
@@ -77,4 +93,19 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function toggleDescription(link) {
+            const shortSpan = link.closest("td").querySelector(".desc-short");
+            const fullSpan = link.closest("td").querySelector(".desc-full");
+
+            if (shortSpan.style.display === "none") {
+                shortSpan.style.display = "inline";
+                fullSpan.style.display = "none";
+            } else {
+                shortSpan.style.display = "none";
+                fullSpan.style.display = "inline";
+            }
+        }
+    </script>
 }

@@ -1,56 +1,51 @@
-﻿@{
-    ViewData["Title"] = "Committee Details";
+﻿@model List<EmployeePortalSystem.ViewModels.DepartmentViewModel>
+@{
+    ViewData["Title"] = "Department Details";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
-
-@model List<EmployeePortalSystem.ViewModels.CommitteeViewModel>
 
 
 
 <div class="container">
     <div class="emp_head">
-        <h2>Committees</h2>
+        <h2>Departments</h2>
     </div>
 
-    <div class="committee-grid">
-        @foreach (var item in Model)
+    <div class="department-grid">
+        @foreach (var dept in Model)
         {
-            <div class="committee-card">
-                <div class="card-left">
-                    <div class="committee-logo">
-                        @if (!string.IsNullOrEmpty(item.Logo))
+            <div class="department-card">
+                <div class="dcard-left">
+
+                    <div class="department-details">
+                        <h3>@dept.Name</h3>
+                        @if (!string.IsNullOrEmpty(dept.ParentDepartmentName))
                         {
-                            <img src="/uploads/@item.Logo" alt="Logo" />
+                            <p><strong>Parent Department:</strong> @dept.ParentDepartmentName</p>
                         }
-                   
-                    </div>
-                    <div class="committee-details">
-                        <h3>@item.Name</h3>
-                        <p><strong>Type:</strong> @item.Type</p>
-                        <p><strong>Head:</strong> @item.HeadName</p>
+                        <p><strong>Head:</strong> @dept.HeadName</p>
                         <p>
                             <strong>Description:</strong>
-                            @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 100)
+                            @if (!string.IsNullOrEmpty(dept.Description) && dept.Description.Length > 100)
                             {
-                                var shortText = item.Description.Substring(0, 100);
+                                var shortText = dept.Description.Substring(0, 100);
                                 <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
                                 <span class="desc-full" style="display:none;">
-                                    @item.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                    @dept.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
                                 </span>
                             }
                             else
                             {
-                                @item.Description
+                                @dept.Description
                             }
                         </p>
-
                     </div>
                 </div>
-                <div class="card-right">
-                    <a href="@Url.Action("EmployeeCommitteeMembers", "Committee", new { id = item.CommitteeId, name = item.Name })">
+                <div class="dcard-right">
+                    <a href="@Url.Action("DepartmentMembers", "Departments", new { id = dept.DepartmentId, name = dept.Name })"> 
                         <img src="~/img/team.png" width="25px" height="25px" />
                     </a>
-                    <span class="member-count">@item.MemberCount</span>
+                    <span class="member-count">@dept.EmployeeCount</span>
                 </div>
             </div>
         }
