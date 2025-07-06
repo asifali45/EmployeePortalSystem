@@ -450,6 +450,14 @@ footer p {
     margin-bottom: 15px;
 }
 
+.emp_head1 h2 {
+    color: #727272;
+    padding-left: 150px;
+    padding-bottom:10px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
 .empmaster_card {
     background-color: #FFFFFF;
     border-radius: 24px;
@@ -1141,7 +1149,7 @@ table .edit-icon img {
 }
     .val input,
     .val select {
-        width: 430px;
+        width: 435px;
     }
 
 .imp_field {
@@ -1248,3 +1256,337 @@ table .edit-icon img {
         text-decoration: underline;
     }
 
+
+/*poll result */
+
+
+
+.option-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    width:400px;
+}
+
+.option-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: #e4e4e4;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.fill-low {
+    background-color: #f44336;
+}
+/* Red for <25% */
+.fill-medium {
+    background-color: #ff9800;
+}
+/* Orange for 25-49% */
+.fill-high {
+    background-color: #ffc107;
+}
+/* Yellow for 50-74% */
+.fill-top {
+    background-color: #4caf50;
+}
+/* Green for 75%+ */
+
+=======
+
+/* Modal container  */
+#photoModal {
+    display: flex !important;
+}
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-modal-content {
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    width: 300px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ❌ Top-left close icon */
+.custom-close {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+}
+
+/* 🖼️ Circular image */
+
+
+#modalPhoto {
+    width: 180px;
+    height: 180px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: none;
+    display: block;
+    margin: 20px auto;
+}
+/* 📛 Name heading */
+#modalName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 5px;
+}
+
+/* Bottom close button */
+.modal-close-btn {
+    padding: 6px 20px;
+    background-color: #cd2f74;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.view-photo-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+    .view-photo-link:hover {
+        text-decoration: underline;
+    }
+
+#logoModalImg {
+    width: 180px;
+    height: 180px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: none;
+    display: block;
+    margin: 20px auto;
+}
+/* 📛 Name heading */
+#logoModalName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 5px;
+}
+
+
+/*Committee details for Employee*/
+
+.committee-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.committee-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 20px); /* 2 cards per row with 20px gap */
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+}
+
+.card-left {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex-grow: 1;
+}
+
+.committee-logo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.committee-details h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #555;
+}
+
+.committee-details p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.card-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cd2f74;
+    gap:5px;
+}
+
+
+/*Department details for Employee*/
+
+.department-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-left:50px;
+    margin-right:50px;
+}
+
+.department-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 30px); /* 2 cards per row with 20px gap */
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+}
+
+.dcard-left {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex-grow: 1;
+}
+
+
+
+.department-details h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #555;
+}
+
+.department-details p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.dcard-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cd2f74;
+    gap: 5px;
+}
+
+/*  comment   */
+
+.blog-actions{
+    display:flex;
+    
+}
+
+.comment-btn{
+    color:darkslategray;
+    text-decoration:none;
+}
+
+.comment-text input{
+    flex: 1;
+    padding: 7px;
+    border-radius: 4px;
+    border: 1px solid #cbcbcb;
+    font-size: 12px;
+    width: 430px;
+    height: 30px;
+    margin-left: 0;
+    box-sizing: border-box;
+    color: #454444;
+}
+
+.comment-text button {
+    display: inline-block;
+    background-color: #18AE90;
+    color: white;
+    padding: 5px 30px;
+    border: none;
+    border-radius: 16px;
+    font-weight: normal;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.like-button{
+    border:none;
+    background:none;
+    text-decoration-line:none;
+}
+
+.comment span {
+    font-size: 14px;
+    font-weight:600;
+    color: #555;
+    margin: 10px 0;
+    
+}
+
+.comment {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+}

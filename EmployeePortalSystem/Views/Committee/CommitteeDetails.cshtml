@@ -54,14 +54,29 @@
                                         <td>
                                             @if (!string.IsNullOrEmpty(item.Logo))
                                             {
-                                                <img src="/uploads/@item.Logo" alt="Logo" class="comm-logo" width="60" height="60"  />
+                                                <a href="javascript:void(0);"
+                                                   class="view-photo-link"
+                                                   onclick="openLogoModal('@item.Name', '/uploads/@item.Logo')">View Logo</a>
                                             }
                                             else
                                             {   
                                                 <span>No Logo</span>
                                             }
                                         </td>
-                                        <td>@item.Description</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 50)
+                                            {
+                                                var shortText = item.Description.Substring(0, 50);
+                                                <span class="desc-short">@shortText... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                                <span class="desc-full" style="display:none;">
+                                                    @item.Description <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                @item.Description
+                                            }
+                                        </td>
                                         <td>
                                             <span style="display: flex; gap: 20px;">
                                                 <a href="@Url.Action("EditCommittee", "Committee", new { id = item.CommitteeId })">
@@ -98,6 +113,43 @@
 
     </div>
 </div>
+<div id="logoModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-close" onclick="closeLogoModal()">&times;</span>
+        <h4 id="logoModalName"></h4>
+        <img id="logoModalImg" src="" alt="Committee Logo" class="circle-image" />
+        <div style="margin-top: 10px;">
+            <button class="modal-close-btn" onclick="closeLogoModal()">Close</button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function openLogoModal(name, logoUrl) {
+            document.getElementById('logoModalName').innerText = name;
+            document.getElementById('logoModalImg').src = logoUrl;
+            document.getElementById('logoModal').style.display = 'flex';
+        }
+
+        function closeLogoModal() {
+            document.getElementById('logoModal').style.display = 'none';
+        }
+    </script>
+    <script>
+        function toggleDescription(link) {
+            const shortSpan = link.closest("td").querySelector(".desc-short");
+            const fullSpan = link.closest("td").querySelector(".desc-full");
+
+            if (shortSpan.style.display === "none") {
+                shortSpan.style.display = "inline";
+                fullSpan.style.display = "none";
+            } else {
+                shortSpan.style.display = "none";
+                fullSpan.style.display = "inline";
+            }
+        }
+    </script>
+
 }

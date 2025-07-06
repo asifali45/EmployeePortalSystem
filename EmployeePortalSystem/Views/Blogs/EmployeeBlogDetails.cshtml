@@ -8,7 +8,7 @@
 
 
 <div class="container">
-    <div class="emp_head">
+    <div class="emp_head1">
         <h2>Blogs</h2>
     </div>
 
@@ -41,9 +41,42 @@
 
                         <!-- Like & Comment -->
                         <div class="blog-actions">
-                            <button class="like-btn">❤ Like</button>
-                            <button class="comment-btn">💬 Comment</button>
+                            <form method="post" asp-controller="Blogs" asp-action="ToggleLike">
+                                <input type="hidden" name="blogId" value="@blog.BlogId" />
+                                <button class="like-button" type="submit" >
+                                    ❤  <span class="like-btn">@blog.LikeCount</span>
+                                </button>
+
+                            </form>
+                            <!-- Comment icon triggers toggle -->
+                            <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
+                                💬 Comments @blog.Comments.Count
+                            </button>
                         </div>
+
+                        <!-- Comment Section Initially Hidden -->
+                        <div id="comment-section-@blog.BlogId" class="comment-section" style="display: none; margin-top: 10px;">
+
+                            <!-- Existing Comments -->
+                            <div class="existing-comments">
+                                @foreach (var comment in blog.Comments)
+                                {
+                                    <div class="comment">
+                                        <span>@comment.EmployeeName</span>: @comment.CommentText
+                                        @* <div class="comment-date">@comment.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div> *@
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Add New Comment -->
+                            <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post">
+                                <input type="hidden" name="blogId" value="@blog.BlogId" />
+                                <input  name="commentText" placeholder="Write your comment..." required>
+                                <button  type="submit">Post</button>
+                            </form>
+                       
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -54,5 +87,18 @@
         <p>No blogs available.</p>
     }
 </div>
+
+@section Scripts {
+    <script>
+        function toggleCommentSection(blogId) {
+            const section = document.getElementById(`comment-section-${blogId}`);
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+    </script>
+}
 
 

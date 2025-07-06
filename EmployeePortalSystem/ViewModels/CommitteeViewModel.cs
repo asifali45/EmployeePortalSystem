@@ -21,5 +21,7 @@ namespace EmployeePortalSystem.ViewModels
 
         [StringLength(250, ErrorMessage = "Description can't exceed 250 characters.")]
         public string? Description { get; set; }
+
+        public int MemberCount { get; set; }
     }
 }

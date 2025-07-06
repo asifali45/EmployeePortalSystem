@@ -10,10 +10,12 @@ builder.Services.AddScoped<UserAccessRepository>();
 builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<AwardRepository>();
 builder.Services.AddScoped<CommitteeRepository>();
-builder.Services.AddScoped<BlogsRepository>();
-
+builder.Services.AddScoped<AnnouncementRepository>();
+builder.Services.AddScoped<DepartmentRepository>();
 builder.Services.AddScoped<AwardContext>();
 builder.Services.AddScoped<SupportTicketRepository>();
+builder.Services.AddScoped<BlogsRepository>();
+builder.Services.AddScoped<PollRepository>();
 
 
 
@@ -25,9 +27,6 @@ builder.Services.AddScoped<AppDbContext>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 
 
 
