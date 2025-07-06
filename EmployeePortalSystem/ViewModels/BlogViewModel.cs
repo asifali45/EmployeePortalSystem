@@ -20,5 +20,19 @@
         public int LikeCount { get; set; }
        
 
+    
+       // For comments
+        public List<BlogCommentViewModel> Comments { get; set; } = new List<BlogCommentViewModel>();
+        public string NewCommentText { get; set; }
+    }
+
+    public class BlogCommentViewModel
+    {
+        public int CommentId { get; set; }
+        public int BlogId { get; set; }
+        public int EmployeeId { get; set; }
+        public string CommentText { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string EmployeeName { get; set; } // To display commenter's name
     }
 }

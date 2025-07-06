@@ -1531,6 +1531,7 @@ table .edit-icon img {
     gap: 5px;
 }
 
+
 /*  For show more   */
 /*
     announcement employee side styles
@@ -1609,3 +1610,64 @@ table .edit-icon img {
     font-size: 14px;
     color: #555;
 }
+
+/*  comment   */
+
+.blog-actions{
+    display:flex;
+    
+}
+
+.comment-btn{
+    color:darkslategray;
+    text-decoration:none;
+}
+
+.comment-text input{
+    flex: 1;
+    padding: 7px;
+    border-radius: 4px;
+    border: 1px solid #cbcbcb;
+    font-size: 12px;
+    width: 430px;
+    height: 30px;
+    margin-left: 0;
+    box-sizing: border-box;
+    color: #454444;
+}
+
+.comment-text button {
+    display: inline-block;
+    background-color: #18AE90;
+    color: white;
+    padding: 5px 30px;
+    border: none;
+    border-radius: 16px;
+    font-weight: normal;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.like-button{
+    border:none;
+    background:none;
+    text-decoration-line:none;
+}
+
+.comment span {
+    font-size: 14px;
+    font-weight:600;
+    color: #555;
+    margin: 10px 0;
+    
+}
+
+.comment {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+}
+
