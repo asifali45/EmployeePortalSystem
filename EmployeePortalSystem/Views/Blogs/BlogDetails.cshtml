@@ -37,15 +37,35 @@
                         <!-- Author & Tags -->
                         <div class="blog-meta">
                             <span class="blog-author">By @blog.AuthorName</span>
-                            <span class="blog-tags">#@blog.Tags</span>
-                        <p>Blog ID: @blog.BlogId</p>    
+                            <span class="blog-tags">#@blog.Tags</span>  
                         </div>
 
                         <!-- Like & Comment -->
                         <div class="blog-actions">
                             <span class="like-btn">❤ @blog.LikeCount</span>
-                            <button class="comment-btn">💬 Comment</button>
 
+
+                            <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
+                                💬 Comments @blog.Comments.Count
+                            </button>
+                        </div>
+
+                        <!-- Comment Section Initially Hidden -->
+                        <div id="comment-section-@blog.BlogId" class="comment-section" style="display: none; margin-top: 10px;">
+
+                            <!-- Existing Comments -->
+                            <div class="existing-comments">
+                                @foreach (var comment in blog.Comments)
+                                {
+                                    <div class="comment">
+                                        <span>@comment.EmployeeName</span>: @comment.CommentText
+                                        @* <div class="comment-date">@comment.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div> *@
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div>
                             <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId })">
                                 <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
                             </a>
@@ -64,5 +84,16 @@
         <p>No blogs available.</p>
     }
 </div>
-  
-  
+
+@section Scripts {
+    <script>
+        function toggleCommentSection(blogId) {
+            const section = document.getElementById(`comment-section-${blogId}`);
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+    </script>
+}
