@@ -15,6 +15,9 @@ namespace EmployeePortalSystem.ViewModels
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Type is required")]
+        public string Type { get; set; } = string.Empty;
+
         [Required]
         public string Status { get; set; } = "Open";
 

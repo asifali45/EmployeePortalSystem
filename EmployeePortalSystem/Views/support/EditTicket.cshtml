@@ -24,7 +24,7 @@
         <div class="container_emp mb-20">
             <div class="empmaster_card">
                 <form asp-action="EditTicket" asp-controller="SupportTicket" method="post" class="emp_form">
-                    
+                    @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="TicketId" />
 
                     <div class="form_row">
@@ -37,7 +37,7 @@
                         <div class="form_group">
                             <label>Description</label>
                             <div class="val">
-                                <input asp-for="Description" class="form-control" rows="3" readonly></input>
+                                <input asp-for="Description" class="form-control" rows="3" readonly>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,8 @@
                         <div class="form_group">
                             <label>Response<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Response"  class="form-control" rows="3"></input>
+                                <textarea asp-for="Response" class="form-control" rows="3"></textarea>
+
                             </div>
                         </div>
                     </div>
@@ -129,24 +130,23 @@
             });
         }
 
-        $('#statusDropdown').on('change', function () {
+                $('#statusDropdown').on('change', function () {
             const status = $(this).val();
+
             if (status === 'Assigned') {
                 $('#assignRow').show();
                 $('#escalateRow').hide();
-                $('#submitBtn').prop('disabled', false);
             } else if (status === 'Escalated') {
-                $('#escalateRow').show();
                 $('#assignRow').hide();
-                $('#submitBtn').prop('disabled', false);
-            } else if (status === 'Resolved') {
-                $('#assignRow, #escalateRow').hide();
-                $('#submitBtn').prop('disabled', false);
+                $('#escalateRow').show();
             } else {
                 $('#assignRow, #escalateRow').hide();
-                $('#submitBtn').prop('disabled', true);
             }
+
+            // ✅ Always enable submit button
+            $('#submitBtn').prop('disabled', false);
         });
+
 
         $('#departmentDropdown').on('change', function () {
             filterEmployees($(this).val());

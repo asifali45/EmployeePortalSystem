@@ -81,7 +81,7 @@ namespace EmployeePortalSystem.Controllers
             await _repository.CreateAsync(ticket);
 
             TempData["Message"] = "Support ticket submitted successfully!";
-            return RedirectToAction("Index");
+            return RedirectToAction("EmployeeTicket");
         }
 
 

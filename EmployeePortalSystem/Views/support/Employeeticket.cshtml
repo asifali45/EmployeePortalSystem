@@ -4,12 +4,13 @@
 @{
     ViewData["Title"] = " My Support Tickets";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var currentDashboard = Context.Session.GetString("CurrentDashboard") ?? "Employee";
 }
 <div class="container">
     <div class="page-contents">
         <div class="emp_btn">
             <div class="left_btn">
-                <form method="get" asp-action="DashboardAdmin" asp-controller="UserAccess">
+                <form method="get" asp-action="@(currentDashboard == "Admin" ? "DashboardAdmin" : "DashboardEmployee")" asp-controller="UserAccess">
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Raise Ticket";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var currentDashboard = Context.Session.GetString("CurrentDashboard") ?? "Employee";
 }
 
 <div class="container">
@@ -10,7 +11,7 @@
         <div class="container_emp">
             <div class="emp_btn">
                 <div class="left_btn">
-                    <form method="get" asp-action="BackToTickets" asp-controller="SupportTicket">
+                    <form method="get" asp-action="@(currentDashboard == "Admin" ? "DashboardAdmin" : "DashboardEmployee")" asp-controller="UserAccess">
                         <button type="submit" class="create_emp_btn">Back</button>
                     </form>
 
@@ -31,19 +32,27 @@
                         <div class="form_group">
                             <label>Issue Title <span class="imp_field">*</span></label>
                             <div class="val">
-                            <input asp-for="IssueTitle" class="form-control" placeholder="Enter Issue Title" />
-                            <span asp-validation-for="IssueTitle" class="text-danger"></span>
+                                <input asp-for="IssueTitle" class="form-control" placeholder="Enter Issue Title" />
+                                <span asp-validation-for="IssueTitle" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="form_group">
+                            <label>Type<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Type" class="form-control" placeholder="Enter Type" />
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="form_row">
                         <div class="form_group">
-                            
+
                             <label>Description <span class="imp_field">*</span> </label>
                             <div class="val">
-                            <input asp-for="Description" class="form-control" placeholder="Enter Description"></input>
-                            <span asp-validation-for="Description" class="text-danger"></span>
+                                <input asp-for="Description" class="form-control" placeholder="Enter Description"></input>
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
