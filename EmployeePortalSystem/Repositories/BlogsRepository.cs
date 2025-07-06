@@ -32,7 +32,7 @@ namespace EmployeePortalSystem.Repositories
         //    return connection.Query<BlogViewModel>(sql).ToList();
         //}
 
-        public List<BlogViewModel> GetBlogDetails()
+        public List<BlogViewModel> GetBlogDetails(int employeeId)
         {
             using var connection = _context.CreateConnection();
 
@@ -54,7 +54,15 @@ namespace EmployeePortalSystem.Repositories
         FROM Blog b
         LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId";
 
-            return connection.Query<BlogViewModel>(sql).ToList();
+            var blogs= connection.Query<BlogViewModel>(sql).ToList();
+
+            // Load comments
+            foreach (var blog in blogs)
+            {
+                blog.Comments = GetCommentsByBlogId(blog.BlogId);
+            }
+
+            return blogs;
         }
 
         public BlogViewModel GetBlogById(int id)
@@ -104,6 +112,33 @@ namespace EmployeePortalSystem.Repositories
 
             }
         }
+        public List<BlogCommentViewModel> GetCommentsByBlogId(int blogId)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = @"
+        SELECT c.CommentId, c.BlogId, c.EmployeeId, c.CommentText, c.CreatedAt, e.Name AS EmployeeName
+        FROM blog_comment c
+        LEFT JOIN Employee e ON c.EmployeeId = e.EmployeeId
+        WHERE c.BlogId = @BlogId
+        ORDER BY c.CreatedAt DESC";
+
+            return connection.Query<BlogCommentViewModel>(sql, new { BlogId = blogId }).ToList();
+        }
+
+        public void AddComment(int blogId, int employeeId, string commentText)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = @"INSERT INTO blog_comment (BlogId, EmployeeId, CommentText) 
+                   VALUES (@BlogId, @EmployeeId, @CommentText)";
+
+            connection.Execute(sql, new { BlogId = blogId, EmployeeId = employeeId, CommentText = commentText });
+        }
+
+
+
+
 
     }
 }
