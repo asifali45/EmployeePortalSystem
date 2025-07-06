@@ -32,6 +32,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
+                                <th>Message</th>
                                 <th>Visible To</th>
                                 <th>Post Date</th>
                                 <th>Is Event</th>
@@ -47,6 +48,7 @@
                             {
                                 <tr>
                                     <td>@a.Title</td>
+                                    <td>@a.Message</td>
                                     <td>@a.VisibleTo</td>
                                     <td>@(a.PostDate.HasValue ? a.PostDate.Value.ToString("yyyy-MM-dd") : "NULL")</td>
                                     <td>@(a.IsEvent == true ? "Yes" : "No")</td>

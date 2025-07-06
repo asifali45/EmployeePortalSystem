@@ -59,6 +59,7 @@ namespace EmployeePortalSystem.Controllers
             return View(announcement);
         }
 
+
         [HttpPost]
         public IActionResult Edit(Announcement model)
         {
@@ -68,10 +69,19 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
             }
 
+            // Get existing record
+            var existing = _repo.GetById(model.AnnouncementId);
+            if (existing == null) return NotFound();
+
+            model.PostDate = existing.PostDate; // Preserve original PostDate
             model.UpdatedBy = 1;
+            model.UpdatedAt = DateTime.Now;
+
             _repo.Update(model);
+
             return RedirectToAction("Index");
         }
+
 
         public IActionResult Delete(int id)
         {
@@ -97,5 +107,13 @@ namespace EmployeePortalSystem.Controllers
                 new { Value = "Committee", Text = "Committee" }
             }, "Value", "Text");
         }
+
+        public IActionResult EmployeeAnnouncement()
+        {
+            var announcements = _repo.GetAll(); // Or filter based on employee, department, etc.
+            return View("EmployeeAnnouncement", announcements);
+        }
+
+
     }
 }
