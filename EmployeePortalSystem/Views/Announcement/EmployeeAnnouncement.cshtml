@@ -1,0 +1,61 @@
+﻿@model List<EmployeePortalSystem.Models.Announcement>
+@{
+    ViewData["Title"] = "Announcements";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="emp_head">
+        <h2 class="text-center text-primary">Announcements</h2>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var ann in Model)
+        {
+            <div class="announcement-card mb-3">
+                <div class="announcement-card-content">
+                    <div class="announcement-card-text-center">
+
+                        <h4 class="announcement-title text-info">@ann.Title</h4>
+
+                        <div class="announcement-description mb-2">
+                            <p>@ann.Message</p>
+                        </div>
+
+                        @* @if (ann.IsEvent == true) *@
+                        @* { *@
+                        @*     <div class="event-details bg-light p-2 rounded mb-2"> *@
+                        @*         <span class="event-label">Event Date:</span> @ann.EventDate?.ToString("dd MMM yyyy") <br /> *@
+                        @*         <span class="event-label">Event Time:</span> @ann.EventTime?.ToString(@"hh\:mm") <br /> *@
+                        @*         <span class="event-label">Venue:</span> @ann.Location *@
+                        @*     </div> *@
+                        @* } *@
+                        @if (ann.IsEvent == true)
+                        {
+                            <div class="announcement-event-details-row">
+                                <div class="event-item">
+                                    <span class="event-label"> Date:</span> @ann.EventDate?.ToString("dd MMM yyyy")
+                                </div>
+                                <div class="event-item">
+                                    <span class="event-label"> Time:</span> @ann.EventTime?.ToString(@"hh\:mm")
+                                </div>
+                                <div class="event-item">
+                                    <span class="event-label">Venue:</span> @ann.Location
+                                </div>
+                            </div>
+                        }
+
+                        <div class="announcement-meta text-muted">
+                            <span>@ann.PostDate?.ToString("dd MMM yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No announcements available.</p>
+    }
+</div>
