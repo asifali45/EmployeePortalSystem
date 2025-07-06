@@ -125,5 +125,13 @@ namespace EmployeePortalSystem.Repositories
             using var db = _context.CreateConnection();
             return db.Query<Employee>("SELECT EmployeeId, Name FROM employee");
         }
+
+        public bool HasEmployees(int departmentId)
+        {
+            using var db = _context.CreateConnection();
+            string sql = "SELECT COUNT(*) FROM employee WHERE DepartmentId = @id";
+            return db.ExecuteScalar<int>(sql, new { id = departmentId }) > 0;
+        }
+
     }
 }

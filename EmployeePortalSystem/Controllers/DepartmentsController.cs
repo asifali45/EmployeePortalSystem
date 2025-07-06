@@ -101,6 +101,7 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _repo.Delete(id);
+            TempData["Message"] = "Department and assigned employees deleted successfully.";
             return RedirectToAction("Index");
         }
 
