@@ -31,6 +31,28 @@ namespace EmployeePortalSystem.Controllers
             return View(polls); // Views/Polls/PollDetails.cshtml
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View(); // Return Create.cshtml
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Poll model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            model.CreatedAt = DateTime.Now;
+            model.CreatedBy = 1; // Replace with session value if available
+
+            _repo.Add(model);
+
+            TempData["Message"] = "Poll created successfully!";
+            return RedirectToAction("PollDetails");
+        }
+
         public IActionResult Delete(int id)
         {
             _repo.Delete(id);
