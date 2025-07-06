@@ -61,8 +61,6 @@
 
                 <ul class="menubar_emp">
 
-                    @* <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li> *@
-
                     @if (currentDashboard == "Admin")
                     {
                         <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li>
@@ -72,6 +70,7 @@
                         <li class="menu_item"><a href="@Url.Action("DashboardEmployee", "UserAccess")">Dashboard</a></li>
                     }
 
+
                     @if (currentDashboard == "Admin")
                     {
                         <li class="menu_item"><a href="@Url.Action("Index", "Departments")">Departments</a></li>
@@ -80,6 +79,7 @@
                     {
                         <li class="menu_item"><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
                     }
+           
                     <li class="menu_item"><a href="@Url.Action("Index","Announcement")">Announcements</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
                     <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
@@ -116,34 +116,17 @@
                 @if (currentDashboard == "Admin")
                 {
                     <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employees</a></li>
-                }
-                else
-                {
-                    <li><a href="@Url.Action("EmployeeDetailsForEmployee", "Employee")">Employees</a></li>
-                }
-
-                @if (currentDashboard == "Admin")
-                {
                     <li><a href="@Url.Action("BlogDetails", "Blogs")">Blogs</a></li>
-                }
-                else
-                {
-                    <li><a href="@Url.Action("EmployeeBlogDetails", "Blogs")">Blogs</a></li>
-                }
-
-                @* <li><a href="#">Polls</a></li> *@
-                @if (currentDashboard == "Admin")
-                {
                     <li><a href="@Url.Action("PollDetails", "Polls")">Polls</a></li>
                 }
                 else
                 {
+                    <li><a href="@Url.Action("EmployeeDetailsForEmployee", "Employee")">Employees</a></li>
+                    <li><a href="@Url.Action("EmployeeBlogDetails", "Blogs")">Blogs</a></li>
                     <li><a href="@Url.Action("EmployeePollDetails", "Polls")">Polls</a></li>
                 }
 
-
-
-
+              
                 <li><a href="#">Announcements</a></li>
 
                 @if (currentDashboard == "Admin")
@@ -164,7 +147,7 @@
                     <li><a href="@Url.Action("EmployeeCommitteeDetails", "Committee")">Committees</a></li>
                 }
                 <li><a href="#">About</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="@Url.Action("Login", "UserAccess")">Logout</a></li>
 
             </ul>
         </div>
