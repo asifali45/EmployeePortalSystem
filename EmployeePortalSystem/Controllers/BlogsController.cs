@@ -12,17 +12,17 @@ namespace EmployeePortalSystem.Controllers
         {
             _repository = repository;
         }
-        public IActionResult BlogDetails()
+        public IActionResult BlogDetails(int employeeId)
         {
            
-            var blogList = _repository.GetBlogDetails();
+            var blogList = _repository.GetBlogDetails(employeeId);
             return View("BlogDetails",blogList);
         }
 
         //Employee side
-        public IActionResult EmployeeBlogDetails()
+        public IActionResult EmployeeBlogDetails(int employeeId)
         {
-            var blogs = _repository.GetBlogDetails();
+            var blogs = _repository.GetBlogDetails(employeeId);
             return View("EmployeeBlogDetails", blogs);
         }
 
@@ -53,5 +53,21 @@ namespace EmployeePortalSystem.Controllers
 
             return RedirectToAction("EmployeeBlogDetails");
         }
+
+        //comment
+
+        [HttpPost]
+        public IActionResult PostComment(int blogId, string commentText)
+        {
+            int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+
+            if (!string.IsNullOrWhiteSpace(commentText))
+            {
+                _repository.AddComment(blogId, employeeId, commentText);
+            }
+
+            return RedirectToAction("EmployeeBlogDetails");
+        }
+
     }
 }
