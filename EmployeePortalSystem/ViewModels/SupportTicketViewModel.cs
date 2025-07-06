@@ -36,10 +36,18 @@ namespace EmployeePortalSystem.ViewModels
 
         // Dropdown Options
         public int DepartmentId { get; set; }
-        public List<SelectListItem> DepartmentList { get; set; } = new();
+        public List<SelectListItem>? DepartmentList { get; set; }
+
+        public List<SupportEmployeeListItem> AllEmployees { get; set; } = new();
+
         public List<SelectListItem> FilteredEmployees { get; set; } = new();
 
         //  only if used in RaiseTicket
         public List<string> EmployeeNameList { get; set; } = new();
+    }
+    public class SupportEmployeeListItem
+    {
+        public string Name { get; set; }
+        public int DepartmentId { get; set; }
     }
 }

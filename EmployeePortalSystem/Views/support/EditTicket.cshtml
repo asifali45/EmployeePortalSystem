@@ -7,221 +7,155 @@
 
 <div class="container">
     <div class="page-contents">
-        <div class="emp_btn">
-            <div class="left_btn">
-                <form method="get" asp-action="Index">
-                    <button type="submit" class="create_emp_btn">Back</button>
-                </form>
+        <div class="container_emp">
+            <div class="emp_btn">
+                <div class="left_btn">
+                    <form method="get" asp-action="Index" asp-controller="SupportTicket">
+                        <button type="submit" class="create_emp_btn">Back</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="emp_head">
+                <h2>Edit Support Ticket</h2>
             </div>
         </div>
 
-        <div class="emp_head">
-            <h2>Edit Support Ticket</h2>
-        </div>
-
-        
-        
-
-        
-          <div class="empmaster_card">
-            <form method="post" asp-action="EditTicket">
-                @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="TicketId" />
-
-                <div class="form_row">
-                    <div class="form_group">
-                        <label>Issue Title</label>
-                        <input asp-for="IssueTitle" class="form-control" readonly />
-                        <span style="min-height: 18px; display: block;"></span> 
-
-                    </div>
-                    <div class="form_group">
-                        <label>Description</label>
-                        <input asp-for="Description" class="form-control" readonly />
-                        <span style="min-height: 18px; display: block;"></span>
-
-                    </div>
-                </div>
-
-                
-                   
-                <div class="form_row">
-
-               
-                    <div class="form_group">
-                        <label>Status<span class="imp_field">*</span></label>
-                        <div class="val">
-                        <select asp-for="Status" class="form-control" id="Status">
-
-                                <option value="Open">Open</option>
-                                <option value="In Progress">In Progress</option>
-                                
-                                <option value="Escalated">Escalated</option>
-                            <option value="Resolved">Resolved</option>
-                        </select>
-                            
-                        </div>
-                        <span asp-validation-for="Status" class="text-danger" style="min-height: 18px; display: block;"></span> 
-                    </div>
-               
-               
-                    <div class="form_group">
-                        <label>Department<span class="imp_field">*</span></label>
-                        <div class="val">
-                        <select id="departmentSelect" asp-for="DepartmentId" class="form-control">
-                                
-                            <option value="">-- Select Department --</option>
-                            @foreach (var dept in Model.DepartmentList)
-                            {
-                                <option value="@dept.Value" selected="@(Model.DepartmentId.ToString() == dept.Value)">
-                                    @dept.Text
-                                </option>
-                            }
-                        </select>
-
-                            <span asp-validation-for="DepartmentId" class="text-danger" style="min-height: 18px; display: block;"></span>
-
-                        </div>
-
-
-                    </div>
-                    </div>
-
-                <div class="form_row">
-                    <div class="form_group">
-                        <label>Assign To<span class="imp_field">*</span></label>
-                        <div class="val">
-                            <select asp-for="AssignedTo" class="form-control" id="assignToSelect">
-                                <option value="">-- Select Employee --</option>
-                                @foreach (var emp in Model.FilteredEmployees)
-                                {
-                                    <option value="@emp.Value">@emp.Text</option>
-                                }
-                                <span asp-validation-for="AssignedTo" class="text-danger" style="min-height: 18px; display: block;"></span>
-                            </select>
-                            
-                        </div>
-                        
-                    </div>
-
-
-                    <div class="form_group" id="escalatedToDiv">
-                        <label>Escalate To</label>
-                        <select asp-for="EscalationName" class="form-control" id="escalateToSelect">
-                            <option value="">-- Select Employee --</option>
-                            @foreach (var emp in Model.FilteredEmployees)
-                            {
-                                <option value="@emp.Value" selected="@(Model.EscalationName == emp.Value)">
-                                    @emp.Text
-                                </option>
-                            }
-                        </select>
-                    </div>
-
-                </div>
-
-               
-
-                <div class="form_row">
-                    <div class="form_group">
-                        <label>Response<span class="imp_field">*</span></label>
-                        <div class="val">
-                        <input asp-for="Response" class="form-control">
-                            <span asp-validation-for="Response" class="text-danger" style="min-height: 18px; display: block;"></span>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div class="form_row">
+        <div class="container_emp mb-20">
+            <div class="empmaster_card">
+                <form asp-action="EditTicket" asp-controller="SupportTicket" method="post" class="emp_form">
                     
+                    <input type="hidden" asp-for="TicketId" />
 
-                    <button type="submit" class="custom-button" id="submitBtn">Save</button>
-                    <button type="reset" class="btn-cancel">Cancel</button>
-                </div>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Issue Title</label>
+                            <div class="val">
+                                <input asp-for="IssueTitle" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <label>Description</label>
+                            <div class="val">
+                                <input asp-for="Description" class="form-control" rows="3" readonly></input>
+                            </div>
+                        </div>
+                    </div>
 
-            </form>
-         </div>
-      
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Department<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="DepartmentId"  class="form-control" id="departmentDropdown">
+                                    <option value="">Select Department</option>
+                                    @foreach (var dept in Model.DepartmentList)
+                                    {
+                                        <option value="@dept.Value">@dept.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <label>Status<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="Status"  class="form-control" id="statusDropdown">
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Escalated">Escalated</option>
+                                    <option value="Resolved">Resolved</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row" id="assignRow" style="display:none;">
+                        <div class="form_group">
+                            <label>Assigned To <span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="AssignedTo" class="form-control" id="assignDropdown">
+                                    <option value="">Select Employee</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row" id="escalateRow" style="display:none;">
+                        <div class="form_group">
+                            <label>Escalated To <span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="EscalationName"  class="form-control" id="escalateDropdown">
+                                    <option value="">Select Senior</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Response<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Response"  class="form-control" rows="3"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <button type="submit" class="custom-button" id="submitBtn">Save</button>
+                        <button type="reset" class="btn btn-warning">Cancel</button>
+                    </div>
+
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-success mt-3">@TempData["Message"]</div>
+                    }
+                </form>
+
+            </div>
+        </div>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+    <script>
+        const allEmployees = @Html.Raw(Json.Serialize(Model.AllEmployees)); // [{name: "John", departmentId: 2}, ...]
 
-
-<script>
-    document.getElementById("departmentSelect").addEventListener("change", function () {
-        var deptId = this.value;
-        if (deptId) {
-            fetch(`/SupportTicket/GetEmployeesByDepartmentId/${deptId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const assignSelect = document.getElementById("assignToSelect");
-                    const escalateSelect = document.getElementById("escalateToSelect");
-
-                    // Clear both
-                    assignSelect.innerHTML = '<option value="">-- Select Employee --</option>';
-                    escalateSelect.innerHTML = '<option value="">-- Select Employee --</option>';
-
-                    if (data.length === 0) {
-                        // No employees available
-                        const emptyOption = new Option("No employees found", "");
-                        assignSelect.add(emptyOption.cloneNode(true));
-                        escalateSelect.add(emptyOption);
-                    } else {
-                        //  Add real employees
-                        data.forEach(emp => {
-                            const option1 = new Option(emp.name, emp.employeeId);
-                            const option2 = new Option(emp.name, emp.employeeId);
-                            assignSelect.add(option1);
-                            escalateSelect.add(option2);
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching employees:", error);
-                    alert("Something went wrong while fetching employees.");
-                });
+        function filterEmployees(deptId) {
+            const filtered = allEmployees.filter(e => e.departmentId == deptId);
+            $('#assignDropdown, #escalateDropdown').empty().append('<option value="">Select</option>');
+            filtered.forEach(e => {
+                $('#assignDropdown').append(`<option value="${e.name}">${e.name}</option>`);
+                $('#escalateDropdown').append(`<option value="${e.name}">${e.name}</option>`);
+            });
         }
-    });
-</script>
-<!-- ✅ NEW Script: Show/Hide Assign & Escalate To -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const statusField = document.querySelector("#Status");
-        const submitBtn = document.querySelector("#submitBtn");
 
-        const assignRow = document.getElementById("assignToSelect").closest(".form_group");
-        const escalateRow = document.getElementById("escalatedToDiv");
-
-        function handleStatusUI() {
-            const status = statusField.value;
-
-            submitBtn.disabled = (status === "Open");
-
-            if (status === "Open" || status === "In Progress") {
-                assignRow.style.display = "block";
-                escalateRow.style.display = "none";
-            } else if (status === "Escalated") {
-                assignRow.style.display = "block";
-                escalateRow.style.display = "block";
-            } else if (status === "Resolved") {
-                assignRow.style.display = "block";
-                escalateRow.style.display = "block";
+        $('#statusDropdown').on('change', function () {
+            const status = $(this).val();
+            if (status === 'Assigned') {
+                $('#assignRow').show();
+                $('#escalateRow').hide();
+                $('#submitBtn').prop('disabled', false);
+            } else if (status === 'Escalated') {
+                $('#escalateRow').show();
+                $('#assignRow').hide();
+                $('#submitBtn').prop('disabled', false);
+            } else if (status === 'Resolved') {
+                $('#assignRow, #escalateRow').hide();
+                $('#submitBtn').prop('disabled', false);
+            } else {
+                $('#assignRow, #escalateRow').hide();
+                $('#submitBtn').prop('disabled', true);
             }
-        }
+        });
 
-        statusField.addEventListener("change", handleStatusUI);
-        handleStatusUI();
-    });
-</script>
+        $('#departmentDropdown').on('change', function () {
+            filterEmployees($(this).val());
+        });
 
-
-
-
-
-
-
-
+        // On page load: disable submit if status is Open
+        $(document).ready(function () {
+            $('#statusDropdown').trigger('change');
+             
+        });
+    </script>
+}

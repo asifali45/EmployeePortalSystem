@@ -57,26 +57,7 @@ namespace EmployeePortalSystem.Repositories
             return await connection.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
         }
 
-        //  Update Ticket (Assign, Escalate, Respond)
-        public async Task<int> UpdateTicketAsync(SupportTicket ticket)
-        {
-            using var connection = _context.CreateConnection();
-            ticket.Status = ticket.Status?.Trim();
-
-            var query = @"UPDATE support_tickets SET 
-                            Status = @Status,
-                            Response = @Response,
-                            AssignedTo = @AssignedTo,
-                            EscalatedTo = @EscalatedTo,
-                            EscalationLevel = @EscalationLevel,
-                            UpdatedBy = @UpdatedBy,
-                            UpdatedAt = @UpdatedAt
-                        WHERE TicketId = @TicketId";
-
-            
-            return await connection.ExecuteAsync(query, ticket);
-        }
-
+       
         //  Get All Employee Names
         public async Task<IEnumerable<string>> GetAllEmployeeNamesAsync()
         {
@@ -209,9 +190,25 @@ namespace EmployeePortalSystem.Repositories
         {
             using var connection = _context.CreateConnection();
             {
-                var query = "SELECT * FROM Employee WHERE DepartmentId = @Id";
+                var query = "SELECT EmployeeId, Name, DepartmentId FROM Employee WHERE @Id = 0 OR DepartmentId = @Id";
                 return (await connection.QueryAsync<Employee>(query, new { Id = departmentId })).ToList();
               }
         }
+        public async Task<int> UpdateTicketAsync(SupportTicket ticket)
+        {
+            var query = @"UPDATE support_tickets SET 
+                    Status = @Status,
+                    Response = @Response,
+                    AssignedTo = @AssignedTo,
+                    EscalatedTo = @EscalatedTo,
+                    EscalationLevel = @EscalationLevel,
+                    UpdatedBy = @UpdatedBy,
+                    UpdatedAt = @UpdatedAt
+                  WHERE TicketId = @TicketId";
+
+            using var connection = _context.CreateConnection();
+            return await connection.ExecuteAsync(query, ticket);
+        }
+
     }
 }

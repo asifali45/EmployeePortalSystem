@@ -18,20 +18,22 @@ namespace EmployeePortalSystem.Controllers
         //  List All Tickets
         public async Task<IActionResult> Index()
         {
-            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-
-            if (isAdmin)
-            {
-                var allTickets = await _repository.GetAllAsync();
-                return View("~/Views/Support/SupportTicketList.cshtml", allTickets); // Admin full list
-            }
-            else
-            {
-                var empTickets = await _repository.GetTicketsByEmployeeIdAsync(employeeId);
-                return View("~/Views/Support/EmployeeTicket.cshtml", empTickets); // Employee-only tickets
-            }
+            var allTickets = await _repository.GetAllAsync();
+            return View("~/Views/Support/SupportTicketList.cshtml", allTickets);
         }
+        [HttpGet]
+        public async Task<IActionResult> EmployeeTicket()
+        {
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var empTickets = await _repository.GetTicketsByEmployeeIdAsync(employeeId);
+            return View("~/Views/Support/EmployeeTicket.cshtml", empTickets); 
+        }
+        public IActionResult BackToTickets()
+        {
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            return RedirectToAction("EmployeeTicket"); // employee history
+        }
+
 
         // Show Raise Form
         [HttpGet]
@@ -82,46 +84,7 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        // Show Edit Form
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var ticket = await _repository.GetByIdAsync(id);
-            if (ticket == null) return NotFound();
 
-            // Get employee to extract department
-            var employee = await _repository.GetEmployeeByIdAsync(ticket.EmployeeId);
-            var departmentId = employee?.DepartmentId ?? 0;
-
-            var viewModel = new SupportTicketViewModel
-            {
-                TicketId = ticket.TicketId,
-                IssueTitle = ticket.IssueTitle,
-                Description = ticket.Description,
-                Status = ticket.Status,
-                Response = ticket.Response ?? "",
-                AssignedTo = ticket.AssignedToName ?? "",
-                EscalationName = ticket.EscalatedToName ?? "",
-                EscalationLevel = ticket.EscalationLevel.ToString(),
-                EmployeeName = employee?.Name ?? "",
-                DepartmentId = departmentId,
-
-                DepartmentList = (await _repository.GetDepartmentsAsync())
-    .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name })
-    .ToList(),
-
-
-                FilteredEmployees = (await _repository.GetEmployeesByDepartmentAsync(departmentId))
-    .Select(e => new SelectListItem { Value = e.EmployeeId.ToString(), Text = e.Name })
-    .ToList()
-
-
-            };
-            viewModel.AssignedToName = await _repository.GetEmployeeNameById(ticket.AssignedTo);
-            viewModel.EscalatedToName = await _repository.GetEmployeeNameById(ticket.EscalatedTo);
-
-            return View("~/Views/Support/EditTicket.cshtml", viewModel);
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetEmployeesByDepartmentId(int id)
@@ -137,73 +100,92 @@ namespace EmployeePortalSystem.Controllers
             var list = employees.Select(e => new { name = e.Name }).ToList();
             return Json(list);
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var ticket = await _repository.GetByIdAsync(id);
+            if (ticket == null) return NotFound();
+
+            var model = new SupportTicketViewModel
+            {
+                TicketId = ticket.TicketId,
+                IssueTitle = ticket.IssueTitle,
+                Description = ticket.Description,
+                Status = ticket.Status,
+                Response = ticket.Response,
+                DepartmentList = (await _repository.GetDepartmentsAsync())
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d.DepartmentId.ToString(),
+                        Text = d.Name
+                    }).ToList(),
+                AllEmployees = (await _repository.GetEmployeesByDepartmentAsync(0))
+                    .Select(e => new SupportEmployeeListItem
+                    {
+                        Name = e.Name,
+                        DepartmentId = (int)(e.DepartmentId ?? 0)
+                    }).ToList()
+            };
+
+            return View("~/Views/Support/EditTicket.cshtml", model);
+        }
 
 
-
-        //  Save Edited Ticket
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTicket(SupportTicketViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.EmployeeNameList = (await _repository.GetAllEmployeeNamesAsync()).ToList();
+                // repopulate dropdowns
                 model.DepartmentList = (await _repository.GetDepartmentsAsync())
-     .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name })
-     .ToList();
+                    .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name }).ToList();
 
-                model.FilteredEmployees = (await _repository.GetEmployeesByDepartmentIdAsync(model.DepartmentId))
-    .Select(e => new SelectListItem { Value = e.EmployeeId.ToString(), Text = e.Name })
-    .ToList();
-                // depends on your logic
+                model.AllEmployees = (await _repository.GetEmployeesByDepartmentAsync(0))
+                    .Select(e => new SupportEmployeeListItem
+                    {
+                        Name = e.Name,
+                        DepartmentId = (int)(e.DepartmentId ?? 0)
 
-                return View("~/Views/support/EditTicket.cshtml", model);
+                    }).ToList();
+
+                return View("~/Views/Support/EditTicket.cshtml", model);
             }
 
             var ticket = await _repository.GetByIdAsync(model.TicketId);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
+            if (ticket == null) return NotFound();
 
             ticket.Status = model.Status;
             ticket.Response = model.Response;
+            ticket.AssignedTo = !string.IsNullOrEmpty(model.AssignedTo)
+                ? await _repository.GetEmployeeIdByNameAsync(model.AssignedTo)
+                : null;
 
-            // ✅ FIXED AssignedTo
-            ticket.AssignedTo = int.TryParse(model.AssignedTo, out int assigneeId) ? assigneeId : null;
+            ticket.EscalatedTo = !string.IsNullOrEmpty(model.EscalationName)
+                ? await _repository.GetEmployeeIdByNameAsync(model.EscalationName)
+                : null;
 
-
-            // ✅ FIXED EscalatedTo
-            ticket.EscalatedTo = !string.IsNullOrEmpty(model.EscalationName) && int.TryParse(model.EscalationName, out int escalateId)
-                ? escalateId
-                : ticket.EscalatedTo;
-
-            // ✅ FIXED EscalationLevel
             ticket.EscalationLevel = int.TryParse(model.EscalationLevel, out int level) ? level : 0;
-
             ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             ticket.UpdatedAt = DateTime.Now;
 
-
             await _repository.UpdateTicketAsync(ticket);
+
             TempData["Message"] = "Ticket updated successfully!";
             return RedirectToAction("Index");
         }
 
-        //  Update ticket directly (Optional)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateTicket(SupportTicket model)
-        {
-            model.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-            model.UpdatedAt = DateTime.Now;
 
-            await _repository.UpdateTicketAsync(model);
-            TempData["Message"] = "Ticket updated successfully!";
-            return RedirectToAction("Index");
-        }
 
-        
+
+
+
+
+
+
+
+
+
 
 
     }
