@@ -17,21 +17,27 @@
                 <div class="blog-card-content">
                     <div class="blog-card-text">
 
-                        <!-- Recipient Photo -->
-                        @if (!string.IsNullOrEmpty(award.RecipientPhoto))
-                        {
-                            <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo"  />
-                        }
-
+                        <div class="award-logo">
+                            <!-- Recipient Photo -->
+                            @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                            {
+                                <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo"  />
+                            }
+                            else
+                            {
+                                <img src="~/img/avatar_11852100.png" alt="Profile image" />
+                            }
+                        </div>
                         <!-- Award Type -->
                         <h3 class="blog-title">@award.Type</h3>
 
                         <!-- Award Details -->
                         <p class="blog-description">
+                            <strong>Description:</strong> @award.Description<br/>
                             <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
                             <strong>Recipient:</strong> @award.RecipientName<br />
                             <strong>Given By:</strong> @award.GivenBy<br />
-                            <strong>Description:</strong> @award.Description
+                           
                         </p>
 
                     </div>
