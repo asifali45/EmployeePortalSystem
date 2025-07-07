@@ -1720,3 +1720,11 @@ table .edit-icon img {
     padding: 8px 12px;
 }
 
+/*Award */
+
+.award-logo img {
+    width: 130px;
+    height: 170px;
+    border-radius: 5%;
+    object-fit: cover;
+}
