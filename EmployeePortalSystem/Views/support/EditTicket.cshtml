@@ -17,7 +17,7 @@
 
             </div>
             <div class="emp_head">
-                <h2>Edit Support Ticket</h2>
+                <h2>Edit Ticket</h2>
             </div>
         </div>
 
@@ -28,12 +28,30 @@
                     <input type="hidden" asp-for="TicketId" />
 
                     <div class="form_row">
+                    <div class="form_group">
+                        <label>Issue Title</label>
+                        <div class="val">
+                            <input asp-for="IssueTitle" class="form-control" readonly />
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form_row">
+                        
                         <div class="form_group">
-                            <label>Issue Title</label>
+                            <label>Type<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="IssueTitle" class="form-control" readonly />
+                                <input asp-for="Type" class="form-control" />
+                                @* <select asp-for="Type" class="form-control"> *@
+                                @*     <option value="">Select Type</option> *@
+                                @*     <option value="Technical">Technical</option> *@
+                                @*     <option value="Functional">Functional</option> *@
+                                @*     <option value="HR">HR</option> *@
+                                @* </select> *@
+
+                               
                             </div>
                         </div>
+
                         <div class="form_group">
                             <label>Description</label>
                             <div class="val">
