@@ -120,13 +120,15 @@ namespace EmployeePortalSystem.Controllers
                 Directory.CreateDirectory(uploads);
                 var fileName = Guid.NewGuid() + "_" + Path.GetFileName(Photo.FileName);
                 var filePath = Path.Combine(uploads, fileName);
+                
 
                 using (var fs = new FileStream(filePath, FileMode.Create))
                 {
                     Photo.CopyTo(fs);
                 }
 
-                employee.Photo = "/uploads/" + fileName;
+                //employee.Photo = "/uploads/" + fileName;
+                employee.Photo = fileName;
             }
             else if (employee.EmployeeId > 0)
             {

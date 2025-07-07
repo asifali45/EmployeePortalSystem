@@ -36,11 +36,11 @@
                             </div>
                         </div>
                         <div class="form_group">
-                            <label>Event Date<span class="imp_field">*</span></label>
+                            <label>Event Date</label>
                            <div class ="val">
                             <input asp-for="EventDate" type="date" class="form-control"
                                    value="@(Model.EventDate.HasValue ? Model.EventDate.Value.ToString("yyyy-MM-dd") : "")" />
-                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                            @* <span asp-validation-for="EventDate" class="text-danger"></span> *@
                             </div>
                         </div>
                     </div>
@@ -72,10 +72,10 @@
                             </div>
                         </div>
                         <div class="form_group">
-                            <label>Display Order<span class="imp_field">*</span></label>
+                            <label>Display Order</label>
                            <div class="val">
                             <input asp-for="DisplayOrder" class="form-control" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            @* <span asp-validation-for="DisplayOrder" class="text-danger"></span> *@
                             </div>
                         </div>
                     </div>
