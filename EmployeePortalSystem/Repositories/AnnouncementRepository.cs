@@ -81,5 +81,20 @@ namespace EmployeePortalSystem.Repositories
             using var db = _dbContext.CreateConnection();
             db.Execute("DELETE FROM announcement WHERE AnnouncementId = @id", new { id });
         }
+
+
+
+        public IEnumerable<Announcement> GetVisibleToEmployee(string visibleTo = "All")
+        {
+            using var db = _dbContext.CreateConnection();
+
+            string sql = @"
+        SELECT * FROM announcement
+        WHERE VisibleTo = @visibleTo OR VisibleTo = 'All'
+        ORDER BY DisplayOrder ASC";
+
+            return db.Query<Announcement>(sql, new { visibleTo });
+        }
+
     }
 }

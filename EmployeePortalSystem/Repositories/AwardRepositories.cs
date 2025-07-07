@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeePortalSystem.Context;
 using EmployeePortalSystem.Models;
+using MySql.Data.MySqlClient;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -18,7 +19,7 @@ namespace EmployeePortalSystem.Repositories
         }
         public async Task<int> GetEmployeeIdByNameAsync(string name)
         {
-            using (var connection = _context.CreateConnection())
+            using var connection = _context.CreateConnection();
             {
                 var query = "SELECT EmployeeId FROM Employee WHERE Name = @Name LIMIT 1";
                 var result = await connection.QueryFirstOrDefaultAsync<int?>(query, new { Name = name });
@@ -29,8 +30,10 @@ namespace EmployeePortalSystem.Repositories
         {
             var query = "SELECT Name FROM Employee WHERE EmployeeId = @EmployeeId LIMIT 1";
             using var connection = _context.CreateConnection();
-            var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { EmployeeId = employeeId });
-            return result ?? string.Empty;
+            {
+                var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { EmployeeId = employeeId });
+                return result ?? string.Empty;
+            }
         }
         public async Task<int> CreateAsync(Award award)
         {
@@ -38,7 +41,7 @@ namespace EmployeePortalSystem.Repositories
                   VALUES (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
                   SELECT LAST_INSERT_ID();";
 
-            using (var connection = _context.CreateConnection())
+            using var connection = _context.CreateConnection();
             {
                 var id = await connection.ExecuteScalarAsync<int>(query, award);
                 return id;
@@ -63,8 +66,10 @@ namespace EmployeePortalSystem.Repositories
         {
             var query = "SELECT Name FROM Employee WHERE Name LIKE @SearchTerm LIMIT 10";
             using var connection = _context.CreateConnection();
-            var result = await connection.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
-            return result.ToList();
+            {
+                var result = await connection.QueryAsync<string>(query, new { SearchTerm = "%" + term + "%" });
+                return result.ToList();
+            }
         }
 
 
@@ -78,7 +83,7 @@ namespace EmployeePortalSystem.Repositories
         public async Task<Award> GetAwardByIdAsync(int id)
         {
             var query = "SELECT * FROM Awards WHERE AwardId = @AwardId";
-            using (var connection = _context.CreateConnection())
+            using var connection = _context.CreateConnection();
             {
                 return await connection.QueryFirstOrDefaultAsync<Award>(query, new { AwardId = id });
             }
@@ -99,15 +104,17 @@ namespace EmployeePortalSystem.Repositories
                           WHERE AwardId = @AwardId";
 
             using var connection = _context.CreateConnection();
-            var rowsAffected = await connection.ExecuteAsync(query, award);
-            return rowsAffected > 0;
+            {
+                var rowsAffected = await connection.ExecuteAsync(query, award);
+                return rowsAffected > 0;
+            }
         }
 
         // Delete Award By ID
         public async Task<int> DeleteAwardAsync(int id)
         {
             var query = "DELETE FROM Awards WHERE AwardId = @AwardId";
-            using (var connection = _context.CreateConnection())
+            using var connection = _context.CreateConnection();
             {
                 return await connection.ExecuteAsync(query, new { AwardId = id });
             }

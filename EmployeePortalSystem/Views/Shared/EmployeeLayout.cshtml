@@ -83,9 +83,30 @@
 
                     }
            
-                    <li class="menu_item"><a href="@Url.Action("Index","Announcement")">Announcements</a></li>
-                    
-                    <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
+
+
+                  
+
+                    @if (currentDashboard == "Admin")
+                    {
+                        <li class="menu_item"><a href="@Url.Action("Index", "Announcement")">Announcement</a></li>
+                    }
+                    else
+                    {
+                        <li class="menu_item"><a href="@Url.Action("EmployeeAnnouncement", "Announcement")">Announcement</a></li>
+                    }
+
+                    <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
+
+                    @if (currentDashboard == "Admin")
+                    {
+                        <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
+                    }
+                    else
+                    {
+                        <li class="menu_item"><a href="@Url.Action("EmployeeTicket", "SupportTicket")">Help</a></li>
+                    }
+
 
                     
                 </ul>
