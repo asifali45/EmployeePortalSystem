@@ -23,6 +23,16 @@ namespace EmployeePortalSystem.Controllers
             model.AwardList = (await _repository.GetAllAsync()).ToList();
             return View("AwardList", model);
         }
+        public async Task<IActionResult> EmployeeAwardlist()
+        {
+            var model = new AwardViewModel
+            {
+                AwardList = (await _repository.GetAllAsync()).ToList()
+            };
+
+            return View("EmployeeAwardlist", model);
+        }
+
 
         // Show Add Form
         [HttpGet]

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EmployeePortalSystem.Context;
+using EmployeePortalSystem.Models;
 using EmployeePortalSystem.ViewModels;
 
 namespace EmployeePortalSystem.Repositories
@@ -59,12 +60,21 @@ namespace EmployeePortalSystem.Repositories
             // Load comments
             foreach (var blog in blogs)
             {
-                blog.Comments = GetCommentsByBlogId(blog.BlogId);
+                blog.Comments = GetCommentsByBlogId(blog.BlogId.Value);
             }
 
             return blogs;
         }
 
+        public void CreateBlog(BlogViewModel blog)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = @"INSERT INTO Blog(Title,Content,Image,Tags,AuthorId,CreatedAt,UpdatedAt)
+                    VALUES(@Title,@Content,@Image,@Tags,@AuthorId,@CreatedAt,@UpdatedAt);";
+            connection.Execute(sql, blog);
+
+        }
+       
         public BlogViewModel GetBlogById(int id)
         {
             using var connection = _context.CreateConnection();

@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Awards";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+@model EmployeePortalSystem.ViewModels.AwardViewModel
+
+<div class="container">
+    <div class="emp_head1">
+        <h2>Employee Awards</h2>
+    </div>
+
+    @if (Model.AwardList != null && Model.AwardList.Any())
+    {
+        foreach (var award in Model.AwardList)
+        {
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <div class="blog-card-text">
+
+                        <!-- Recipient Photo -->
+                        @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                        {
+                            <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo"  />
+                        }
+
+                        <!-- Award Type -->
+                        <h3 class="blog-title">@award.Type</h3>
+
+                        <!-- Award Details -->
+                        <p class="blog-description">
+                            <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                            <strong>Recipient:</strong> @award.RecipientName<br />
+                            <strong>Given By:</strong> @award.GivenBy<br />
+                            <strong>Description:</strong> @award.Description
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No awards to display.</p>
+    }
+</div>
