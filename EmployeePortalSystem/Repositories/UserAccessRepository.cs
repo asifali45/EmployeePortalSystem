@@ -46,6 +46,9 @@ namespace EmployeePortalSystem.Repositories
 
             return conn.QueryFirst<DashboardCardViewModel>(sql, new { EmpId = empid });
         }
+
+       
+
     }
 
 }

@@ -1,0 +1,152 @@
+﻿@model EmployeePortalSystem.ViewModels.MyProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+<div class="container">
+    <div class="emp_head">
+        <h2>My Profile</h2>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-photo">
+            @if (!string.IsNullOrEmpty(Model.Photo))
+            {
+                <img src="@Url.Content("~/uploads/" + Model.Photo)" alt="Profile Photo" />
+            }
+            else
+            {
+                <img src="~/img/default-user.png" alt="No Photo" />
+            }
+        </div>
+
+        <div class="profile-details">
+            <div class="p-name">
+            <h2>@Model.Name</h2>
+            <h3>@Model.Designation</h3>
+            </div>
+            <div class="p-details">
+                <div class="p-details1">
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                </div>
+                <div class="p-details2">
+                    <p><strong>Department:</strong> @Model.DepartmentName</p>
+                    @* <p><strong>Committee:</strong> </p> *@
+                    @if (Model.Committees != null && Model.Committees.Any())
+                    {
+                        <p><strong>Committee:</strong> @string.Join(", ", Model.Committees)</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-card2">
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('awards')">Awards</button>
+                <button class="tab-btn" onclick="showTab('blogs')">Blogs</button>
+                <button class="tab-btn" onclick="showTab('polls')">Polls</button>
+            </div>
+
+            <div class="tab-content" id="awards" style="display: block;">
+                @if (Model.Awards != null && Model.Awards.Any())
+                {
+                    foreach (var award in Model.Awards)
+                    {
+                        <div class="blog-card">
+                            <div class="blog-card-content">
+                                <div class="blog-card-text">
+                                    <div class="award-logo">
+                                        @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                                        {
+                                            <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/avatar_11852100.png" class="blog-float-image" alt="Profile image" />
+                                        }
+                                    </div>
+
+                                    <h3 class="blog-title">@award.Type</h3>
+
+                                    <p class="blog-description">
+                                        <strong>Description:</strong> @award.Description<br />
+                                        <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                                        <strong>Recipient:</strong> @award.RecipientName<br />
+                                        <strong>Given By:</strong> @award.GivenBy<br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No awards to display.</p>
+                }
+            </div>
+
+
+            <div class="tab-content" id="blogs" style="display: none;">
+                @if (Model.Blogs.Any())
+                {
+                    foreach (var blog in Model.Blogs)
+                    {
+                        <div class="card-item">
+                            <h4>@blog.Title</h4>
+                            <p>@blog.Content.Substring(0, Math.Min(150, blog.Content.Length))...</p>
+                            <p><strong>Created At:</strong> @blog.CreatedAt.ToShortDateString()</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No blogs found.</p>
+                }
+            </div>
+
+            <div class="tab-content" id="polls" style="display: none;">
+                @if (Model.Polls.Any())
+                {
+                    foreach (var poll in Model.Polls)
+                    {
+                        <div class="card-item">
+                            <h4>@poll.Question</h4>
+                            <ul>
+                                <li>@poll.Option1</li>
+                                <li>@poll.Option2</li>
+                                @if (!string.IsNullOrEmpty(poll.Option3))
+                                {
+                                    <li>@poll.Option3</li>
+                                }
+                                @if (!string.IsNullOrEmpty(poll.Option4))
+                                {
+                                    <li>@poll.Option4</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No polls found.</p>
+                }
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+<script>
+    function showTab(tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        const buttons = document.querySelectorAll('.tab-btn');
+
+        contents.forEach(tab => tab.style.display = 'none');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabId).style.display = 'block';
+        event.target.classList.add('active');
+    }
+</script>
