@@ -87,7 +87,7 @@
 @section Scripts {
     <script>
         function toggleCommentSection(blogId) {
-            const section = document.getElementById(comment-section-${blogId});
+            const section = document.getElementById(`comment-section-${blogId}`);
             if (section.style.display === 'none') {
                 section.style.display = 'block';
             } else {
