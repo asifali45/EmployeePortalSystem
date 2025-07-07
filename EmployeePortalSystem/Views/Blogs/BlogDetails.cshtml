@@ -1,7 +1,6 @@
-﻿
-@{
-	ViewData["Title"] = "Blog Details";
-	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+﻿@{
+    ViewData["Title"] = "Blog Details";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 
 @model List<EmployeePortalSystem.ViewModels.BlogViewModel>
@@ -25,7 +24,7 @@
                         {
                             <img src="~/uploads/@blog.Image" class="blog-float-image" alt="Blog Image">
                         }
-                       
+
                         <!-- Title -->
                         <h3 class="blog-title">@blog.Title</h3>
 
@@ -37,7 +36,7 @@
                         <!-- Author & Tags -->
                         <div class="blog-meta">
                             <span class="blog-author">By @blog.AuthorName</span>
-                            <span class="blog-tags">#@blog.Tags</span>  
+                            <span class="blog-tags">#@blog.Tags</span>
                         </div>
 
                         <!-- Like & Comment -->
@@ -70,9 +69,9 @@
                                 <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
                             </a>
                         </div>
-                        
-                        
-                       
+
+
+
 
                     </div>
                 </div>

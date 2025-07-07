@@ -89,6 +89,8 @@ namespace EmployeePortalSystem.Controllers
 
         }
 
+        
+
         [HttpGet]
         public IActionResult BlogDelete(int id)
         {
