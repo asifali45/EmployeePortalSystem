@@ -23,6 +23,16 @@ namespace EmployeePortalSystem.Controllers
             model.AwardList = (await _repository.GetAllAsync()).ToList();
             return View("AwardList", model);
         }
+        public async Task<IActionResult> EmployeeAwardlist()
+        {
+            var model = new AwardViewModel
+            {
+                AwardList = (await _repository.GetAllAsync()).ToList()
+            };
+
+            return View("EmployeeAwardlist", model);
+        }
+
 
         // Show Add Form
         [HttpGet]
@@ -43,7 +53,10 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
-            var recipientName = await _repository.GetEmployeeNameByIdAsync(award.RecipientId);
+            var recipientName = award.RecipientId.HasValue
+    ? await _repository.GetEmployeeNameByIdAsync(award.RecipientId.Value)
+    : string.Empty;
+
 
             var model = new AwardViewModel
             {
@@ -88,23 +101,21 @@ namespace EmployeePortalSystem.Controllers
             }
 
             int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
-            if (recipientId == 0)
-            {
-                ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                return View("AwardForm", model);
-            }
+            int? finalRecipientId = recipientId > 0 ? recipientId : (int?)null;
 
             var award = new Award
             {
                 Type = model.Type,
                 EventDate = model.EventDate.Value,
 
-                RecipientId = recipientId,
+                RecipientId = finalRecipientId,
+                RecipientName = model.RecipientName,
                 GivenBy = model.GivenBy,
                 Description = model.Description,
                 DisplayOrder = model.DisplayOrder,
                 CreatedBy = model.CreatedBy,
                 UpdatedBy = model.UpdatedBy,
+
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
@@ -122,12 +133,17 @@ namespace EmployeePortalSystem.Controllers
                 return View("AwardForm", model);
             }
 
-            int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
-            if (recipientId == 0)
+            int? recipientId = null;
+            if (!string.IsNullOrWhiteSpace(model.RecipientName))
             {
-                ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                return View("AwardForm", model);
+                recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
+                if (recipientId == 0)
+                {
+                    ModelState.AddModelError("RecipientName", "Invalid employee name.");
+                    return View("AwardForm", model);
+                }
             }
+
 
             var award = await _repository.GetByIdAsync(model.AwardId);
             if (award == null)

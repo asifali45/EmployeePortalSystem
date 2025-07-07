@@ -1,12 +1,12 @@
-﻿@{
+﻿@model List<EmployeePortalSystem.ViewModels.PollViewModel>
+
+@{
     ViewData["Title"] = "Polls";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 
     var resultsPollId = ViewBag.ResultsPollId as int?;
     var results = ViewBag.Results as Dictionary<string, int>;
 }
-
-@model List<EmployeePortalSystem.ViewModels.PollViewModel>
 
 <div class="container">
     <div class="emp_head">
@@ -27,20 +27,27 @@
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="pollId" value="@poll.PollId" />
 
-                            <!-- Options as radio -->
+                            <!-- Options -->
                             <div class="blog-description">
-                                @foreach (var option in new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 })
+                                @{
+                                    var optionTexts = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
+                                }
+
+                                @for (int i = 0; i < optionTexts.Length; i++)
                                 {
-                                    if (!string.IsNullOrEmpty(option))
+                                    var optionText = optionTexts[i];
+                                    var optionEnumValue = (i + 1).ToString(); // "1", "2", "3", "4"
+
+                                    if (!string.IsNullOrEmpty(optionText))
                                     {
                                         <div>
-                                            <input type="radio" name="selectedOption" value="@option" required />
-                                            @option
+                                            <input type="radio" name="selectedOption" value="@optionEnumValue" required />
+                                            @optionText
 
-                                            @if (resultsPollId == poll.PollId && results != null && results.ContainsKey(option))
+                                            @if (resultsPollId == poll.PollId && results != null && results.ContainsKey(optionEnumValue))
                                             {
                                                 <span style="color: green; margin-left: 10px;">
-                                                    — @results[option] vote(s)
+                                                    — @results[optionEnumValue] vote(s)
                                                 </span>
                                             }
                                         </div>
@@ -48,13 +55,13 @@
                                 }
                             </div>
 
-                            <!-- Author & Date -->
+                            <!-- Meta -->
                             <div class="blog-meta">
                                 <span class="blog-author">By @poll.CreatedByName</span>
                                 <span class="blog-tags">@poll.CreatedAt.ToString("dd MMM yyyy")</span>
                             </div>
 
-                            <!-- Submit Button -->
+                            <!-- Submit -->
                             <div class="blog-actions">
                                 <button type="submit" class="like-btn">🗳 Submit Vote</button>
                                 <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn">📊 View Results</a>

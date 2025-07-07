@@ -61,51 +61,26 @@
 
                 <ul class="menubar_emp">
 
+                    
+
                     @if (currentDashboard == "Admin")
                     {
                         <li class="menu_item"><a href="@Url.Action("DashboardAdmin", "UserAccess")">Dashboard</a></li>
-                    }
-                    else
-                    {
-                        <li class="menu_item"><a href="@Url.Action("DashboardEmployee", "UserAccess")">Dashboard</a></li>
-                    }
-
-
-                    @if (currentDashboard == "Admin")
-                    {
                         <li class="menu_item"><a href="@Url.Action("Index", "Departments")">Departments</a></li>
-                    }
-                    else
-                    {
-                        <li class="menu_item"><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
-                    }
-           
-
-
-                  
-
-                    @if (currentDashboard == "Admin")
-                    {
+                        <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
                         <li class="menu_item"><a href="@Url.Action("Index", "Announcement")">Announcement</a></li>
-                    }
-                    else
-                    {
-                        <li class="menu_item"><a href="@Url.Action("EmployeeAnnouncement", "Announcement")">Announcement</a></li>
-                    }
-
-                    <li class="menu_item"><a href="@Url.Action("Index", "Award")">Awards</a></li>
-
-                    @if (currentDashboard == "Admin")
-                    {
                         <li class="menu_item"><a href="@Url.Action("Index", "SupportTicket")">Help</a></li>
                     }
                     else
                     {
+                        <li class="menu_item"><a href="@Url.Action("DashboardEmployee", "UserAccess")">Dashboard</a></li>
+                        <li class="menu_item"><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
+                        <li class="menu_item"><a href="@Url.Action("EmployeeAwardList", "Award")">Awards</a></li>
+                        <li class="menu_item"><a href="@Url.Action("EmployeeAnnouncement", "Announcement")">Announcement</a></li>
                         <li class="menu_item"><a href="@Url.Action("EmployeeTicket", "SupportTicket")">Help</a></li>
+
                     }
-
-
-                    
+                 
                 </ul>
 
                 @if (HttpContextAccessor.HttpContext.Session.GetString("IsAdmin") == "True")
@@ -139,34 +114,20 @@
                     <li><a href="@Url.Action("EmployeeDetails", "Employee")">Employees</a></li>
                     <li><a href="@Url.Action("BlogDetails", "Blogs")">Blogs</a></li>
                     <li><a href="@Url.Action("PollDetails", "Polls")">Polls</a></li>
+                    <li><a href="@Url.Action("Index", "Announcement")">Announcement</a></li>
+                    <li><a href="@Url.Action("Index", "Departments")">Departments</a></li>
+                    <li><a href="@Url.Action("CommitteeDetails", "Committee")">Committees</a></li>
                 }
                 else
                 {
                     <li><a href="@Url.Action("EmployeeDetailsForEmployee", "Employee")">Employees</a></li>
                     <li><a href="@Url.Action("EmployeeBlogDetails", "Blogs")">Blogs</a></li>
                     <li><a href="@Url.Action("EmployeePollDetails", "Polls")">Polls</a></li>
-                }
-
-              
-                <li><a href="#">Announcements</a></li>
-
-                @if (currentDashboard == "Admin")
-                {
-                    <li><a href="@Url.Action("Index", "Departments")">Departments</a></li>
-                }
-                else
-                {
+                    <li><a href="@Url.Action("EmployeeAnnouncement", "Announcement")">Announcement</a></li>
                     <li><a href="@Url.Action("EmployeeDepartmentDetails", "Departments")">Departments</a></li>
-                }
-
-                @if (currentDashboard == "Admin")
-                {
-                    <li><a href="@Url.Action("CommitteeDetails", "Committee")">Committees</a></li>
-                }
-                else
-                {
                     <li><a href="@Url.Action("EmployeeCommitteeDetails", "Committee")">Committees</a></li>
                 }
+
                 <li><a href="#">About</a></li>
                 <li><a href="@Url.Action("Login", "UserAccess")">Logout</a></li>
 

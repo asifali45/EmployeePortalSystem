@@ -11,7 +11,7 @@ namespace EmployeePortalSystem.ViewModels
      
         public DateTime? EventDate { get; set; }
 
-        public string RecipientName { get; set; } = string.Empty;
+        public string RecipientName { get; set; } 
         public string GivenBy { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int DisplayOrder { get; set; }
