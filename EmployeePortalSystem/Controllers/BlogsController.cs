@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmployeePortalSystem.Repositories;
 using EmployeePortalSystem.ViewModels;
+using EmployeePortalSystem.Models;
 
 namespace EmployeePortalSystem.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly BlogsRepository _repository;
+        private readonly IWebHostEnvironment _environment;
 
-        public BlogsController(BlogsRepository repository)
+        public BlogsController(BlogsRepository repository, IWebHostEnvironment environment)
         {
             _repository = repository;
+            _environment = environment;
         }
         public IActionResult BlogDetails(int employeeId)
         {
@@ -24,6 +27,66 @@ namespace EmployeePortalSystem.Controllers
         {
             var blogs = _repository.GetBlogDetails(employeeId);
             return View("EmployeeBlogDetails", blogs);
+        }
+        [HttpGet]
+        public IActionResult BlogsCreate()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult BlogsCreate(BlogViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+              
+                string? ImagePath = model.Image;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    string? fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") +
+                         Path.GetExtension(model.ImageFile.FileName);
+
+                    string imageFullPath = Path.Combine(_environment.WebRootPath, "uploads",fileName);
+
+                    using (var stream = new FileStream(imageFullPath, FileMode.Create))
+                    {
+                        model.ImageFile.CopyTo(stream);
+                    }
+
+                    ImagePath = fileName;
+                    Console.WriteLine("Uploaded file name: " + model.ImageFile.FileName);
+                }
+                int? UserId = HttpContext.Session.GetInt32("EmployeeId");
+
+                var blog = new BlogViewModel
+                {
+
+                    Title = model.Title,
+                    Content = model.Content,
+                    Tags = model.Tags,
+                    Image = ImagePath, // can be null if no image uploaded
+                    UpdatedAt = DateTime.Now,
+                    CreatedAt = DateTime.Now,
+                    AuthorId = UserId
+
+                };
+               
+
+                _repository.CreateBlog(blog);
+
+                
+                return RedirectToAction("EmployeeBlogDetails", "Blogs");
+            }
+
+            TempData["Message1"] = "Blog created successfully!";
+            TempData.Remove("Message1");
+
+
+
+            return View("BlogsCreate", model);
+
         }
 
         [HttpGet]
