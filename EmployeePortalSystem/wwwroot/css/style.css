@@ -1250,10 +1250,11 @@ table .edit-icon img {
     font-size: 14px;
     margin-right: 10px;
     color: #007BFF;
+    align-items:center;
 }
 
     .like-btn:hover, .comment-btn:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 
@@ -1389,7 +1390,7 @@ table .edit-icon img {
 }
 
     .view-photo-link:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 #logoModalImg {
@@ -1651,11 +1652,32 @@ table .edit-icon img {
     text-decoration: none;
 }
 
-.like-button{
-    border:none;
-    background:none;
-    text-decoration-line:none;
+
+.like-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-decoration:none;
 }
+
+.like-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.comment-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #555;
+    font-size: 14px;
+    text-decoration:none;
+}
+
 
 .comment span {
     font-size: 14px;

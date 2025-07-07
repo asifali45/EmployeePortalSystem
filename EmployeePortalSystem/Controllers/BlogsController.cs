@@ -26,6 +26,8 @@ namespace EmployeePortalSystem.Controllers
             return View("EmployeeBlogDetails", blogs);
         }
 
+        
+
         [HttpGet]
         public IActionResult BlogDelete(int id)
         {
