@@ -1202,8 +1202,8 @@ table .edit-icon img {
 
 .blog-float-image {
     float: left;
-    width: 350px;
-    height: auto;
+    max-width: 300px;
+    max-height: 200px;
     margin: 0 20px 10px 0;
     border-radius: 8px;
 }

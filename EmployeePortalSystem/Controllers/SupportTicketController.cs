@@ -135,8 +135,40 @@ namespace EmployeePortalSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTicket(SupportTicketViewModel model)
         {
+            // ✅ Conditional Validation
+            if (model.Status == "Assigned")
+            {
+                if (string.IsNullOrWhiteSpace(model.AssignedTo))
+                    ModelState.AddModelError("AssignedTo", "Assigned To is required when status is Assigned.");
+
+                // ✅ Clear unrelated
+                ModelState.Remove("EscalationName");
+            }
+            else if (model.Status == "Escalated")
+            {
+                if (string.IsNullOrWhiteSpace(model.EscalationName))
+                    ModelState.AddModelError("EscalationName", "Escalation Name is required when status is Escalated.");
+
+                // ✅ Clear unrelated
+                ModelState.Remove("AssignedTo");
+            }
+            else
+            {
+                // ✅ Neither Assigned nor Escalated — remove both
+                ModelState.Remove("AssignedTo");
+                ModelState.Remove("EscalationName");
+            }
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState)
+                {
+                    Console.WriteLine($"Key: {error.Key}");
+                    foreach (var e in error.Value.Errors)
+                    {
+                        Console.WriteLine($"Error: {e.ErrorMessage}");
+                    }
+                }
                 // repopulate dropdowns
                 model.DepartmentList = (await _repository.GetDepartmentsAsync())
                     .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name }).ToList();

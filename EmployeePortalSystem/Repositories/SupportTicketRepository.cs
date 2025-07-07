@@ -109,7 +109,7 @@ namespace EmployeePortalSystem.Repositories
 
        
 
-
+        
         public async Task<List<SelectListItem>> GetAllDepartmentsAsync()
         {
             using var connection = _context.CreateConnection();
@@ -128,7 +128,7 @@ namespace EmployeePortalSystem.Repositories
         }
 
 
-
+        
         public async Task<List<Employee>> GetEmployeesByDepartmentIdAsync(int departmentId)
         {
             using var connection = _context.CreateConnection();
