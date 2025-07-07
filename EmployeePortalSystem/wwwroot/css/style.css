@@ -1670,4 +1670,26 @@ table .edit-icon img {
     color: #555;
     margin: 10px 0;
 }
+/*POlls Create Page */
+
+.poll-card {
+    max-width: 600px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin: 30px auto;
+}
+
+.form-group-poll label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
 
