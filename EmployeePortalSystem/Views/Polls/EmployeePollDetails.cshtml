@@ -4,76 +4,81 @@
     ViewData["Title"] = "Polls";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 
-    var resultsPollId = ViewBag.ResultsPollId as int?;
-    var results = ViewBag.Results as Dictionary<string, int>;
+    var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
+    var results = ViewBag.Results as Dictionary<int, Dictionary<string, int>>;
+    var currentEmpId = Context.Session.GetInt32("EmployeeId") ?? 0;
 }
 
-<div class="container">
-    <div class="emp_head1">
-        <h2>Polls</h2>
-    </div>
+@foreach (var poll in Model)
+{
+    var isVotedPoll = selectedOptions != null && selectedOptions.ContainsKey(poll.PollId);
+    var selectedOption = isVotedPoll ? selectedOptions[poll.PollId] : null;
+    var optionTexts = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
 
-    @if (Model != null && Model.Count > 0)
-    {
-        foreach (var poll in Model)
-        {
-            <div class="blog-card">
-                <div class="blog-card-content">
-                    <div class="blog-card-text">
-                        <!-- Question -->
-                        <h3 class="blog-title">@poll.Question</h3>
+    <div class="blog-card" style="margin-bottom: 30px;">
+        <div class="blog-card-content">
+            <div class="blog-card-text">
+                <h3 class="blog-title">@poll.Question</h3>
 
-                        <form asp-action="VoteFromList" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="pollId" value="@poll.PollId" />
+                <form asp-action="VoteFromList" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="pollId" value="@poll.PollId" />
 
-                            <!-- Options -->
-                            <div class="blog-description">
-                                @{
-                                    var optionTexts = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
-                                }
+                    @for (int i = 0; i < optionTexts.Length; i++)
+                    {
+                        var optionValue = (i + 1).ToString();
+                        var optionText = optionTexts[i];
 
-                                @for (int i = 0; i < optionTexts.Length; i++)
-                                {
-                                    var optionText = optionTexts[i];
-                                    var optionEnumValue = (i + 1).ToString(); // "1", "2", "3", "4"
+                        if (!string.IsNullOrEmpty(optionText))
+                        {
+                            var isSelected = selectedOption == optionValue;
 
-                                    if (!string.IsNullOrEmpty(optionText))
-                                    {
-                                        <div>
-                                            <input type="radio" name="selectedOption" value="@optionEnumValue" required />
-                                            @optionText
-
-                                            @if (resultsPollId == poll.PollId && results != null && results.ContainsKey(optionEnumValue))
-                                            {
-                                                <span style="color: green; margin-left: 10px;">
-                                                    — @results[optionEnumValue] vote(s)
-                                                </span>
-                                            }
-                                        </div>
-                                    }
-                                }
+                            <div style="margin-bottom: 6px;">
+                                <input type="radio"
+                                       name="selectedOption"
+                                       value="@optionValue"
+                                @(isSelected ? "checked" : "")
+                                @(isVotedPoll ? "disabled" : "")
+                                       style="accent-color: @(isSelected ? "green" : "#999"); margin-right: 6px;" />
+                                <label>@optionText</label>
                             </div>
+                        }
+                    }
 
-                            <!-- Meta -->
-                            <div class="blog-meta">
-                                <span class="blog-author">By @poll.CreatedByName</span>
-                                <span class="blog-tags">@poll.CreatedAt.ToString("dd MMM yyyy")</span>
-                            </div>
-
-                            <!-- Submit -->
-                            <div class="blog-actions">
-                                <button type="submit" class="like-btn">🗳 Submit Vote</button>
-                                <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn">📊 View Results</a>
-                            </div>
-                        </form>
+                    <div class="blog-meta" style="margin-top: 5px; font-size: 12px;">
+                        <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
                     </div>
-                </div>
+
+                    <div class="blog-actions" style="margin-top: 10px;">
+                        <div class="like-content">
+                        @if (!isVotedPoll)
+                        {
+                            <button type="submit" class="pollbtn">
+                                🗳 Submit Vote
+                            </button>
+                        }
+                        else
+                        {
+                            <span style="color: green; font-weight: 500;">
+                                ✅ You already voted
+                            </span>
+                        }
+                        <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn" style="margin-left: 15px;">
+                            📊 View Results
+                        </a>
+
+                            @if (poll.CreatedBy == currentEmpId)
+                            {
+                                <form asp-action="Delete" asp-route-id="@poll.PollId" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                    @Html.AntiForgeryToken()
+                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                  
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </form>
             </div>
-        }
-    }
-    else
-    {
-        <p>No polls available.</p>
-    }
-</div>
+        </div>
+    </div>
+}
