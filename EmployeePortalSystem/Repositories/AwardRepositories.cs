@@ -52,7 +52,8 @@ namespace EmployeePortalSystem.Repositories
         public async Task<IEnumerable<Award>> GetAllAsync()
         {
             var query = @"SELECT  a.AwardId, a.Type, a.EventDate, 
-                    a.RecipientId, e.Name as RecipientName, 
+                    a.RecipientId, e.Name as RecipientName,
+                    e.Photo as RecipientPhoto,
                     a.GivenBy, a.Description, a.DisplayOrder
                   FROM Awards a
                   JOIN Employee e ON a.RecipientId = e.EmployeeId

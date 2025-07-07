@@ -1,17 +1,26 @@
-﻿namespace EmployeePortalSystem.ViewModels
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+
+namespace EmployeePortalSystem.ViewModels
 {
     public class BlogViewModel
     {
-        public int BlogId { get; set; }
+        public int? BlogId { get; set; }
+
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Content { get; set; }
 
-        public string Image { get; set; }
+        public string? Image { get; set; }
+
+        public IFormFile? ImageFile { get; set; } // For uploading image files
 
         public string Tags { get; set; }
 
-        public string AuthorName { get; set; }
+        public int? AuthorId { get; set; } // EmployeeId of the author
+        public string? AuthorName { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -23,7 +32,8 @@
     
        // For comments
         public List<BlogCommentViewModel> Comments { get; set; } = new List<BlogCommentViewModel>();
-        public string NewCommentText { get; set; }
+
+        public string? NewCommentText { get; set; } = "";
     }
 
     public class BlogCommentViewModel

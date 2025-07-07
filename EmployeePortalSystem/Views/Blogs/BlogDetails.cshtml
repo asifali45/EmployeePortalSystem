@@ -1,7 +1,6 @@
-﻿
-@{
-	ViewData["Title"] = "Blog Details";
-	Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+﻿@{
+    ViewData["Title"] = "Blog Details";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 
 @model List<EmployeePortalSystem.ViewModels.BlogViewModel>
@@ -23,9 +22,9 @@
                     <div class="blog-card-text">
                         @if (!string.IsNullOrEmpty(blog.Image))
                         {
-                            <img src="~/uploads/blogs/@blog.Image" class="blog-float-image" alt="Blog Image">
+                            <img src="~/uploads/@blog.Image" class="blog-float-image" alt="Blog Image">
                         }
-                       
+
                         <!-- Title -->
                         <h3 class="blog-title">@blog.Title</h3>
 
@@ -37,16 +36,22 @@
                         <!-- Author & Tags -->
                         <div class="blog-meta">
                             <span class="blog-author">By @blog.AuthorName</span>
-                            <span class="blog-tags">#@blog.Tags</span>  
+                            <span class="blog-tags">#@blog.Tags</span>
                         </div>
 
                         <!-- Like & Comment -->
                         <div class="blog-actions">
-                            <span class="like-btn">❤ @blog.LikeCount</span>
+                            <div class="like-content">
+                                <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" />
+                                <span>@blog.LikeCount</span>
+                            </div>
 
 
                             <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
-                                💬 Comments @blog.Comments.Count
+                                <div class="comment-content">
+                                    <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
+                                    <span>Comments @blog.Comments.Count</span>
+                                </div>
                             </button>
                         </div>
 
@@ -65,14 +70,14 @@
                             </div>
 
                         </div>
-                        <div>
+                        <div class="blog-del">
                             <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId })">
                                 <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
                             </a>
                         </div>
-                        
-                        
-                       
+
+
+
 
                     </div>
                 </div>

@@ -48,7 +48,20 @@
                             {
                                 <tr>
                                     <td>@a.Title</td>
-                                    <td>@a.Message</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(a.Message) && a.Message.Length > 50)
+                                        {
+                                            var shortMsg = a.Message.Substring(0, 50);
+                                            <span class="desc-short">@shortMsg... <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">more</a></span>
+                                            <span class="desc-full" style="display:none;">
+                                                @a.Message <a href="javascript:void(0);" class="toggle-desc" onclick="toggleDescription(this)">less</a>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @a.Message
+                                        }
+                                    </td>
                                     <td>@a.VisibleTo</td>
                                     <td>@(a.PostDate.HasValue ? a.PostDate.Value.ToString("yyyy-MM-dd") : "NULL")</td>
                                     <td>@(a.IsEvent == true ? "Yes" : "No")</td>
@@ -79,6 +92,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function toggleDescription(link) {
+            const td = link.closest("td");
+            const shortSpan = td.querySelector(".desc-short");
+            const fullSpan = td.querySelector(".desc-full");
+
+            if (shortSpan.style.display === "none") {
+                shortSpan.style.display = "inline";
+                fullSpan.style.display = "none";
+            } else {
+                shortSpan.style.display = "none";
+                fullSpan.style.display = "inline";
+            }
+        }
+    </script>
 }
+
 
 

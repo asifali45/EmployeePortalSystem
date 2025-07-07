@@ -1250,10 +1250,11 @@ table .edit-icon img {
     font-size: 14px;
     margin-right: 10px;
     color: #007BFF;
+    align-items:center;
 }
 
     .like-btn:hover, .comment-btn:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 
@@ -1389,7 +1390,7 @@ table .edit-icon img {
 }
 
     .view-photo-link:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 #logoModalImg {
@@ -1651,11 +1652,34 @@ table .edit-icon img {
     text-decoration: none;
 }
 
-.like-button{
-    border:none;
-    background:none;
-    text-decoration-line:none;
+
+.like-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-decoration:none;
 }
+
+.like-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+
+.comment-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left:10px;
+    color: #555;
+    font-size: 14px;
+    text-decoration:none;
+}
+
 
 .comment span {
     font-size: 14px;
@@ -1671,3 +1695,36 @@ table .edit-icon img {
     margin: 10px 0;
 }
 
+.blog-del{
+    padding-top:10px;
+}
+/*POlls Create Page */
+
+.poll-card {
+    max-width: 600px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin: 30px auto;
+}
+
+.form-group-poll label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+/*Award */
+
+.award-logo img {
+    width: 130px;
+    height: 170px;
+    border-radius: 5%;
+    object-fit: cover;
+}
