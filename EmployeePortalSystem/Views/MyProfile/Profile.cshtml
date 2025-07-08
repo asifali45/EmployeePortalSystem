@@ -153,7 +153,7 @@
                                             <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
                                         </div>
 
-                                        <div class="blog-actions" style="margin-top: 10px;">
+                                        <div class="p-poll-actions" style="margin-top: 10px;">
                                             @if (!isVoted)
                                             {
                                                 <button type="submit" class="pollbtn">
@@ -166,10 +166,18 @@
                                                     ✅ You already voted
                                                 </span>
                                             }
-
+                                           
                                             <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn" style="margin-left: 15px;">
                                                 📊 View Results
                                             </a>
+                                            
+                                                <form asp-action="Delete" asp-controller="Polls" asp-route-id="@poll.PollId" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" style="border: none; background: transparent; padding: 0; cursor: pointer;">
+                                                        <img src="~/img/trash-xmark (1).png" width="15px" height="15px" alt="Delete" />
+                                                    </button>
+                                                </form>
+                
                                         </div>
                                     </form>
                                 </div>
