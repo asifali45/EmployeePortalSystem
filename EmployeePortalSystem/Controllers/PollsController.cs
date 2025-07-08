@@ -45,7 +45,7 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
 
             model.CreatedAt = DateTime.Now;
-            model.CreatedBy = 1; // Replace with session value if available
+            model.CreatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
 
             _repo.Add(model);
 
@@ -53,11 +53,21 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("PollDetails");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+            var empId = HttpContext.Session.GetInt32("EmployeeId");
+            if (empId == null)
+                return RedirectToAction("Login", "UserAccess");
+
+            var poll = _repo.GetById(id);
+            if (poll == null || poll.CreatedBy != empId)
+                return Forbid(); // prevent unauthorized access
+
             _repo.Delete(id);
             TempData["Message"] = "Poll deleted.";
-            return RedirectToAction("PollDetails");
+            return RedirectToAction("EmployeePollDetails");
         }
 
         public IActionResult Results(int id)
@@ -76,6 +86,10 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult EmployeePollDetails()
         {
+            var empId = HttpContext.Session.GetInt32("EmployeeId");
+            if (empId == null)
+                return RedirectToAction("Login", "UserAccess");
+
             var polls = _repo.GetAll();
 
             var results = new Dictionary<int, Dictionary<string, int>>();
@@ -84,9 +98,14 @@ namespace EmployeePortalSystem.Controllers
                 results[poll.PollId] = _repo.GetResults(poll.PollId);
             }
 
+            var selectedOptions = _repo.GetSelectedOptionsForEmployee(empId.Value); // get past votes
+
+            ViewBag.SelectedOptions = selectedOptions;
             ViewBag.Results = results;
+
             return View(polls); // Views/Polls/EmployeePollDetails.cshtml
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -96,11 +115,7 @@ namespace EmployeePortalSystem.Controllers
             if (empId == null)
                 return RedirectToAction("Login", "UserAccess");
 
-            if (_repo.HasVoted(pollId, empId.Value))
-            {
-                TempData["Error"] = "You have already voted on this poll.";
-            }
-            else
+            if (!_repo.HasVoted(pollId, empId.Value))
             {
                 var response = new PollResponse
                 {
@@ -111,22 +126,26 @@ namespace EmployeePortalSystem.Controllers
                 };
 
                 _repo.SubmitResponse(response);
-                TempData["Message"] = "Vote submitted!";
             }
 
-            // Refresh polls and results
             var polls = _repo.GetAll();
+            var selectedOptions = _repo.GetSelectedOptionsForEmployee(empId.Value);
+
             var results = new Dictionary<int, Dictionary<string, int>>();
             foreach (var poll in polls)
             {
                 results[poll.PollId] = _repo.GetResults(poll.PollId);
             }
 
-            ViewBag.ResultsPollId = pollId;
             ViewBag.Results = results;
+            ViewBag.SelectedOptions = selectedOptions;
 
             return View("EmployeePollDetails", polls);
         }
+
+
+
+
 
         public IActionResult EmployeeResults(int id)
         {
