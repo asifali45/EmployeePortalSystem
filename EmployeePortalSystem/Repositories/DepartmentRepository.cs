@@ -133,5 +133,14 @@ namespace EmployeePortalSystem.Repositories
             return db.ExecuteScalar<int>(sql, new { id = departmentId }) > 0;
         }
 
+
+
+
+        public int? GetDepartmentIdByEmployeeId(int employeeId)
+        {
+            using var db = _context.CreateConnection();
+            return db.QueryFirstOrDefault<int?>("SELECT DepartmentId FROM employee WHERE EmployeeId = @id", new { id = employeeId });
+        }
+
     }
 }
