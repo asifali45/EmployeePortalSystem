@@ -59,7 +59,12 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DashboardAdmin()
         {
             HttpContext.Session.SetString("CurrentDashboard", "Admin");
-            return View();
+            var latestblogs = _blogsRepository.GetLatestBlogsForDashboard(2);
+            var model = new DashboardCardViewModel
+            {
+                LatestBlogs = latestblogs
+            };
+            return View(model);
         }
 
         [HttpGet]
