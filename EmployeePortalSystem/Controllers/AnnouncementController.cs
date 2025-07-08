@@ -48,7 +48,12 @@ namespace EmployeePortalSystem.Controllers
             ModelState.Remove("AnnouncementId");
 
             if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = new SelectList(_repo.GetAll(), "DepartmentId", "Name");
+                ViewBag.Committees = new SelectList(_repository.GetAllCommittees(), "CommitteeId", "Name");
                 return View(announcement);
+
+            }
 
             // Set server-side fields
             announcement.PostDate = DateTime.Now;
@@ -68,6 +73,9 @@ namespace EmployeePortalSystem.Controllers
             if (announcement == null) return NotFound();
 
             ViewBag.VisibleToOptions = GetVisibleToOptions();
+            ViewBag.Departments = new SelectList(_repo.GetAll(), "DepartmentId", "Name");
+            ViewBag.Committees = new SelectList(_repository.GetAllCommittees(), "CommitteeId", "Name");
+
             return View(announcement);
         }
 
