@@ -13,6 +13,9 @@ namespace EmployeePortalSystem.Models
         [Required(ErrorMessage = "VisibleTo is required")]
         public string VisibleTo { get; set; }
 
+        public int? VisibleToDepartmentId { get; set; }
+        public int? VisibleToCommitteeId { get; set; }
+
         [Required(ErrorMessage = "Display Order is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Display Order must be greater than 0")]
         public int DisplayOrder { get; set; }
