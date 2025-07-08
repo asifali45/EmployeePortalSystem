@@ -23,26 +23,21 @@
         <div class="container_emp mb-20">
             <div class="empmaster_card">
                 <form asp-action="Create" asp-controller="Announcement" method="post" class="emp_form">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
-                   
-
-                    @* <input type="hidden" asp-for="AnnouncementId" /> *@
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                     <div class="form_row">
                         <div class="form_group">
                             <label>Title <span class="imp_field">*</span></label>
                             <div class="val">
-                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
+                                <input asp-for="Title" class="form-control" placeholder="Enter Title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
                             <label>Message</label>
-                         
                             <input asp-for="Message" class="form-control" maxlength="250" placeholder="Enter Message" />
                             <span asp-validation-for="Message" class="text-danger"></span>
-
                         </div>
                     </div>
 
@@ -50,20 +45,46 @@
                         <div class="form_group">
                             <label>Visible To <span class="imp_field">*</span></label>
                             <div class="val">
-                            <select asp-for="VisibleTo" class="form-control">
-                                <option disabled selected value="">-- Select --</option>
-                                <option value="All">All</option>
-                                <option value="Department">Department</option>
-                                <option value="Committee">Committee</option>
-                            </select>
-                            <span asp-validation-for="VisibleTo" class="text-danger"></span>
+                                <select asp-for="VisibleTo" class="form-control" id="visibleToSelect">
+                                    <option disabled selected value="">-- Select --</option>
+                                    <option value="All">All</option>
+                                    <option value="Department">Department</option>
+                                    <option value="Committee">Committee</option>
+                                </select>
+                                <span asp-validation-for="VisibleTo" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
                             <label>Display Order <span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="DisplayOrder"  class="form-control" type="text" pattern="\d*" />
+                                <input asp-for="DisplayOrder" class="form-control" type="number" />
                                 <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row" id="departmentGroup" style="display: none;">
+                        <div class="form_group">
+                            <label>Select Department <span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="VisibleToDepartmentId" class="form-control"
+                                        asp-items="ViewBag.Departments">
+                                    <option value="">-- Select Department --</option>
+                                </select>
+                                <span asp-validation-for="VisibleToDepartmentId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row" id="committeeGroup" style="display: none;">
+                        <div class="form_group">
+                            <label>Select Committee <span class="imp_field">*</span></label>
+                            <div class="val">
+                                <select asp-for="VisibleToCommitteeId" class="form-control"
+                                        asp-items="ViewBag.Committees">
+                                    <option value="">-- Select Committee --</option>
+                                </select>
+                                <span asp-validation-for="VisibleToCommitteeId" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -72,50 +93,42 @@
                         <div class="form_group">
                             <label>Is Event <span class="imp_field">*</span></label>
                             <div class="val">
-                            <select asp-for="IsEvent" class="form-control" id="isEventSelect">
-                                <option value="">-- Select --</option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                            <span asp-validation-for="IsEvent" class="text-danger"></span>
+                                <select asp-for="IsEvent" class="form-control" id="isEventSelect">
+                                    <option value="">-- Select --</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                                <span asp-validation-for="IsEvent" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
                             <label>Location</label>
                             <input asp-for="Location" class="form-control" />
                             <span asp-validation-for="Location" class="text-danger"></span>
-
                         </div>
                     </div>
 
-                    <div class="form_row">
-                        <div class="form_group event-group" id="eventDateGroup">
-                            <label for="eventDate">Event Date</label>
-                            <div class="val">
-                                <input asp-for="EventDate" class="form-control" type="date" id="eventDate" />
-                                <span asp-validation-for="EventDate" class="text-danger"></span>
-                            </div>
+                    <div class="form_row" id="eventDetails" style="display: none;">
+                        <div class="form_group">
+                            <label>Event Date</label>
+                            <input asp-for="EventDate" class="form-control" type="date" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
                         </div>
-
-                        <div class="form_group event-group" id="eventTimeGroup">
-                            <label for="eventTime">Event Time</label>
-                            <div class="val">
-                                <input asp-for="EventTime" class="form-control" type="time" id="eventTime" />
-                                <span asp-validation-for="EventTime" class="text-danger"></span>
-                            </div>
+                        <div class="form_group">
+                            <label>Event Time</label>
+                            <input asp-for="EventTime" class="form-control" type="time" />
+                            <span asp-validation-for="EventTime" class="text-danger"></span>
                         </div>
                     </div>
-
 
                     <div class="form_row">
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
+
                     @if (TempData["Message"] != null)
                     {
-                        <div class="alert alert-success mt-2">
-                            @TempData["Message"]
-                        </div>
+                        <div class="alert alert-success mt-2">@TempData["Message"]</div>
                     }
                 </form>
             </div>
@@ -127,21 +140,29 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const visibleTo = document.getElementById("visibleToSelect");
+            const deptGroup = document.getElementById("departmentGroup");
+            const commGroup = document.getElementById("committeeGroup");
+
             const isEventSelect = document.getElementById("isEventSelect");
+            const eventDetails = document.getElementById("eventDetails");
 
-            const eventDateGroup = document.getElementById("eventDateGroup");
-            const eventTimeGroup = document.getElementById("eventTimeGroup");
-
-            function toggleEventFields() {
-                const isEvent = isEventSelect.value.toLowerCase() === "true";
-
-                eventDateGroup.style.display = isEvent ? "flex" : "none";
-                eventTimeGroup.style.display = isEvent ? "flex" : "none";
+            function toggleVisibleToGroups() {
+                const selected = visibleTo.value;
+                deptGroup.style.display = selected === "Department" ? "flex" : "none";
+                commGroup.style.display = selected === "Committee" ? "flex" : "none";
             }
 
-            isEventSelect.addEventListener("change", toggleEventFields);
-            toggleEventFields(); // Run on page load
+            function toggleEventDetails() {
+                const selected = isEventSelect.value.toLowerCase();
+                eventDetails.style.display = selected === "true" ? "flex" : "none";
+            }
+
+            visibleTo.addEventListener("change", toggleVisibleToGroups);
+            isEventSelect.addEventListener("change", toggleEventDetails);
+
+            toggleVisibleToGroups();
+            toggleEventDetails();
         });
     </script>
 }
-

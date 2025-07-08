@@ -32,9 +32,10 @@ namespace EmployeePortalSystem.Repositories
 
             string sql = @"
                 INSERT INTO announcement
-                (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
+                (Title, Message, PostDate, VisibleTo, VisibleToDepartmentId, VisibleToCommitteeId, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
                 VALUES
-                (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+                (@Title, @Message, @PostDate, @VisibleTo, @VisibleToDepartmentId, @VisibleToCommitteeId, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+
 
             var parameters = new
             {

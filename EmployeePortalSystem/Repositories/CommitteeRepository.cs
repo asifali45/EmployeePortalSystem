@@ -162,5 +162,12 @@ namespace EmployeePortalSystem.Repositories
         }
 
 
+
+
+        public List<int> GetCommitteeIdsByEmployeeId(int employeeId)
+        {
+            using var db = _context.CreateConnection();
+            return db.Query<int>("SELECT CommitteeId FROM Committee WHERE EmployeeId = @employeeId", new { employeeId }).ToList();
+        }
     }
 }

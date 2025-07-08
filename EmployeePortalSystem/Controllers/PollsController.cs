@@ -31,11 +31,17 @@ namespace EmployeePortalSystem.Controllers
             return View(polls); // Views/Polls/PollDetails.cshtml
         }
 
+
+
         [HttpGet]
         public IActionResult Create()
         {
-            return View(); // Return Create.cshtml
+            return View(); // Make sure Views/Polls/Create.cshtml exists
         }
+
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,8 +56,19 @@ namespace EmployeePortalSystem.Controllers
             _repo.Add(model);
 
             TempData["Message"] = "Poll created successfully!";
-            return RedirectToAction("PollDetails");
+
+            // Redirect based on role
+            var role = HttpContext.Session.GetString("Role");
+            if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+            {
+                return RedirectToAction("PollDetails");
+            }
+            else
+            {
+                return RedirectToAction("EmployeePollDetails");
+            }
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -62,12 +79,32 @@ namespace EmployeePortalSystem.Controllers
                 return RedirectToAction("Login", "UserAccess");
 
             var poll = _repo.GetById(id);
-            if (poll == null || poll.CreatedBy != empId)
-                return Forbid(); // prevent unauthorized access
+            if (poll == null)
+                return NotFound();
+
+            // Allow if current user is the creator OR admin
+            if (poll.CreatedBy != empId && !IsAdmin(empId.Value))
+                return Forbid();
 
             _repo.Delete(id);
             TempData["Message"] = "Poll deleted.";
-            return RedirectToAction("EmployeePollDetails");
+            if (Request.Headers["Referer"].ToString().Contains("PollDetails"))
+            {
+                return RedirectToAction("PollDetails");
+            }
+            else
+            {
+                return RedirectToAction("EmployeePollDetails");
+            }
+
+        }
+
+        // Helper method to check admin (you can adjust logic accordingly)
+        private bool IsAdmin(int empId)
+        {
+            // Example logic: You can replace this with your actual admin check
+            var role = HttpContext.Session.GetString("Role");
+            return role != null && role.ToLower() == "admin";
         }
 
         public IActionResult Results(int id)
@@ -115,6 +152,13 @@ namespace EmployeePortalSystem.Controllers
             if (empId == null)
                 return RedirectToAction("Login", "UserAccess");
 
+            // Ensure the selected option is not null or empty
+            if (string.IsNullOrEmpty(selectedOption))
+            {
+                TempData["Error"] = "Please select an option before submitting.";
+                return RedirectToAction("EmployeePollDetails");
+            }
+
             if (!_repo.HasVoted(pollId, empId.Value))
             {
                 var response = new PollResponse
@@ -128,19 +172,7 @@ namespace EmployeePortalSystem.Controllers
                 _repo.SubmitResponse(response);
             }
 
-            var polls = _repo.GetAll();
-            var selectedOptions = _repo.GetSelectedOptionsForEmployee(empId.Value);
-
-            var results = new Dictionary<int, Dictionary<string, int>>();
-            foreach (var poll in polls)
-            {
-                results[poll.PollId] = _repo.GetResults(poll.PollId);
-            }
-
-            ViewBag.Results = results;
-            ViewBag.SelectedOptions = selectedOptions;
-
-            return View("EmployeePollDetails", polls);
+            return RedirectToAction("EmployeePollDetails");
         }
 
 

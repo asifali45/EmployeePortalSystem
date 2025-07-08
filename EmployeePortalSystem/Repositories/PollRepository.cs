@@ -35,7 +35,10 @@ namespace EmployeePortalSystem.Repositories
         public Poll GetById(int id)
         {
             using var conn = _context.CreateConnection();
-            return conn.QuerySingleOrDefault<Poll>("SELECT * FROM polls WHERE PollId = @Id", new { Id = id });
+            return conn.QuerySingleOrDefault<Poll>(
+    "SELECT PollId, Question, Option1, Option2, Option3, Option4, CreatedAt, CreatedBy FROM polls WHERE PollId = @Id",
+    new { Id = id });
+
         }
 
         // Add a new poll
