@@ -1203,7 +1203,7 @@ table .edit-icon img {
 .blog-float-image {
     float: left;
     max-width: 300px;
-    max-height:200px;
+    max-height: 200px;
     margin: 0 20px 10px 0;
     border-radius: 8px;
 }
@@ -1720,8 +1720,28 @@ table .edit-icon img {
     padding: 8px 12px;
 }
 
-/*Award */
 
+input[type="radio"].highlight-radio:checked {
+    accent-color: green;
+}
+
+.pollbtn  {
+    
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+    padding: 2px 20px;
+    width: 129px;
+    height: 25px;
+}
+
+
+/*Award */
 .award-logo img {
     width: 130px;
     height: 170px;

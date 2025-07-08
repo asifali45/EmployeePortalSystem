@@ -81,7 +81,7 @@ namespace EmployeePortalSystem.Controllers
             }
 
             TempData["Message1"] = "Blog created successfully!";
-            TempData.Remove("Message1");
+            
 
 
 
