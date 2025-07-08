@@ -2,15 +2,18 @@
 using EmployeePortalSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace EmployeePortalSystem.Controllers
 {
     public class UserAccessController : Controller
     {
        private readonly UserAccessRepository _repository;
+        private readonly BlogsRepository _blogsRepository;
 
-        public UserAccessController(UserAccessRepository repository)
+        public UserAccessController(UserAccessRepository repository,BlogsRepository blogsRepository)
         {
             _repository = repository;
+            _blogsRepository = blogsRepository;
         }
        
 
@@ -68,7 +71,17 @@ namespace EmployeePortalSystem.Controllers
          
 
 
-            var model =_repository.GetCardCounts(empid);
+            var cardcounts =_repository.GetCardCounts(empid);
+
+            var latestblogs=_blogsRepository.GetLatestBlogsForDashboard(2);
+
+            var model = new DashboardCardViewModel
+            {
+                TotalAwards = cardcounts.TotalAwards,
+                BlogsWritten = cardcounts.BlogsWritten,
+                PollsVoted = cardcounts.PollsVoted,
+                LatestBlogs = latestblogs
+            };
 
             return View(model);
         }
