@@ -30,7 +30,7 @@ namespace EmployeePortalSystem.Controllers
 
             if (employee == null)
                 return NotFound();
-
+            ViewBag.SelectedOptions = _repo.GetSelectedOptionsByEmployeeId(empId.Value);
             return View(employee);
         }
     }

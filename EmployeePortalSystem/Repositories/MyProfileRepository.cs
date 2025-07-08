@@ -2,6 +2,7 @@
 using EmployeePortalSystem.ViewModels;
 using MySql.Data.MySqlClient;
 using Dapper;
+using Mysqlx.Crud;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -93,16 +94,25 @@ namespace EmployeePortalSystem.Repositories
             p.CreatedBy,
             e.Name AS CreatedByName,
             p.CreatedAt
-        FROM poll_response pr
-        JOIN polls p ON pr.PollId = p.PollId
+       FROM polls p
         JOIN employee e ON p.CreatedBy = e.EmployeeId
-        WHERE pr.EmployeeId = @empId";
+        WHERE p.CreatedBy = @empId
+        ORDER BY p.CreatedAt DESC";
 
             return conn.Query<PollViewModel>(sql, new { empId }).ToList();
         }
 
 
+        public Dictionary<int, string> GetSelectedOptionsByEmployeeId(int empId)
+        {
+            using var conn = _context.CreateConnection();
+            var results = conn.Query<(int PollId, string SelectedOption)>(
+                "SELECT PollId, SelectedOption FROM poll_response WHERE EmployeeId = @empId",
+                new { empId }).ToList();
 
-      
+            return results.ToDictionary(r => r.PollId, r => r.SelectedOption);
+        }
+
+
     }
 }

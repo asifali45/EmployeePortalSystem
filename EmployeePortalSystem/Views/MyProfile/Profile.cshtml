@@ -107,24 +107,73 @@
             </div>
 
             <div class="tab-content" id="polls" style="display: none;">
-                @if (Model.Polls.Any())
+
+                @if (Model.Polls != null && Model.Polls.Any())
                 {
+                    var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
+                    var empId = Context.Session.GetInt32("EmployeeId") ?? 0;
+
                     foreach (var poll in Model.Polls)
                     {
-                        <div class="card-item">
-                            <h4>@poll.Question</h4>
-                            <ul>
-                                <li>@poll.Option1</li>
-                                <li>@poll.Option2</li>
-                                @if (!string.IsNullOrEmpty(poll.Option3))
-                                {
-                                    <li>@poll.Option3</li>
-                                }
-                                @if (!string.IsNullOrEmpty(poll.Option4))
-                                {
-                                    <li>@poll.Option4</li>
-                                }
-                            </ul>
+                        var isVoted = selectedOptions != null && selectedOptions.ContainsKey(poll.PollId);
+                        var selected = isVoted ? selectedOptions[poll.PollId] : null;
+                        var options = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
+
+                        <div class="blog-card" style="margin-bottom: 30px;">
+                            <div class="blog-card-content">
+                                <div class="blog-card-text">
+                                    <h3 class="blog-title">@poll.Question</h3>
+
+                                    <form asp-action="VoteFromList" asp-controller="Polls" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="pollId" value="@poll.PollId" />
+                                        @* <input type="hidden" name="returnTo" value="Profile" /> *@
+
+                                        @for (int i = 0; i < options.Length; i++)
+                                        {
+                                            var val = (i + 1).ToString();
+                                            var text = options[i];
+                                            if (!string.IsNullOrEmpty(text))
+                                            {
+                                                var isSel = selected == val;
+
+                                                <div style="margin-bottom: 6px;">
+                                                    <input type="radio"
+                                                           name="selectedOption"
+                                                           value="@val"
+                                                    @(isSel ? "checked" : "")
+                                                    @(isVoted ? "disabled" : "")
+                                                           style="accent-color: @(isSel ? "green" : "#999"); margin-right: 6px;" />
+                                                    <label>@text</label>
+                                                </div>
+                                            }
+                                        }
+
+                                        <div class="blog-meta" style="margin-top: 5px; font-size: 12px;">
+                                            <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                                        </div>
+
+                                        <div class="blog-actions" style="margin-top: 10px;">
+                                            @if (!isVoted)
+                                            {
+                                                <button type="submit" class="pollbtn">
+                                                    🗳 Submit Vote
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <span style="color: green; font-weight: 500;">
+                                                    ✅ You already voted
+                                                </span>
+                                            }
+
+                                            <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn" style="margin-left: 15px;">
+                                                📊 View Results
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     }
                 }

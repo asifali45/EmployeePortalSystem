@@ -139,6 +139,8 @@ namespace EmployeePortalSystem.Controllers
 
             ViewBag.Results = results;
             ViewBag.SelectedOptions = selectedOptions;
+            //if (returnTo == "Profile")
+            //    return RedirectToAction("Profile", "MyProfile", new { activeTab = "polls" });
 
             return View("EmployeePollDetails", polls);
         }
