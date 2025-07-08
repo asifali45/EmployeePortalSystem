@@ -881,4 +881,18 @@ button[type = "reset"] {
     .blog-description {
         text-align: justify;
     }
+
+    @media (max-width: 600px) {
+        .blog-card-content {
+            flex-wrap: wrap;
+        }
+
+        .blog-float-image1 {
+            width: 100%;
+            height: auto;
+            margin: 0 0 10px 0;
+        }
+    }
+
+
 }
