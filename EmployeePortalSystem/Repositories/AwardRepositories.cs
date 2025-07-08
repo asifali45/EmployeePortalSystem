@@ -37,8 +37,8 @@ namespace EmployeePortalSystem.Repositories
         }
         public async Task<int> CreateAsync(Award award)
         {
-            var query = @"INSERT INTO Awards (Type, EventDate, RecipientId, GivenBy, Description, DisplayOrder, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
-                  VALUES (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
+            var query = @"INSERT INTO Awards (Type, EventDate, RecipientId,  RecipientName, GivenBy, Description, DisplayOrder, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
+                  VALUES (@Type, @EventDate, @RecipientId, @RecipientName, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
                   SELECT LAST_INSERT_ID();";
 
             using var connection = _context.CreateConnection();
@@ -52,11 +52,11 @@ namespace EmployeePortalSystem.Repositories
         public async Task<IEnumerable<Award>> GetAllAsync()
         {
             var query = @"SELECT  a.AwardId, a.Type, a.EventDate, 
-                    a.RecipientId, e.Name as RecipientName,
+                    a.RecipientId, COALESCE(a.RecipientName, e.Name) as RecipientName,
                     e.Photo as RecipientPhoto,
                     a.GivenBy, a.Description, a.DisplayOrder
                   FROM Awards a
-                  JOIN Employee e ON a.RecipientId = e.EmployeeId
+                  LEFT JOIN Employee e ON a.RecipientId = e.EmployeeId
                   ORDER BY a.DisplayOrder";
 
             using var connection = _context.CreateConnection();

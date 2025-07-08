@@ -33,14 +33,11 @@
                         <div class="val">
                             <input asp-for="IssueTitle" class="form-control" readonly />
                         </div>
-                    </div>
-                    </div>
-                    <div class="form_row">
-                        
+                    </div>   
                         <div class="form_group">
-                            <label>Type<span class="imp_field">*</span></label>
-                            <div class="val">
-                                <input asp-for="Type" class="form-control" />
+                            <label>Type<span class="imp_field"></span></label>
+                            
+                                <input asp-for="Type" class="form-control" readonly />
                                 @* <select asp-for="Type" class="form-control"> *@
                                 @*     <option value="">Select Type</option> *@
                                 @*     <option value="Technical">Technical</option> *@
@@ -48,9 +45,13 @@
                                 @*     <option value="HR">HR</option> *@
                                 @* </select> *@
 
-                               
-                            </div>
+
+                           
                         </div>
+                    </div>
+                    <div class="form_row">
+                        
+                       
 
                         <div class="form_group">
                             <label>Description</label>
@@ -58,13 +59,10 @@
                                 <input asp-for="Description" class="form-control" rows="3" readonly>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form_row">
                         <div class="form_group">
                             <label>Department<span class="imp_field">*</span></label>
                             <div class="val">
-                                <select asp-for="DepartmentId"  class="form-control" id="departmentDropdown">
+                                <select asp-for="DepartmentId" class="form-control" id="departmentDropdown">
                                     <option value="">Select Department</option>
                                     @foreach (var dept in Model.DepartmentList)
                                     {
@@ -73,15 +71,26 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form_row">
+                        
                         <div class="form_group">
                             <label>Status<span class="imp_field">*</span></label>
                             <div class="val">
-                                <select asp-for="Status"  class="form-control" id="statusDropdown">
+                                <select asp-for="Status" class="form-control" id="statusDropdown">
                                     <option value="Open">Open</option>
                                     <option value="Assigned">Assigned</option>
                                     <option value="Escalated">Escalated</option>
                                     <option value="Resolved">Resolved</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <label>Response<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Response" class="form-control" rows="3">
+
                             </div>
                         </div>
                     </div>
@@ -107,26 +116,20 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="form_row">
-                        <div class="form_group">
-                            <label>Response<span class="imp_field">*</span></label>
-                            <div class="val">
-                                <textarea asp-for="Response" class="form-control" rows="3"></textarea>
-
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form_row">
                         <button type="submit" class="custom-button" id="submitBtn">Save</button>
                         <button type="reset" class="btn btn-warning">Cancel</button>
                     </div>
 
-                    @if (TempData["Message"] != null)
+                    @if (TempData.ContainsKey("Message"))
                     {
-                        <div class="alert alert-success mt-3">@TempData["Message"]</div>
+                        <div class="alert alert-success" id="successMsg">
+                            @TempData["Message"]
+                        </div>
                     }
+
+
+
                 </form>
 
             </div>
@@ -175,5 +178,10 @@
             $('#statusDropdown').trigger('change');
              
         });
+
+        setTimeout(function () {
+            var msg = document.getElementById("successMsg");
+            if (msg) msg.style.display = "none";
+        }, 3000);
     </script>
 }

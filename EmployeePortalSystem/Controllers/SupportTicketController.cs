@@ -74,6 +74,7 @@ namespace EmployeePortalSystem.Controllers
                 EmployeeId = employeeId,
                 IssueTitle = model.IssueTitle,
                 Description = model.Description,
+                Type = model.Type,
                 Status = "Open",
                 CreatedAt = DateTime.Now
             };
@@ -111,6 +112,7 @@ namespace EmployeePortalSystem.Controllers
                 TicketId = ticket.TicketId,
                 IssueTitle = ticket.IssueTitle,
                 Description = ticket.Description,
+                Type = ticket.Type,
                 Status = ticket.Status,
                 Response = ticket.Response,
                 DepartmentList = (await _repository.GetDepartmentsAsync())
@@ -189,14 +191,16 @@ namespace EmployeePortalSystem.Controllers
 
             ticket.Status = model.Status;
             ticket.Response = model.Response;
-            ticket.AssignedTo = !string.IsNullOrEmpty(model.AssignedTo)
-                ? await _repository.GetEmployeeIdByNameAsync(model.AssignedTo)
-                : null;
+            if (!string.IsNullOrEmpty(model.AssignedTo))
+            {
+                ticket.AssignedTo = await _repository.GetEmployeeIdByNameAsync(model.AssignedTo);
+            }
 
-            ticket.EscalatedTo = !string.IsNullOrEmpty(model.EscalationName)
-                ? await _repository.GetEmployeeIdByNameAsync(model.EscalationName)
-                : null;
-
+            // EscalatedTo: only update if not empty
+            if (!string.IsNullOrEmpty(model.EscalationName))
+            {
+                ticket.EscalatedTo = await _repository.GetEmployeeIdByNameAsync(model.EscalationName);
+            }
             ticket.EscalationLevel = int.TryParse(model.EscalationLevel, out int level) ? level : 0;
             ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             ticket.UpdatedAt = DateTime.Now;

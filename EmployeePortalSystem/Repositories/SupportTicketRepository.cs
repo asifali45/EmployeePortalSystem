@@ -23,9 +23,9 @@ namespace EmployeePortalSystem.Repositories
 
 
             var query = @"INSERT INTO support_tickets 
-                        (EmployeeId, IssueTitle, Description, Status, CreatedAt)
+                        (EmployeeId, IssueTitle,Type, Description, Status, CreatedAt)
                         VALUES 
-                        (@EmployeeId, @IssueTitle, @Description, @Status, @CreatedAt);
+                        (@EmployeeId, @IssueTitle, @Type, @Description, @Status, @CreatedAt);
                         SELECT LAST_INSERT_ID();";
 
            using var connection = _context.CreateConnection();
