@@ -49,8 +49,24 @@ namespace EmployeePortalSystem.Repositories
 
             return conn.QueryFirst<DashboardCardViewModel>(sql, new { EmpId = empid });
         }
+        public bool UpdatePasswordIfEmailExists(string email, string newPassword)
+        {
+            using var conn = _context.CreateConnection();
+            conn.Open();
 
-        
+            string checkSql = "SELECT COUNT(*) FROM employee WHERE Email = @Email";
+            int count = conn.ExecuteScalar<int>(checkSql, new { Email = email });
+
+            if (count == 0)
+                return false;
+
+            string updateSql = "UPDATE employee SET Password = @Password WHERE Email = @Email";
+            conn.Execute(updateSql, new { Email = email, Password = newPassword });
+
+            return true;
+        }
+
+
     }
 
 }

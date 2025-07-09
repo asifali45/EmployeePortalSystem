@@ -1,19 +1,13 @@
-﻿@model EmployeePortalSystem.ViewModels.LoginViewModel
-
-
+﻿@model EmployeePortalSystem.ViewModels.SignUpViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Signup / Reset Password";
     Layout = null;
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <title>Reset Password</title>
 
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/responsive.css" />
@@ -32,43 +26,45 @@
     <div class="background_section">
         <div class="login_card">
             <div class="login_image">
-                <img src="~/img/login%20illustration.png" alt="Login Illustration" />
+                <img src="~/img/login illustration.png" alt="Illustration" />
             </div>
             <div class="login_form">
-                <form asp-action="Login" method="post">
+                <form asp-action="Signup" asp-controller="UserAccess" method="post">
                     <div class="form-group">
                         <label asp-for="Email"></label>
-                        <input asp-for="Email"  class="form-control" />
+                        <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <input type="password" asp-for="Password"  class="form-control" />
+                        <label asp-for="Password">New Password</label>
+                        <input asp-for="Password" class="form-control" type="password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    <div class="remember">
-                        <input type="checkbox" />
-                        <label>Remember me in this machine</label>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
-                    
 
                     <div class="button_group">
-                        <button type="submit" class="login-btn">Login</button>
-                        <button type="button" class="forgot-btn">Forgot Password</button>
+                        <button type="submit" class="login-btn">Submit</button>
+                        <button type="button" class="forgot-btn" onclick="location.href='@Url.Action("Login", "UserAccess")'">Back to Login</button>
+
                     </div>
-                    <div class="signup">
-                        Create new ?<a asp-action="Signup" asp-controller="UserAccess">Signup</a>
-                    </div>
-                    @if(ViewBag.ErrorMessage!=null)
+
+                    @if (ViewBag.ErrorMessage != null)
                     {
-                        <div class="text-danger" style="margin-top:10px;">
-                            @ViewBag.ErrorMessage
-                        </div>
+                        <div class="alert-error" style="margin-top: 10px;">@ViewBag.ErrorMessage</div>
                     }
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert-success" style="margin-top: 10px;">@ViewBag.SuccessMessage</div>
+                    }
+
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 </form>
-
             </div>
         </div>
     </div>
@@ -78,11 +74,9 @@
             <p>©2023 SMRT. All Rights Reserved | Developed by Alnsurtech</p>
         </div>
     </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
-
 </body>
 </html>
-
-

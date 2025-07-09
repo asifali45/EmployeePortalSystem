@@ -16,15 +16,22 @@
 
             <div class="employee_deletion">
                 <div class="left_del">
-                    <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.PollId">
+                    <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.PollId" asp-route-returnTo="@ViewBag.ReturnTo">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="del_button">Delete</button>
                     </form>
+
                 </div>
                 <div class="right_cancel">
-                    <form method="get" asp-action="@(currentDashboard == "Admin" ? "PollDetails" : "EmployeePollDetails")" asp-controller="Polls">
+                    <form method="get"
+                          asp-action="@(ViewBag.ReturnTo == "Profile" ? "Profile" :
+                    ViewBag.ReturnTo == "EmployeePollDetails" ? "EmployeePollDetails" : "PollDetails")"
+                          asp-controller="@(ViewBag.ReturnTo == "Profile" ? "MyProfile" : "Polls")"
+                          asp-route-activeTab="@(ViewBag.ReturnTo == "Profile" ? "polls" : null)">
                         <button type="submit" class="cancel_button">Cancel</button>
                     </form>
+
+
                 </div>
             </div>
         </div>

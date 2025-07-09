@@ -22,5 +22,7 @@ namespace EmployeePortalSystem.ViewModels
         public string RecipientPhoto { get; set; } = string.Empty;
 
         public List<Award> AwardList { get; set; } = new List<Award>();
+
+        public string? RecipientPhoto { get; set; }
     }
 }

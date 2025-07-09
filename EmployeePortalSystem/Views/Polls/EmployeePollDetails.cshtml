@@ -97,7 +97,13 @@
 
                                 @if (poll.CreatedBy == currentEmpId)
                                 {
-                                    <a asp-action="Delete" asp-route-id="@poll.PollId" title="Delete Poll">
+                                    @* <a asp-action="Delete" asp-route-id="@poll.PollId" title="Delete Poll"> *@
+                                    @*     <img src="~/img/trash-xmark (1).png" width="15px" height="15px" /> *@
+                                    @* </a> *@
+                                    <a asp-action="Delete"
+                                       asp-route-id="@poll.PollId"
+                                       asp-route-returnTo="EmployeePollDetails"
+                                       title="Delete Poll">
                                         <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
                                     </a>
                                 }
