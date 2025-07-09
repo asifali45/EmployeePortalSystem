@@ -91,7 +91,9 @@
 
                     @if (TempData["Message"] != null)
                     {
-                        <div class="alert-success mt-2">@TempData["Message"]</div>
+                        <div id="successMessage" class="alert alert-success mt-2">
+                            @TempData["Message"]
+                        </div>
                     }
                 </form>
             </div>
@@ -121,4 +123,10 @@
                 });
             });
     });
+     setTimeout(function () {
+            var msgDiv = document.getElementById("successMessage");
+            if (msgDiv) {
+                msgDiv.style.display = 'none';
+            }
+        }, 1500);
 </script>
