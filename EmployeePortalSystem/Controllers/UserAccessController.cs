@@ -7,13 +7,23 @@ namespace EmployeePortalSystem.Controllers
 {
     public class UserAccessController : Controller
     {
-       private readonly UserAccessRepository _repository;
+        private readonly UserAccessRepository _repository;
         private readonly BlogsRepository _blogsRepository;
+        private readonly AnnouncementRepository _announcementRepository;
+        private readonly EmployeeRepository _employeeRepository;
+        private readonly CommitteeRepository _committeeRepository;
+        private readonly AwardRepository _awardRepository;
 
-        public UserAccessController(UserAccessRepository repository,BlogsRepository blogsRepository)
+        public UserAccessController(UserAccessRepository repository,
+            BlogsRepository blogsRepository,AnnouncementRepository announcementRepository,
+            EmployeeRepository employeeRepository,CommitteeRepository committeeRepository,AwardRepository awardRepository)
         {
             _repository = repository;
             _blogsRepository = blogsRepository;
+            _announcementRepository = announcementRepository;
+            _employeeRepository = employeeRepository;
+            _committeeRepository = committeeRepository;
+            _awardRepository = awardRepository;
         }
        
 
@@ -65,10 +75,20 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DashboardAdmin()
         {
             HttpContext.Session.SetString("CurrentDashboard", "Admin");
+           
             var latestblogs = _blogsRepository.GetLatestBlogsForDashboard(2);
+
+
+            var latestAnnouncements = _announcementRepository
+               .GetLatestAnnouncements(2);
+
+            var latestawards = _awardRepository.GetAwardsForDashboard(2);
             var model = new DashboardCardViewModel
             {
-                LatestBlogs = latestblogs
+                LatestBlogs = latestblogs,
+                LatestAnnouncements = latestAnnouncements.ToList(),
+                LatestAwards = latestawards.ToList()
+
             };
             return View(model);
         }
@@ -86,12 +106,25 @@ namespace EmployeePortalSystem.Controllers
 
             var latestblogs=_blogsRepository.GetLatestBlogsForDashboard(2);
 
+            // Get department & committee IDs
+            var deptId = _employeeRepository.GetDepartmentIdByEmployeeId(empid);
+            var committeeIds = _committeeRepository.GetCommitteeIdsByEmployeeId(empid);
+
+            //  Fetch  announcements
+            var latestAnnouncements = _announcementRepository
+                .GetLatestVisibleAnnouncementsForEmployee(deptId, committeeIds, 2);
+
+            // Fetch Awards
+            var latestawards = _awardRepository.GetAwardsForDashboard(2);
+
             var model = new DashboardCardViewModel
             {
                 TotalAwards = cardcounts.TotalAwards,
                 BlogsWritten = cardcounts.BlogsWritten,
                 PollsVoted = cardcounts.PollsVoted,
-                LatestBlogs = latestblogs
+                LatestBlogs = latestblogs,
+                LatestAnnouncements = latestAnnouncements.ToList(),
+                LatestAwards= latestawards.ToList()
             };
 
             return View(model);

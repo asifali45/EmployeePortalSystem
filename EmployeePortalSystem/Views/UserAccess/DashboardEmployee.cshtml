@@ -40,6 +40,65 @@
             </div>
         </div>
 
+
+        @if (Model.LatestAnnouncements != null && Model.LatestAnnouncements.Any())
+        {
+            <div class="dashboard-card">
+                <h3>Latest Announcements</h3>
+                <div class="announcement-list-row">
+                    @foreach (var ann in Model.LatestAnnouncements)
+                    {
+                        <div class="announcement-box">
+                            <strong class="announcement-title">@ann.Title</strong>
+                            <p class="announcement-message">@ann.Message</p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("EmployeeAnnouncement", "Announcement")" class="btn btn-secondary btn-sm">View All Announcements</a>
+                </div>
+            </div>
+        }
+
+        @if (Model.LatestAwards != null && Model.LatestAwards.Any())
+        {
+            <div class="dashboard-card">
+                <h3>New Awards</h3>
+                <div class="announcement-list-row">
+                    @foreach (var award in Model.LatestAwards)
+                    {
+                        <div class="announcement-box">
+                            <div class="award-logo">
+                                <!-- Recipient Photo -->
+                                @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                                {
+                                    <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/avatar_11852100.png" class="blog-float-image" alt="Profile image" />
+                                }
+                            </div>
+                            <!-- Award Type -->
+                            <h3 class="blog-title">@award.Type</h3>
+
+                            <!-- Award Details -->
+                            <p class="blog-description">
+                                @award.Description<br /><br />
+                                <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                                <strong>Recipient:</strong> @award.RecipientName<br />
+                                <strong>Given By:</strong> @award.GivenBy<br />
+
+                            </p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("EmployeeAwardList","Award")" class="btn btn-secondary btn-sm">View All Awards</a>
+                </div>
+            </div>
+        }
+
         <!-- Blog and Polls card -->
         <div class="table_card">
             <!-- First Table -->
@@ -138,12 +197,10 @@
             </div>
         </div>
 
-        <div class="dashboard-card">
-            <h4>Announcements</h4>
-            <div class="blog-card-content">
-                
-            </div>
-        </div>
+        
+      
+
+
 
        
 

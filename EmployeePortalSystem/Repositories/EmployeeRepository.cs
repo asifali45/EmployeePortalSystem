@@ -90,6 +90,15 @@ namespace EmployeePortalSystem.Repositories
             conn.Execute(sql, new { Id = id });
         }
 
+        //used when announcemnt filtering in dashboard
+        public int? GetDepartmentIdByEmployeeId(int empId)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = "SELECT DepartmentId FROM employee WHERE EmployeeId = @empId";
+            return conn.QueryFirstOrDefault<int?>(sql, new { empId });
+        }
+
+
 
     }
 
