@@ -5,14 +5,25 @@
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
 
-<div class="container del_emp">
-    <h3>Are you sure you want to delete award: <b>@Model.Type</b>?</h3>
+<div class="container">
+    <div class="empmaster_card">
+        <div class="del_emp">
+            <h3>Are you sure you want to delete award: <b>@Model.Type</b>?</h3>
 
-    <form asp-action="DeleteConfirmed" method="post">
-        <input type="hidden" asp-for="AwardId" />
-        <div class="employee_deletion">
-            <button type="submit" class="del_button">Delete</button>
-            <a asp-action="Index" class="cancel_button">Cancel</a>
+            <div class="employee_deletion">
+                <div class="left_del">
+                    <form asp-action="Delete" method="post">
+                        <!-- NOT DeleteConfirmed -->
+                        <input type="hidden" name="id" value="@Model.AwardId" />
+                        <button type="submit" class="del_button">Delete</button>
+                    </form>
+                </div>
+                <div class="right_cancel">
+                    <form asp-action="Index" method="get">
+                        <button type="submit" class="cancel_button">Cancel</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
