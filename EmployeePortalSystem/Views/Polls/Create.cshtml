@@ -1,13 +1,11 @@
 ﻿@model EmployeePortalSystem.Models.Poll
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Create Poll";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
     var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
-
 }
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
 
 <div class="container">
     <div class="page-contents">
@@ -36,7 +34,7 @@
         <div class="container_emp mb-20">
             <div class="empmaster_card">
                 <form asp-action="Create" asp-controller="Polls" method="post" class="emp_form">
-                    @* <input type="hidden" asp-for="PollId" /> *@
+                    @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                     <div class="form_row">
@@ -48,7 +46,7 @@
                             </div>
                         </div>
                         <div class="form_group">
-                            <label>Option 3 </label>
+                            <label>Option 3</label>
                             <div class="val">
                                 <input asp-for="Option3" class="form-control" placeholder="Enter option 3 (optional)" />
                                 <span asp-validation-for="Option3" class="text-danger"></span>
@@ -83,20 +81,7 @@
                     </div>
 
                     <div class="form_row">
-                       
-                        @if (currentDashboard == "Admin")
-                        {
-                            <form method="get" asp-action="PollDetails" asp-controller="Polls">
-                                <button type="submit" class="custom-button">Submit</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls">
-                                <button type="submit" class="custom-button">Submit</button>
-                            </form>
-                        }
-
+                        <button type="submit" class="custom-button">Submit</button>
                         <button type="reset" class="custom-button">Cancel</button>
                     </div>
 

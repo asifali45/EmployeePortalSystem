@@ -2,21 +2,24 @@
 using Dapper;
 using EmployeePortalSystem.ViewModels;
 using System.Data.Common;
+using EmployeePortalSystem.Context;
 
 namespace EmployeePortalSystem.Repositories
 {
     public class UserAccessRepository
     {
-        private readonly string _connectionString;
+        private readonly AppDbContext _context;
 
-        public UserAccessRepository(IConfiguration configuration)
+        public UserAccessRepository(AppDbContext context)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _context = context;
         }
+
+
 
         public LoginViewModel EmployeeLogin(string email,string password)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection =_context.CreateConnection())
             {
                 connection.Open();
                 string query = @"
@@ -35,7 +38,7 @@ namespace EmployeePortalSystem.Repositories
 
         public DashboardCardViewModel GetCardCounts(int empid)
         {
-            using var conn = new MySqlConnection(_connectionString);
+            using var conn =_context.CreateConnection();
             conn.Open();
             string sql = @"
                 SELECT 
@@ -46,6 +49,8 @@ namespace EmployeePortalSystem.Repositories
 
             return conn.QueryFirst<DashboardCardViewModel>(sql, new { EmpId = empid });
         }
+
+        
     }
 
 }
