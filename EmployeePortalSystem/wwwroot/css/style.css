@@ -1929,17 +1929,51 @@ input[type="radio"].highlight-radio:checked {
 }
 .dashboard-card {
     width: 100%;
-/*    max-width: 1200px;*/
     background: #fff;
-    border: 1px solid #ddd;
+/*    border: 1px solid #ddd;*/
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    margin: 20px auto;
+    margin: 2px auto;
     padding: 16px;
     box-sizing: border-box;
 }
 
+
+.announcement-list-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 8px 0;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Makes it responsive */
+}
+
+.announcement-box {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 49%; /* or use 45%, or auto depending on how many per row */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    box-sizing: border-box;
+}
+
+
+.announcement-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.announcement-message {
+    margin: 0;
+    color: #555;
+    font-size: 14px;
+
+}
 
 .alert-success {
     color: #555;
@@ -1949,4 +1983,3 @@ input[type="radio"].highlight-radio:checked {
 .alert-error {
     color: #555;
     font-size: 12px;
-}

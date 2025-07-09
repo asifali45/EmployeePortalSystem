@@ -17,7 +17,7 @@ namespace EmployeePortalSystem.Repositories
         public IEnumerable<Announcement> GetAll()
         {
             using var db = _dbContext.CreateConnection();
-            return db.Query<Announcement>("SELECT * FROM announcement ORDER BY DisplayOrder ASC");
+            return db.Query<Announcement>("SELECT * FROM announcement ORDER BY DisplayOrder ASC,PostDate DESC");
         }
 
         public Announcement GetById(int id)
@@ -98,6 +98,36 @@ namespace EmployeePortalSystem.Repositories
 
             return db.Query<Announcement>(sql, new { visibleTo });
         }
+
+        //method for dashboardEmployee
+        public IEnumerable<Announcement> GetLatestVisibleAnnouncementsForEmployee(
+     int? deptId, List<int> committeeIds, int count = 2)
+        {
+            using var db = _dbContext.CreateConnection();
+
+            string sql = @"
+    SELECT * FROM announcement
+    WHERE VisibleTo = 'All'
+       OR (VisibleTo = 'Department' AND VisibleToDepartmentId = @deptId)
+       OR (VisibleTo = 'Committee' AND VisibleToCommitteeId IN @committeeIds)
+    ORDER BY DisplayOrder ASC,PostDate DESC
+    LIMIT @count";
+
+            return db.Query<Announcement>(sql, new { deptId, committeeIds, count });
+        }
+
+        //method for dashboardAdmin
+        public IEnumerable<Announcement> GetLatestAnnouncements(int count = 2)
+        {
+            using var db = _dbContext.CreateConnection();
+            string sql = @"
+        SELECT * FROM announcement
+        ORDER BY  DisplayOrder ASC,PostDate DESC
+        LIMIT @count";
+            return db.Query<Announcement>(sql, new { count });
+        }
+
+
 
     }
 }
