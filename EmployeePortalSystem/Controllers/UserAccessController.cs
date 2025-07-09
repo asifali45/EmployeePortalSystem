@@ -104,6 +104,12 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("DashboardAdmin", "UserAccess");
         }
 
+        [HttpPost]
+        public IActionResult SwitchToEmployee()
+        {
+            return RedirectToAction("DashboardEmployee", "UserAccess");
+        }
+
         [HttpGet]
         public IActionResult Signup()
         {
