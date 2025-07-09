@@ -44,6 +44,8 @@ namespace EmployeePortalSystem.Repositories
                 PostDate = DateTime.Now,
                 announcement.VisibleTo,
                 announcement.DisplayOrder,
+                VisibleToDepartmentId = (announcement.VisibleTo == "Department") ? announcement.VisibleToDepartmentId : null,
+                VisibleToCommitteeId = (announcement.VisibleTo == "Committee") ? announcement.VisibleToCommitteeId : null,
                 IsEvent = (announcement.IsEvent ?? false) ? 1 : 0,
                 EventDate = (announcement.IsEvent ?? false) ? announcement.EventDate : null,
                 EventTime = (announcement.IsEvent ?? false) ? announcement.EventTime : null,

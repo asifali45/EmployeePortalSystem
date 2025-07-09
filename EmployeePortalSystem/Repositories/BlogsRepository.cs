@@ -27,6 +27,7 @@ namespace EmployeePortalSystem.Repositories
             b.Content,
             b.Image,
             b.Tags,
+            b.AuthorId,
             e.Name AS AuthorName,
             b.CreatedAt,
             b.UpdatedAt,
@@ -71,6 +72,7 @@ namespace EmployeePortalSystem.Repositories
             b.Tags,
             b.CreatedAt,
             b.UpdatedAt,
+            b.AuthorId,
             e.Name AS AuthorName
         FROM Blog b
         LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId

@@ -46,6 +46,12 @@ namespace EmployeePortalSystem.Controllers
                 HttpContext.Session.SetString("Designation", employee.RoleName);
                 HttpContext.Session.SetString("IsAdmin", employee.IsAdmin.ToString());
 
+
+                HttpContext.Session.SetString("Role", employee.IsAdmin ? "admin" : "employee");
+
+                // ✅ Set "CurrentDashboard" for cancel redirection in Delete.cshtml
+                HttpContext.Session.SetString("CurrentDashboard", employee.IsAdmin ? "Admin" : "Employee");
+
                 return RedirectToAction("DashboardEmployee", "UserAccess");
             }   
             else
