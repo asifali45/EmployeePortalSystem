@@ -4,6 +4,9 @@
 }
 
 @model List<EmployeePortalSystem.ViewModels.BlogViewModel>
+@{
+    int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+}
 
 
 
@@ -103,6 +106,16 @@
                             </form>
                        
                         </div>
+
+                        @if (blog.AuthorId == currentEmpId)
+                        {
+                            <div class="blog-del">
+                                <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId })" title="Delete Blog">
+                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                </a>
+                            </div>
+                        }
+
 
                     </div>
                 </div>

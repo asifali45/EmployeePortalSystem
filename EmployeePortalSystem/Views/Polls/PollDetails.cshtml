@@ -3,7 +3,10 @@
     ViewData["Title"] = "Polls";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
     var allResults = ViewBag.Results as Dictionary<int, Dictionary<string, int>>; // PollId -> OptionId -> Count
+    
+    var isAdmin = (Context.Session.GetString("Role") ?? "").ToLower() == "admin";
 }
+
 
 
 <div class="container">
@@ -93,14 +96,15 @@
 
                         <!-- Actions -->
                         <div class="blog-actions">
+                            <div class="like-content">
                             <a asp-action="Results" asp-route-id="@poll.PollId" class="comment-btn">📊 View Responses</a>
 
-                            <form asp-action="Delete" asp-route-id="@poll.PollId" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this poll?');">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" style="border: none; background: transparent; padding: 0; cursor: pointer;">
-                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" alt="Delete" />
-                                </button>
-                            </form>
+                                <a asp-action="Delete" asp-route-id="@poll.PollId" title="Delete Poll" style="margin-left: 15px;">
+                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                </a>
+
+
+                        </div>
                         </div>
 
                     </div>

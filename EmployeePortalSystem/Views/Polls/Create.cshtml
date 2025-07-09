@@ -5,7 +5,10 @@
     ViewData["Title"] = "Create Poll";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
     var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
+
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 
 <div class="container">
     <div class="page-contents">
@@ -81,7 +84,20 @@
                     </div>
 
                     <div class="form_row">
-                        <button type="submit" class="custom-button">Submit</button>
+                       
+                        @if (currentDashboard == "Admin")
+                        {
+                            <form method="get" asp-action="PollDetails" asp-controller="Polls">
+                                <button type="submit" class="custom-button">Submit</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls">
+                                <button type="submit" class="custom-button">Submit</button>
+                            </form>
+                        }
+
                         <button type="reset" class="custom-button">Cancel</button>
                     </div>
 

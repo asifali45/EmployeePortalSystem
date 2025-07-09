@@ -70,34 +70,80 @@ namespace EmployeePortalSystem.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
+
+        //[HttpGet]
+        //public IActionResult Delete(int id)
+        //{
+        //    var poll = _repo.GetById(id);
+        //    if (poll == null)
+        //        return NotFound();
+
+        //    var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+        //    var isAdmin = IsAdmin(empId);
+
+        //    // Only allow delete if admin or creator
+        //    if (!isAdmin && poll.CreatedBy != empId)
+        //    {
+        //        TempData["Error"] = "You are not authorized to delete this poll.";
+        //        var role = HttpContext.Session.GetString("Role")?.ToLower();
+        //        return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
+        //    }
+
+
+        //    HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
+
+
+        //    return View(poll); // Goes to Views/Polls/Delete.cshtml
+        //}
+
+
+        [HttpGet]
         public IActionResult Delete(int id)
         {
-            var empId = HttpContext.Session.GetInt32("EmployeeId");
-            if (empId == null)
-                return RedirectToAction("Login", "UserAccess");
-
             var poll = _repo.GetById(id);
             if (poll == null)
                 return NotFound();
 
-            // Allow if current user is the creator OR admin
-            if (poll.CreatedBy != empId && !IsAdmin(empId.Value))
+            var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var isAdmin = IsAdmin(empId); // <- this uses the "Role" session string
+
+            if (!isAdmin && poll.CreatedBy != empId)
+            {
+                TempData["Error"] = "You are not authorized to delete this poll.";
+                var role = HttpContext.Session.GetString("Role")?.ToLower();
+                return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
+            }
+
+            HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
+
+            return View(poll); // This should render Delete.cshtml
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var poll = _repo.GetById(id);
+            if (poll == null)
+                return NotFound();
+
+            if (poll.CreatedBy != empId && !IsAdmin(empId))
                 return Forbid();
 
             _repo.Delete(id);
             TempData["Message"] = "Poll deleted.";
-            if (Request.Headers["Referer"].ToString().Contains("PollDetails"))
-            {
-                return RedirectToAction("PollDetails");
-            }
-            else
-            {
-                return RedirectToAction("EmployeePollDetails");
-            }
 
+            var role = HttpContext.Session.GetString("Role");
+            if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+                return RedirectToAction("PollDetails");
+
+            return RedirectToAction("EmployeePollDetails");
         }
+
+
 
         // Helper method to check admin (you can adjust logic accordingly)
         private bool IsAdmin(int empId)
@@ -105,6 +151,7 @@ namespace EmployeePortalSystem.Controllers
             // Example logic: You can replace this with your actual admin check
             var role = HttpContext.Session.GetString("Role");
             return role != null && role.ToLower() == "admin";
+
         }
 
         public IActionResult Results(int id)
@@ -152,12 +199,15 @@ namespace EmployeePortalSystem.Controllers
             if (empId == null)
                 return RedirectToAction("Login", "UserAccess");
 
+
+
             // Ensure the selected option is not null or empty
             if (string.IsNullOrEmpty(selectedOption))
             {
                 TempData["Error"] = "Please select an option before submitting.";
                 return RedirectToAction("EmployeePollDetails");
             }
+
 
             if (!_repo.HasVoted(pollId, empId.Value))
             {
@@ -172,8 +222,14 @@ namespace EmployeePortalSystem.Controllers
                 _repo.SubmitResponse(response);
             }
 
+
             return RedirectToAction("EmployeePollDetails");
         }
+
+
+
+
+
 
 
 
