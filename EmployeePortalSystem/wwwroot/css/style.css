@@ -1762,13 +1762,15 @@ input[type="radio"].highlight-radio:checked {
     flex-shrink: 0;
 }
 
-/*.blog-text-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: nowrap;*/ /* prevent wrapping image above text */
-/*}
-
-.list-group-item {
-    border: none;
-}*/
+.dashboard-card {
+    width: 100%;
+/*    max-width: 1200px;*/
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
