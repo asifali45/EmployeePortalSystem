@@ -104,14 +104,29 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("DashboardAdmin", "UserAccess");
         }
 
-        [HttpPost]
-        public IActionResult SwitchToEmployee()
+        [HttpGet]
+        public IActionResult Signup()
         {
-            return RedirectToAction("DashboardEmployee", "UserAccess");
+            return View(new SignUpViewModel());
         }
 
-       
+        [HttpPost]
+        public IActionResult Signup(SignUpViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
+            bool updated = _repository.UpdatePasswordIfEmailExists(model.Email, model.Password);
+
+            if (!updated)
+            {
+                ViewBag.ErrorMessage = "Email not found.";
+                return View(model);
+            }
+
+            ViewBag.SuccessMessage = "Password reset successful. You can now login.";
+            return View(new SignUpViewModel());
+        }
 
 
     }

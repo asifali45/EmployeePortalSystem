@@ -3,6 +3,10 @@
     ViewData["Title"] = "My Profile";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
 }
+@{
+    int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+}
+
 <div class="container">
     <div class="emp_head">
         <h2>My Profile</h2>
@@ -16,8 +20,15 @@
             }
             else
             {
-                <img src="~/img/default-user.png" alt="No Photo" />
+               
+                    <img src="~/img/avatar_11852100.png"  alt="Profile image" />
             }
+                <div style="margin-top: px;">
+                    <a asp-action="EditPhoto" asp-controller="MyProfile" class="btn-edit-photo">
+                        <img src="~/img/edit Icon.png" alt="edit" class="profile-edit" />
+                        
+                    </a>
+                </div>
         </div>
 
         <div class="profile-details">
@@ -56,7 +67,7 @@
                 {
                     foreach (var award in Model.Awards)
                     {
-                        <div class="blog-card">
+                        <div class="pro-card">
                             <div class="blog-card-content">
                                 <div class="blog-card-text">
                                     <div class="award-logo">
@@ -97,7 +108,7 @@
                 {
                     foreach (var blog in Model.Blogs)
                     {
-                        <div class="blog-card">
+                        <div class="pro-card">
                             <div class="blog-card-content">
                                 <div class="blog-card-text">
                                     @if (!string.IsNullOrEmpty(blog.Image))
@@ -117,8 +128,10 @@
                                     </div>
 
                                     <div class="blog-actions">
-                                        <form method="post" asp-controller="Blogs" asp-action="ToggleLike">
+                                            <form method="post" asp-controller="Blogs" asp-action="ToggleLike">
+                                                
                                             <input type="hidden" name="blogId" value="@blog.BlogId" />
+                                                <input type="hidden" name="returnTo" value="Profile" />
                                             <button class="like-button" type="submit">
                                                 <div class="like-content">
                                                     <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" />
@@ -147,10 +160,19 @@
 
                                         <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post">
                                             <input type="hidden" name="blogId" value="@blog.BlogId" />
+                                                <input type="hidden" name="returnTo" value="Profile" />
                                             <input name="commentText" placeholder="Write your comment..." required>
                                             <button type="submit">Post</button>
                                         </form>
                                     </div>
+                                        @if (blog.AuthorId == currentEmpId)
+                                        {
+                                            <div class="blog-del">
+                                                <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId , returnTo = "Profile"})" title="Delete Blog">
+                                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                                </a>
+                                            </div>
+                                        }
                                 </div>
                             </div>
                         </div>
@@ -177,7 +199,7 @@
                         var selected = isVoted ? selectedOptions[poll.PollId] : null;
                         var options = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
 
-                        <div class="blog-card" style="margin-bottom: 30px;">
+                        <div class="pro-card" style="margin-bottom: 30px;">
                             <div class="blog-card-content">
                                 <div class="blog-card-text">
                                     <h3 class="blog-title">@poll.Question</h3>
@@ -228,13 +250,10 @@
                                             <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn" style="margin-left: 15px;">
                                                 📊 View Results
                                             </a>
-                                            
-                                                <form asp-action="Delete" asp-controller="Polls" asp-route-id="@poll.PollId" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
-                                                    @Html.AntiForgeryToken()
-                                                    <button type="submit" style="border: none; background: transparent; padding: 0; cursor: pointer;">
-                                                        <img src="~/img/trash-xmark (1).png" width="15px" height="15px" alt="Delete" />
-                                                    </button>
-                                                </form>
+                                                <a asp-action="Delete" asp-controller="Polls" asp-route-id="@poll.PollId" asp-route-returnTo="Profile" title="Delete Poll">
+                                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                                </a>
+
                 
                                         </div>
                                     </form>
@@ -254,6 +273,43 @@
     </div>
     
 </div>
+@section Scripts {
+    <script>
+        function toggleCommentSection(blogId) {
+            const section = document.getElementById(`comment-section-${blogId}`);
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            contents.forEach(tab => tab.style.display = 'none');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) {
+                activeContent.style.display = 'block';
+            }
+
+            const activeButton = [...buttons].find(btn => btn.textContent.toLowerCase().includes(tabId.toLowerCase()));
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const activeTab = "@ViewBag.ActiveTab" || "awards";
+            showTab(activeTab);
+        });
+    </script>
+}
+
+
 @* <script> *@
 @*     function showTab(tabId) { *@
 @*         const contents = document.querySelectorAll('.tab-content'); *@
@@ -262,40 +318,19 @@
 @*         contents.forEach(tab => tab.style.display = 'none'); *@
 @*         buttons.forEach(btn => btn.classList.remove('active')); *@
 
-@*         document.getElementById(tabId).style.display = 'block'; *@
-@*         document.querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`).classList.add('active'); *@
+@*         const activeContent = document.getElementById(tabId); *@
+@*         if (activeContent) { *@
+@*             activeContent.style.display = 'block'; *@
+@*         } *@
+
+@*         const activeButton = [...buttons].find(btn => btn.textContent.toLowerCase().includes(tabId.toLowerCase())); *@
+@*         if (activeButton) { *@
+@*             activeButton.classList.add('active'); *@
+@*         } *@
 @*     } *@
 
-@*     // ✅ Auto-show tab if redirected *@
 @*     window.addEventListener("DOMContentLoaded", function () { *@
-@*         const activeTab = "@ViewBag.ActiveTab"; *@
-@*         if (activeTab) { *@
-@*             showTab(activeTab); *@
-@*         } *@
+@*         const activeTab = "@ViewBag.ActiveTab" || "awards"; // default to awards *@
+@*         showTab(activeTab); *@
 @*     }); *@
 @* </script> *@
-
-<script>
-    function showTab(tabId) {
-        const contents = document.querySelectorAll('.tab-content');
-        const buttons = document.querySelectorAll('.tab-btn');
-
-        contents.forEach(tab => tab.style.display = 'none');
-        buttons.forEach(btn => btn.classList.remove('active'));
-
-        const activeContent = document.getElementById(tabId);
-        if (activeContent) {
-            activeContent.style.display = 'block';
-        }
-
-        const activeButton = [...buttons].find(btn => btn.textContent.toLowerCase().includes(tabId.toLowerCase()));
-        if (activeButton) {
-            activeButton.classList.add('active');
-        }
-    }
-
-    window.addEventListener("DOMContentLoaded", function () {
-        const activeTab = "@ViewBag.ActiveTab" || "awards"; // default to awards
-        showTab(activeTab);
-    });
-</script>

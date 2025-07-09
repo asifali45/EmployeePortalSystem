@@ -35,8 +35,46 @@ namespace EmployeePortalSystem.Controllers
             var selected = _repo.GetSelectedOptionsByEmployee(empId.Value);
             ViewBag.SelectedOptions = selected;
 
-            ViewBag.ActiveTab = activeTab;
+            ViewBag.ActiveTab = TempData["ActiveTab"]?.ToString() ?? "awards";
             return View(employee);
         }
+        [HttpGet]
+        public IActionResult EditPhoto()
+        {
+            int? empId = HttpContext.Session.GetInt32("EmployeeId");
+            if (empId == null)
+                return RedirectToAction("Login", "UserAccess");
+
+            var employee = _repo.GetEmployeeById(empId.Value);
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPhoto(IFormFile PhotoFile)
+        {
+            int? empId = HttpContext.Session.GetInt32("EmployeeId");
+            if (empId == null)
+                return RedirectToAction("Login", "UserAccess");
+
+            var employee = _repo.GetEmployeeById(empId.Value);
+
+            if (PhotoFile != null && PhotoFile.Length > 0)
+            {
+                var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(PhotoFile.FileName);
+                var path = Path.Combine(_env.WebRootPath, "uploads", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await PhotoFile.CopyToAsync(stream);
+                }
+
+                employee.Photo = fileName;
+                _repo.UpdateEmployeePhoto(empId.Value, fileName); // Add this method in repo
+                TempData["Message1"] = "Photo updated successfully!";
+            }
+
+            return RedirectToAction("Profile");
+        }
+
     }
 }

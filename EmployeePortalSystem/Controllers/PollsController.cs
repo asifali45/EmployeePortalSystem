@@ -52,21 +52,26 @@ namespace EmployeePortalSystem.Controllers
 
             model.CreatedAt = DateTime.Now;
             model.CreatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
 
             _repo.Add(model);
 
             TempData["Message"] = "Poll created successfully!";
 
             // Redirect based on role
-            var role = HttpContext.Session.GetString("Role");
-            if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-            {
-                return RedirectToAction("PollDetails");
-            }
+            //var role = HttpContext.Session.GetString("Role");
+            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+            //{
+            //    return RedirectToAction("PollDetails");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("EmployeePollDetails");
+            //}
+            if (currentDashboard == "Admin")
+                return RedirectToAction("PollDetails", "Polls");
             else
-            {
-                return RedirectToAction("EmployeePollDetails");
-            }
+                return RedirectToAction("EmployeePollDetails", "Polls");
         }
 
 
@@ -98,7 +103,7 @@ namespace EmployeePortalSystem.Controllers
 
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, string? returnTo)
         {
             var poll = _repo.GetById(id);
             if (poll == null)
@@ -115,16 +120,17 @@ namespace EmployeePortalSystem.Controllers
             }
 
             HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
-
+            ViewBag.ReturnTo = returnTo;
             return View(poll); // This should render Delete.cshtml
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             var poll = _repo.GetById(id);
             if (poll == null)
                 return NotFound();
@@ -135,13 +141,31 @@ namespace EmployeePortalSystem.Controllers
             _repo.Delete(id);
             TempData["Message"] = "Poll deleted.";
 
-            var role = HttpContext.Session.GetString("Role");
-            if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-                return RedirectToAction("PollDetails");
+            if (!string.IsNullOrEmpty(returnTo))
+            {
+                if (returnTo.ToLower() == "profile")
+                {
+                    TempData["ActiveTab"] = "polls";
+                    return RedirectToAction("Profile", "MyProfile");
+                }
 
-            return RedirectToAction("EmployeePollDetails");
+                if (returnTo == "EmployeePollDetails")
+                    return RedirectToAction("EmployeePollDetails", "Polls");
+
+                if (returnTo == "PollDetails")
+                    return RedirectToAction("PollDetails", "Polls");
+            }
+
+            if (currentDashboard == "Admin")
+                return RedirectToAction("PollDetails", "Polls");
+
+            return RedirectToAction("EmployeePollDetails", "Polls");
         }
+            //var role = HttpContext.Session.GetString("Role");
+            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+            //    return RedirectToAction("PollDetails");
 
+            //return RedirectToAction("EmployeePollDetails");
 
 
         // Helper method to check admin (you can adjust logic accordingly)
@@ -217,7 +241,9 @@ namespace EmployeePortalSystem.Controllers
                 _repo.SubmitResponse(response);
             }
             if (returnTo == "Profile")
-                return RedirectToAction("Profile", "MyProfile", new { activeTab = "polls" });
+                TempData["ActiveTab"] = "polls";
+                return RedirectToAction("Profile", "MyProfile");
+
             return RedirectToAction("EmployeePollDetails");
            
         }

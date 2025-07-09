@@ -3,6 +3,8 @@ using EmployeePortalSystem.ViewModels;
 using MySql.Data.MySqlClient;
 using Dapper;
 using Mysqlx.Crud;
+using Org.BouncyCastle.Asn1.X509;
+using EmployeePortalSystem.Models;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -62,7 +64,9 @@ namespace EmployeePortalSystem.Repositories
         public List<BlogViewModel> GetBlogsByEmployeeId(int empId)
         {
             using var conn = _context.CreateConnection();
-            string sql = @"
+
+            // First: Get blogs with LikeCount
+            string blogSql = @"
         SELECT 
             b.BlogId,
             b.Title,
@@ -72,13 +76,44 @@ namespace EmployeePortalSystem.Repositories
             b.AuthorId,
             e.Name AS AuthorName,
             b.CreatedAt,
-            b.UpdatedAt
+            b.UpdatedAt,
+            (SELECT COUNT(*) FROM blog_like bl WHERE bl.BlogId = b.BlogId) AS LikeCount
         FROM blog b
         JOIN employee e ON b.AuthorId = e.EmployeeId
-        WHERE b.AuthorId = @empId";
+        WHERE b.AuthorId = @empId
+        ORDER BY b.CreatedAt DESC";
 
-            return conn.Query<BlogViewModel>(sql, new { empId }).ToList();
+            var blogs = conn.Query<BlogViewModel>(blogSql, new { empId }).ToList();
+
+            // Second: Get comments for all blogs
+            string commentSql = @"
+        SELECT 
+            bc.CommentId,
+            bc.BlogId,
+            bc.EmployeeId,
+            bc.CommentText,
+            bc.CreatedAt,
+            e.Name AS EmployeeName
+        FROM blog_comment bc
+        JOIN employee e ON bc.EmployeeId = e.EmployeeId
+        WHERE bc.BlogId IN @BlogIds";
+
+            var blogIds = blogs.Select(b => b.BlogId).ToList();
+
+            if (blogIds.Any())
+            {
+                var comments = conn.Query<BlogCommentViewModel>(commentSql, new { BlogIds = blogIds }).ToList();
+
+                // Map comments to respective blogs
+                foreach (var blog in blogs)
+                {
+                    blog.Comments = comments.Where(c => c.BlogId == blog.BlogId).ToList();
+                }
+            }
+
+            return blogs;
         }
+
 
         public List<PollViewModel> GetPollsByEmployeeId(int empId)
         {
@@ -113,6 +148,18 @@ namespace EmployeePortalSystem.Repositories
             return results.ToDictionary(r => r.PollId, r => r.SelectedOption);
         }
 
+        public Employee GetEmployeeById(int empId)
+        {
+            using var conn = _context.CreateConnection();
+            return conn.QueryFirstOrDefault<Employee>(
+                "SELECT EmployeeId, Name, Photo FROM employee WHERE EmployeeId = @empId", new { empId });
+        }
+
+        public void UpdateEmployeePhoto(int empId, string fileName)
+        {
+            using var conn = _context.CreateConnection();
+            conn.Execute("UPDATE employee SET Photo = @fileName WHERE EmployeeId = @empId", new { fileName, empId });
+        }
 
     }
 }

@@ -1181,7 +1181,7 @@ table .edit-icon img {
 
 .blog-card {
     width: 100%;
-    width: 900px;
+    max-width: 900px;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -1777,7 +1777,18 @@ input[type="radio"].highlight-radio:checked {
 /*  My Profile  */
 
 
-
+.pro-card {
+    width: 100%;
+    width: 900px!important;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
 .profile-wrapper {
     background: #ffffff;
     border-radius: 12px;
@@ -1797,13 +1808,22 @@ input[type="radio"].highlight-radio:checked {
     align-items: center;
 }
 
+.profile-photo {
+    text-align: center;
+}
 
 .profile-photo img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #cd2f74;
+    border: none;
+}
+
+.profile-edit {
+    width:15px!important;
+    height:15px!important;
+    cursor:pointer;
 }
 
 .p-name h2 {
@@ -1902,7 +1922,7 @@ input[type="radio"].highlight-radio:checked {
 }
 
 .tab-content {
-    width: 100%!;
+    width: 900px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1918,4 +1938,15 @@ input[type="radio"].highlight-radio:checked {
     margin: 20px auto;
     padding: 16px;
     box-sizing: border-box;
+}
+
+
+.alert-success {
+    color: #555;
+    font-size: 14px;
+}
+
+.alert-error {
+    color: #555;
+    font-size: 12px;
 }
