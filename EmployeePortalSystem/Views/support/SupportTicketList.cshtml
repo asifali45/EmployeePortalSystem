@@ -33,6 +33,7 @@
                         <th>Employee</th>
                         <th>Issue</th>
                         <th>Description</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Response</th>
                         <th>Assign</th>
@@ -50,19 +51,19 @@
                             <td>@ticket.EmployeeName</td>
                             <td>@ticket.IssueTitle</td>
                             <td>@ticket.Description</td>
-
+                            <td>@ticket.Type</td>
                             <td>@ticket.Status</td>
 
                             <td>
                                @ticket.Response
                             </td>
-
+                            <td>@ticket.AssignedToName</td>
 
 
                             <td>
                                     @ticket.EscalatedToName
                             </td>
-                            <td>@ticket.AssignedToName</td>
+                           
 
                             <td>
                                 <span style="display: flex; gap: 15px; justify-content: center;">

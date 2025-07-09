@@ -1211,6 +1211,7 @@ table .edit-icon img {
 
 .blog-card-text {
     flex: 2 1 600px;
+
 }
 
 .blog-title {
@@ -1747,6 +1748,30 @@ input[type="radio"].highlight-radio:checked {
     height: 170px;
     border-radius: 5%;
     object-fit: cover;
+}
+
+/*Dashboard Blogs*/
+
+.blog-float-image1 {
+
+    width: 150px ;
+    height: 100px;
+    margin-right: 5px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/*.blog-text-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap;*/ /* prevent wrapping image above text */
+/*}
+
+.list-group-item {
+    border: none;
+}*/
 }
 
 /*  My Profile  */
