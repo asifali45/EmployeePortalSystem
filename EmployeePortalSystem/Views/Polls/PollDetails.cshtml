@@ -3,7 +3,10 @@
     ViewData["Title"] = "Polls";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
     var allResults = ViewBag.Results as Dictionary<int, Dictionary<string, int>>; // PollId -> OptionId -> Count
+    
+    var isAdmin = (Context.Session.GetString("Role") ?? "").ToLower() == "admin";
 }
+
 
 
 <div class="container">
@@ -19,7 +22,7 @@
                 </form>
             </div>
             <div class="right_btn">
-                <form method="get" asp-action="Create" asp-controller="polls">
+                <form method="get" asp-action="Create" asp-controller="Polls">
                     <button type="submit" class="create_emp_btn">Add Poll</button>
                 </form>
             </div>
@@ -93,11 +96,17 @@
 
                         <!-- Actions -->
                         <div class="blog-actions">
+                            <div class="like-content">
                             <a asp-action="Results" asp-route-id="@poll.PollId" class="comment-btn">📊 View Responses</a>
-                            <a asp-action="Delete" asp-route-id="@poll.PollId">
-                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
-                            </a>
+
+                                <a asp-action="Delete" asp-route-id="@poll.PollId" title="Delete Poll" style="margin-left: 15px;">
+                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                </a>
+
+
                         </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

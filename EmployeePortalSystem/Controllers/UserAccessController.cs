@@ -2,15 +2,18 @@
 using EmployeePortalSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace EmployeePortalSystem.Controllers
 {
     public class UserAccessController : Controller
     {
        private readonly UserAccessRepository _repository;
+        private readonly BlogsRepository _blogsRepository;
 
-        public UserAccessController(UserAccessRepository repository)
+        public UserAccessController(UserAccessRepository repository,BlogsRepository blogsRepository)
         {
             _repository = repository;
+            _blogsRepository = blogsRepository;
         }
        
 
@@ -42,6 +45,12 @@ namespace EmployeePortalSystem.Controllers
                 HttpContext.Session.SetString("Designation", employee.RoleName);
                 HttpContext.Session.SetString("IsAdmin", employee.IsAdmin.ToString());
 
+
+                HttpContext.Session.SetString("Role", employee.IsAdmin ? "admin" : "employee");
+
+                // ✅ Set "CurrentDashboard" for cancel redirection in Delete.cshtml
+                HttpContext.Session.SetString("CurrentDashboard", employee.IsAdmin ? "Admin" : "Employee");
+
                 return RedirectToAction("DashboardEmployee", "UserAccess");
             }   
             else
@@ -56,7 +65,12 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DashboardAdmin()
         {
             HttpContext.Session.SetString("CurrentDashboard", "Admin");
-            return View();
+            var latestblogs = _blogsRepository.GetLatestBlogsForDashboard(2);
+            var model = new DashboardCardViewModel
+            {
+                LatestBlogs = latestblogs
+            };
+            return View(model);
         }
 
         [HttpGet]
@@ -68,7 +82,17 @@ namespace EmployeePortalSystem.Controllers
          
 
 
-            var model =_repository.GetCardCounts(empid);
+            var cardcounts =_repository.GetCardCounts(empid);
+
+            var latestblogs=_blogsRepository.GetLatestBlogsForDashboard(2);
+
+            var model = new DashboardCardViewModel
+            {
+                TotalAwards = cardcounts.TotalAwards,
+                BlogsWritten = cardcounts.BlogsWritten,
+                PollsVoted = cardcounts.PollsVoted,
+                LatestBlogs = latestblogs
+            };
 
             return View(model);
         }

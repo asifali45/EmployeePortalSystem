@@ -32,9 +32,10 @@ namespace EmployeePortalSystem.Repositories
 
             string sql = @"
                 INSERT INTO announcement
-                (Title, Message, PostDate, VisibleTo, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
+                (Title, Message, PostDate, VisibleTo, VisibleToDepartmentId, VisibleToCommitteeId, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
                 VALUES
-                (@Title, @Message, @PostDate, @VisibleTo, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+                (@Title, @Message, @PostDate, @VisibleTo, @VisibleToDepartmentId, @VisibleToCommitteeId, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+
 
             var parameters = new
             {
@@ -43,6 +44,8 @@ namespace EmployeePortalSystem.Repositories
                 PostDate = DateTime.Now,
                 announcement.VisibleTo,
                 announcement.DisplayOrder,
+                VisibleToDepartmentId = (announcement.VisibleTo == "Department") ? announcement.VisibleToDepartmentId : null,
+                VisibleToCommitteeId = (announcement.VisibleTo == "Committee") ? announcement.VisibleToCommitteeId : null,
                 IsEvent = (announcement.IsEvent ?? false) ? 1 : 0,
                 EventDate = (announcement.IsEvent ?? false) ? announcement.EventDate : null,
                 EventTime = (announcement.IsEvent ?? false) ? announcement.EventTime : null,

@@ -1211,6 +1211,7 @@ table .edit-icon img {
 
 .blog-card-text {
     flex: 2 1 600px;
+
 }
 
 .blog-title {
@@ -1747,4 +1748,29 @@ input[type="radio"].highlight-radio:checked {
     height: 170px;
     border-radius: 5%;
     object-fit: cover;
+}
+
+/*Dashboard Blogs*/
+
+.blog-float-image1 {
+
+    width: 150px ;
+    height: 100px;
+    margin-right: 5px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.dashboard-card {
+    width: 100%;
+/*    max-width: 1200px;*/
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
 }

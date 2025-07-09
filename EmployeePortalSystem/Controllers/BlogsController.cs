@@ -2,6 +2,7 @@
 using EmployeePortalSystem.Repositories;
 using EmployeePortalSystem.ViewModels;
 using EmployeePortalSystem.Models;
+using System.Reflection.Metadata;
 
 namespace EmployeePortalSystem.Controllers
 {
@@ -103,11 +104,28 @@ namespace EmployeePortalSystem.Controllers
         [HttpPost]
         public IActionResult BlogDeleteConfirmed(int id)
         {
-            _repository.DeleteBlog(id);
+            var blog=_repository.GetBlogById(id);
 
-            TempData["Mess"] = "Blog deleted successfully!";
+            if (blog == null)
+                return NotFound();
 
-            return RedirectToAction("BlogDetails", "Blogs");
+            int loggedInEmpId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
+
+            // Allow if Admin OR Author of the blog
+            if (currentDashboard == "Admin" || blog.AuthorId == loggedInEmpId)
+            {
+                _repository.DeleteBlog(id);
+                TempData["Mess"] = "Blog deleted successfully!";
+
+                if (currentDashboard == "Admin")
+                    return RedirectToAction("BlogDetails", "Blogs");
+                else
+                    return RedirectToAction("EmployeeBlogDetails", "Blogs");
+            }
+
+
+            return RedirectToAction("EmployeeBlogDetails", "Blogs");
         }
 
         [HttpPost]

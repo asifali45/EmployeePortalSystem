@@ -41,7 +41,7 @@
                     <div class="form_row">
                         <div class="form_group">
                             <label>Visible To</label>
-                            <select asp-for="VisibleTo" class="form-control">
+                            <select asp-for="VisibleTo" id="visibleToSelect" class="form-control">
                                 <option value="All">All</option>
                                 <option value="Department">Department</option>
                                 <option value="Committee">Committee</option>
@@ -55,10 +55,44 @@
                         </div>
                     </div>
 
+
+
+                    <div class="form_row" id="departmentGroup" style="display: none;">
+                        <div class="form_group">
+                            <label>Select Department </label>
+                            <div class="val">
+                                <select asp-for="VisibleToDepartmentId" class="form-control" asp-items="ViewBag.Departments">
+                                    <option value="">-- Select Department --</option>
+                                </select>
+                                <span asp-validation-for="VisibleToDepartmentId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row" id="committeeGroup" style="display: none;">
+                        <div class="form_group">
+                            <label>Select Committee </label>
+                            <div class="val">
+                                <select asp-for="VisibleToCommitteeId" class="form-control" asp-items="ViewBag.Committees">
+                                    <option value="">-- Select Committee --</option>
+                                </select>
+                                <span asp-validation-for="VisibleToCommitteeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+         
+
+
+
+
+
                     <div class="form_row">
                         <div class="form_group">
                             <label>Is Event</label>
-                            <select asp-for="IsEvent" class="form-control">
+                            <select asp-for="IsEvent" id="isEventSelect" class="form-control">
                                 <option value="false">No</option>
                                 <option value="true">Yes</option>
                             </select>
@@ -71,7 +105,7 @@
                         </div>
                     </div>
 
-                    <div class="form_row">
+                    <div class="form_row" id="eventDetails">
                         <div class="form_group">
                             <label>Event Date</label>
                             <input asp-for="EventDate" class="form-control" type="date" />
@@ -97,4 +131,32 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const visibleTo = document.getElementById("visibleToSelect");
+            const deptGroup = document.getElementById("departmentGroup");
+            const commGroup = document.getElementById("committeeGroup");
+
+            const isEventSelect = document.getElementById("isEventSelect");
+            const eventDetails = document.getElementById("eventDetails");
+
+            function toggleVisibleToGroups() {
+                const selected = visibleTo.value;
+                deptGroup.style.display = selected === "Department" ? "flex" : "none";
+                commGroup.style.display = selected === "Committee" ? "flex" : "none";
+            }
+
+            function toggleEventDetails() {
+                const selected = isEventSelect.value.toLowerCase();
+                eventDetails.style.display = selected === "true" ? "flex" : "none";
+            }
+
+            visibleTo.addEventListener("change", toggleVisibleToGroups);
+            isEventSelect.addEventListener("change", toggleEventDetails);
+
+            toggleVisibleToGroups();
+            toggleEventDetails();
+        });
+    </script>
 }
+
