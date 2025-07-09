@@ -103,7 +103,7 @@ namespace EmployeePortalSystem.Repositories
         }
 
 
-        public Dictionary<int, string> GetSelectedOptionsByEmployeeId(int empId)
+        public Dictionary<int, string> GetSelectedOptionsByEmployee(int empId)
         {
             using var conn = _context.CreateConnection();
             var results = conn.Query<(int PollId, string SelectedOption)>(

@@ -16,7 +16,7 @@ namespace EmployeePortalSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public IActionResult Profile(string? activeTab)
         {
             int? empId = HttpContext.Session.GetInt32("EmployeeId");
             if (empId == null)
@@ -28,9 +28,14 @@ namespace EmployeePortalSystem.Controllers
             employee.Blogs = _repo.GetBlogsByEmployeeId(empId.Value);
             employee.Polls = _repo.GetPollsByEmployeeId(empId.Value);
 
-            if (employee == null)
-                return NotFound();
-            ViewBag.SelectedOptions = _repo.GetSelectedOptionsByEmployeeId(empId.Value);
+            //if (employee == null)
+            //    return NotFound();
+            //ViewBag.SelectedOptions = _repo.GetSelectedOptionsByEmployeeId(empId.Value);
+            //return View(employee);
+            var selected = _repo.GetSelectedOptionsByEmployee(empId.Value);
+            ViewBag.SelectedOptions = selected;
+
+            ViewBag.ActiveTab = activeTab;
             return View(employee);
         }
     }

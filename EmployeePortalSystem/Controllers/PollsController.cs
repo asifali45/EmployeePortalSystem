@@ -146,7 +146,7 @@ namespace EmployeePortalSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VoteFromList(int pollId, string selectedOption)
+        public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId");
             if (empId == null)
@@ -171,8 +171,8 @@ namespace EmployeePortalSystem.Controllers
 
                 _repo.SubmitResponse(response);
             }
-            //if (returnTo == "Profile")
-            //    return RedirectToAction("Profile", "MyProfile", new { activeTab = "polls" });
+            if (returnTo == "Profile")
+                return RedirectToAction("Profile", "MyProfile", new { activeTab = "polls" });
             return RedirectToAction("EmployeePollDetails");
            
         }

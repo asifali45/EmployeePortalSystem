@@ -1181,7 +1181,7 @@ table .edit-icon img {
 
 .blog-card {
     width: 100%;
-    max-width: 900px;
+    width: 900px;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -1777,15 +1777,26 @@ input[type="radio"].highlight-radio:checked {
 /*  My Profile  */
 
 
+
+.profile-wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .profile-card {
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 30px;
     margin-top: 20px;
     display: flex;
-    gap: 50px;
+    gap: 30px;
+    align-items: center;
 }
+
 
 .profile-photo img {
     width: 150px;
@@ -1873,6 +1884,7 @@ input[type="radio"].highlight-radio:checked {
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+    width:100%;
 }
 
 .p-poll-actions {
@@ -1881,4 +1893,17 @@ input[type="radio"].highlight-radio:checked {
     gap: 15px;
     flex-wrap: wrap;
     margin-top: 10px;
+}
+
+.tab-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.tab-content {
+    width: 100%!;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
