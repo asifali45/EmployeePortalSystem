@@ -71,6 +71,7 @@ namespace EmployeePortalSystem.Controllers
 
 
 
+
         //[HttpGet]
         //public IActionResult Delete(int id)
         //{
@@ -150,6 +151,7 @@ namespace EmployeePortalSystem.Controllers
             // Example logic: You can replace this with your actual admin check
             var role = HttpContext.Session.GetString("Role");
             return role != null && role.ToLower() == "admin";
+
         }
 
         public IActionResult Results(int id)
@@ -197,12 +199,15 @@ namespace EmployeePortalSystem.Controllers
             if (empId == null)
                 return RedirectToAction("Login", "UserAccess");
 
+
+
             // Ensure the selected option is not null or empty
             if (string.IsNullOrEmpty(selectedOption))
             {
                 TempData["Error"] = "Please select an option before submitting.";
                 return RedirectToAction("EmployeePollDetails");
             }
+
 
             if (!_repo.HasVoted(pollId, empId.Value))
             {
@@ -217,8 +222,14 @@ namespace EmployeePortalSystem.Controllers
                 _repo.SubmitResponse(response);
             }
 
+
             return RedirectToAction("EmployeePollDetails");
         }
+
+
+
+
+
 
 
 

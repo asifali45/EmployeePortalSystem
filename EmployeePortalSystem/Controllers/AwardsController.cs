@@ -79,8 +79,10 @@ namespace EmployeePortalSystem.Controllers
             var award = await _repository.GetAwardByIdAsync(id);
             if (award == null)
                 return NotFound();
-            return View(award);
+
+            return View(award); // View name should be Delete.cshtml
         }
+
         [HttpGet]
         public async Task<JsonResult> SearchEmployeeNames(string term)
         {
@@ -168,11 +170,12 @@ namespace EmployeePortalSystem.Controllers
         }
 
         // POST: Final delete
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _repository.DeleteAwardAsync(id);
+            TempData["Message"] = "Award deleted successfully.";
             return RedirectToAction("Index");
         }
 
