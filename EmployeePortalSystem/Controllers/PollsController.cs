@@ -246,9 +246,10 @@ namespace EmployeePortalSystem.Controllers
                 _repo.SubmitResponse(response);
             }
             if (returnTo == "Profile")
+            { 
                 TempData["ActiveTab"] = "polls";
                 return RedirectToAction("Profile", "MyProfile");
-
+            }
 
             return RedirectToAction("EmployeePollDetails");
            

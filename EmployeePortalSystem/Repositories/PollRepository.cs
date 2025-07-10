@@ -131,6 +131,21 @@ namespace EmployeePortalSystem.Repositories
             return responses.ToDictionary(r => r.PollId, r => r.SelectedOption);
         }
 
+        //poll method for dashbpard
+
+        public List<PollViewModel> GetAll(int count=2)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+                SELECT p.PollId, p.Question, p.Option1, p.Option2, p.Option3, p.Option4,
+                       p.CreatedAt, p.CreatedBy, e.Name AS CreatedByName
+                FROM polls p
+                JOIN employee e ON p.CreatedBy = e.EmployeeId
+                ORDER BY p.CreatedAt DESC
+                LIMIT @Count";
+
+            return conn.Query<PollViewModel>(sql, new {Count=count}).ToList();
+        }
 
 
     }

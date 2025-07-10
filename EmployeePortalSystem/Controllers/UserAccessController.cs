@@ -14,10 +14,11 @@ namespace EmployeePortalSystem.Controllers
         private readonly EmployeeRepository _employeeRepository;
         private readonly CommitteeRepository _committeeRepository;
         private readonly AwardRepository _awardRepository;
+        private readonly PollRepository _pollsRepository;
 
         public UserAccessController(UserAccessRepository repository,
             BlogsRepository blogsRepository,AnnouncementRepository announcementRepository,
-            EmployeeRepository employeeRepository,CommitteeRepository committeeRepository,AwardRepository awardRepository)
+            EmployeeRepository employeeRepository, CommitteeRepository committeeRepository, AwardRepository awardRepository, PollRepository pollsRepository)
         {
             _repository = repository;
             _blogsRepository = blogsRepository;
@@ -25,8 +26,9 @@ namespace EmployeePortalSystem.Controllers
             _employeeRepository = employeeRepository;
             _committeeRepository = committeeRepository;
             _awardRepository = awardRepository;
+            _pollsRepository = pollsRepository;
         }
-       
+
 
 
         [HttpGet]
@@ -100,23 +102,35 @@ namespace EmployeePortalSystem.Controllers
             HttpContext.Session.SetString("CurrentDashboard", "Employee");
 
             int empid=Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
-         
-
-
+            //Card counts
             var cardcounts =_repository.GetCardCounts(empid);
 
+            //fetch blogs
             var latestblogs=_blogsRepository.GetLatestBlogsForDashboard(2);
 
-            // Get department & committee IDs
+            // Get department & committee IDs for Announcement Visibility
             var deptId = _employeeRepository.GetDepartmentIdByEmployeeId(empid);
             var committeeIds = _committeeRepository.GetCommitteeIdsByEmployeeId(empid);
-
             //  Fetch  announcements
             var latestAnnouncements = _announcementRepository
                 .GetLatestVisibleAnnouncementsForEmployee(deptId, committeeIds, 2);
 
             // Fetch Awards
             var latestawards = _awardRepository.GetAwardsForDashboard(2);
+
+            //Fetch Polls
+            var latestpolls = _pollsRepository.GetAll(2);
+
+            var selectedOptions = _pollsRepository.GetSelectedOptionsForEmployee(empid); // get past votes
+
+            var results = new Dictionary<int, Dictionary<string, int>>();
+            foreach (var poll in latestpolls)
+            {
+                results[poll.PollId] = _pollsRepository.GetResults(poll.PollId);
+            }
+
+            ViewBag.SelectedOptions = selectedOptions;
+            ViewBag.Results = results;
 
             var model = new DashboardCardViewModel
             {
@@ -125,7 +139,8 @@ namespace EmployeePortalSystem.Controllers
                 PollsVoted = cardcounts.PollsVoted,
                 LatestBlogs = latestblogs,
                 LatestAnnouncements = latestAnnouncements.ToList(),
-                LatestAwards= latestawards.ToList()
+                LatestAwards= latestawards.ToList(),
+                LatestPolls=latestpolls.ToList()
             };
 
             return View(model);

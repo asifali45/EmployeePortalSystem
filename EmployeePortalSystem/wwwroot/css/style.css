@@ -881,7 +881,7 @@ svg {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/*    text-align: center;*/
     box-sizing: border-box;
 }
 
@@ -962,8 +962,9 @@ table {
     color: #d81b60;
     margin-bottom: 8px;
     /* Reduced spacing */
-    font-size: 14px;
+    font-size: 20px;
     /* Smaller heading */
+    text-align:center;
 }
 
 /* Edit icon styling */
@@ -1182,10 +1183,10 @@ table .edit-icon img {
 .blog-card {
     width: 100%;
     max-width: 900px;
-    background: #fff;
-    border: 1px solid #ddd;
+    background: #fff6f6;
+/*    border: 1px solid #ddd;*/
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin: 20px auto;
     padding: 16px;
@@ -1218,7 +1219,7 @@ table .edit-icon img {
     margin-top: 0;
     font-size: 20px;
     font-weight: bold;
-    color: #333;
+    color: #5b3333;
     text-align: left;
 }
 
@@ -1580,7 +1581,7 @@ table .edit-icon img {
 .announcement-title {
     font-size: 20px;
     font-weight: bold;
-    color: #333;
+    color: #5b3333;
     margin-bottom: 10px;
 }
 
@@ -1945,9 +1946,9 @@ input[type="radio"].highlight-radio:checked {
 }
 
 .announcement-box {
-    background-color: #f9f9f9;
+    background-color: #fff6f6;
     padding: 16px;
-    border: 1px solid #ddd;
+    /*    border: 1px solid #ddd;*/
     border-radius: 8px;
     width: 49%; /* or use 45%, or auto depending on how many per row */
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -1957,8 +1958,8 @@ input[type="radio"].highlight-radio:checked {
 
 
 .announcement-title {
-    font-weight: 600;
-    color: #333;
+    font-weight: bold;
+    color: #5b3333;
     margin-bottom: 6px;
     display: block;
 }
@@ -1978,3 +1979,16 @@ input[type="radio"].highlight-radio:checked {
 .alert-error {
     color: #555;
     font-size: 12px;
+}
+.blog-poll {
+    width: 100%;
+    max-width: 900px;
+    background: #fff6f6;
+    /*    border: 1px solid #ddd;*/
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
