@@ -17,5 +17,6 @@ namespace EmployeePortalSystem.ViewModels
 
         public List<AwardViewModel> LatestAwards { get; set; }
 
+        public List<PollViewModel> LatestPolls { get; set; }
     }
 }
