@@ -255,21 +255,106 @@
         </div>
 
         <div class="policy_card">
+            @* <div class="motor_card_box"> *@
+            @*     <div class="motor_text"> *@
+            @*         <h2 style="font-weight: bold; font-size: 20px;">Activity Contribution</h2> *@
+            @*     </div> *@
+            @*     <div class="chart-container"> *@
+            @*         <canvas id="mychart1" style="width:100%; height: 100%;"></canvas> *@
+            @*     </div> *@
+            @* </div> *@
+
             <div class="motor_card_box">
                 <div class="motor_text">
                     <h2 style="font-weight: bold; font-size: 20px;">Activity Contribution</h2>
                 </div>
-                <div class="chart-container">
-                    <canvas id="mychart1" style="width:100%; height: 100%;"></canvas>
+                <div class="chart-container" style="position: relative; width:100%; max-width: 300px; margin: auto;">
+                    <canvas id="mychart1" style="width:100%; height:auto;"></canvas>
                 </div>
             </div>
-
             <div class="motor_card_box">
                 <h2 style="font-weight: bold; font-size: 20px;">Monthly Activity Trends</h2>
                 <div class="chart-container">
                     <canvas id="mychart" style="width:100%; height: 100%;"></canvas>
                 </div>
             </div>
+            @section Scripts {
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    const ctx1 = document.getElementById('mychart1').getContext('2d');
+
+                    const activityData1 = {
+                        labels: [
+                    @foreach (var item in Model.ContributionChartData.Keys)
+                    {
+                        @Html.Raw($"'{item}',")
+                    }
+                        ],
+                        datasets: [{
+                            label: 'Activity',
+                            data: [
+                    @foreach (var value in Model.ContributionChartData.Values)
+                    {
+                        @Html.Raw($"{value},")
+                    }
+                            ],
+                            backgroundColor: ['#1bc9f2', '#df0052', '#ff6c03'],
+                            hoverOffset: 10
+                        }]
+                    };
+
+                    new Chart(ctx1, {
+                        type: 'doughnut',
+                        data: activityData1,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        boxWidth: 14,
+                                        font: {
+                                            size: 15
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                     const ctx = document.getElementById('mychart').getContext('2d');
+
+                    const TestingChart = {
+                        labels: ['Red','Blue','Green'],
+                        datasets: [{
+                            label: 'Testing Line Chart',
+                            data: [10,12,13],
+                            backgroundColor: ['#1bc9f2', '#df0052', '#ff6c03'],
+                            // hoverOffset: 10
+                        }]
+                    };
+
+                    const config={
+                        type: 'bar',
+                        data:TestingChart,
+                        options: {
+                            responsive: true,
+                            scales:{
+                                y:{
+                                    beginAtZero:true
+                                }
+                            }
+                            
+                        }
+                    }
+
+                    new Chart(ctx,config);
+                </script>
+            }
+
+
+           
         </div>
 
         
