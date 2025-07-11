@@ -30,6 +30,7 @@ namespace EmployeePortalSystem.Models
         [Required(ErrorMessage = "Department is required")]
         public int? DepartmentId { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsCurrentEmployee { get; set; }
         
     }
 }

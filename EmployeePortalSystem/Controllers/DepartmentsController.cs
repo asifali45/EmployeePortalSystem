@@ -57,6 +57,7 @@ namespace EmployeePortalSystem.Controllers
 
             model.CreatedBy = 1;
             _repo.Add(model);
+            TempData["Message4"] = "Department created successfully.";
             return RedirectToAction("Index");
         }
 
@@ -82,6 +83,7 @@ namespace EmployeePortalSystem.Controllers
 
             dept.UpdatedBy = 1;
             _repo.Update(dept);
+            TempData["Message4"] = "Department updated successfully.";
             return RedirectToAction("Index");
         }
 
@@ -101,7 +103,7 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _repo.Delete(id);
-            TempData["Message"] = "Department and assigned employees deleted successfully.";
+            TempData["Message4"] = "Department deleted successfully.";
             return RedirectToAction("Index");
         }
 

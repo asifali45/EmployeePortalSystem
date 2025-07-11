@@ -25,7 +25,12 @@
             <h2>Members of @ViewBag.CommitteeName</h2>
         </div>
     </div>
-
+    @if (TempData["message3"] != null)
+    {
+        <div class="alert-message">
+            @TempData["message3"]
+        </div>
+    }
     <div class="container_emp mb-20">
         <div class="empmaster_card">
             <div class="table-responsive">
@@ -87,12 +92,7 @@
                         }
                     </tbody>
                 </table>
-                @if (TempData["Messages"] != null)
-                {
-                    <div class="alert alert-success mt-2">
-                        @TempData["Messages"]
-                    </div>
-                }
+                
             </div>
         </div>
     </div>
