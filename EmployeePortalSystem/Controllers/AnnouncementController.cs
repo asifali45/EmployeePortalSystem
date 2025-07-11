@@ -61,7 +61,7 @@ namespace EmployeePortalSystem.Controllers
 
             _announcementrepo.Add(announcement);
 
-            TempData["Message"] = "Announcement created successfully!";
+            TempData["Message5"] = "Announcement created successfully!";
             return RedirectToAction("Index");
         }
 
@@ -98,7 +98,7 @@ namespace EmployeePortalSystem.Controllers
             model.UpdatedAt = DateTime.Now;
 
             _announcementrepo.Update(model);
-
+            TempData["Message5"] = "Announcement updated successfully!";
             return RedirectToAction("Index");
         }
 
@@ -115,6 +115,7 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _announcementrepo.Delete(id);
+            TempData["Message5"] = "Announcement deleted successfully!";
             return RedirectToAction("Index");
         }
 

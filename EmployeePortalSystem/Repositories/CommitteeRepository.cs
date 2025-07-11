@@ -97,7 +97,8 @@ namespace EmployeePortalSystem.Repositories
                 FROM committee_member cm
                 INNER JOIN Employee e ON cm.EmployeeId = e.EmployeeId
                 INNER JOIN Department d ON e.DepartmentId = d.DepartmentId
-                WHERE cm.CommitteeId = @committeeId";
+                WHERE cm.CommitteeId = @committeeId
+                AND e.IsCurrentEmployee = 1";
             return connection.Query<CommitteeMemberViewModel>(sql, new {CommitteeId}).ToList();
         }
        

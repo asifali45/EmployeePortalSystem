@@ -53,7 +53,8 @@ namespace EmployeePortalSystem.Repositories
                         d.Name AS DepartmentName
                     FROM employee e
                     LEFT JOIN role r ON e.RoleId = r.RoleId
-                    LEFT JOIN department d ON e.DepartmentId = d.DepartmentId";
+                    LEFT JOIN department d ON e.DepartmentId = d.DepartmentId
+                    WHERE e.IsCurrentEmployee = 1";
                 return conn.Query<EmployeeDetailsViewModel>(sql).ToList();
             
         }
@@ -86,7 +87,7 @@ namespace EmployeePortalSystem.Repositories
         public void DeleteEmployee(int id)
         {
             using var conn = _context.CreateConnection();
-            string sql = "DELETE FROM employee WHERE EmployeeId = @Id";
+            string sql = "UPDATE employee SET IsCurrentEmployee = 0 WHERE EmployeeId = @id";
             conn.Execute(sql, new { Id = id });
         }
 
