@@ -86,11 +86,23 @@ namespace EmployeePortalSystem.Controllers
                .GetLatestAnnouncements(2);
 
             var latestawards = _awardRepository.GetAwardsForDashboard(2);
+
+            var latestpolls = _pollsRepository.GetAll(2);
+
+            var results = new Dictionary<int, Dictionary<string, int>>();
+            foreach (var poll in latestpolls)
+            {
+                results[poll.PollId] = _pollsRepository.GetResults(poll.PollId);
+            }
+            ViewBag.Results = results;
+
             var model = new DashboardCardViewModel
             {
                 LatestBlogs = latestblogs,
                 LatestAnnouncements = latestAnnouncements.ToList(),
-                LatestAwards = latestawards.ToList()
+                LatestAwards = latestawards.ToList(),
+                LatestPolls=latestpolls.ToList()
+
 
             };
             return View(model);

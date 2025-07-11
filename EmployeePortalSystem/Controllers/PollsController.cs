@@ -229,6 +229,17 @@ namespace EmployeePortalSystem.Controllers
             if (string.IsNullOrEmpty(selectedOption))
             {
                 TempData["Error"] = "Please select an option before submitting.";
+
+                if (returnTo == "DashboardEmployee")
+                    return RedirectToAction("DashboardEmployee", "UserAccess");
+
+                if (returnTo == "Profile")
+                {
+                    TempData["ActiveTab"] = "polls";
+                    return RedirectToAction("Profile", "MyProfile");
+                }
+
+               
                 return RedirectToAction("EmployeePollDetails");
             }
 
@@ -249,6 +260,11 @@ namespace EmployeePortalSystem.Controllers
             { 
                 TempData["ActiveTab"] = "polls";
                 return RedirectToAction("Profile", "MyProfile");
+            }
+
+            if (returnTo == "DashboardEmployee")
+            {
+                return RedirectToAction("DashboardEmployee", "UserAccess");
             }
 
             return RedirectToAction("EmployeePollDetails");

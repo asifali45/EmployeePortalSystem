@@ -269,7 +269,8 @@ footer p {
     }
 
 .menubar_background {
-    background-color: #9c2458;
+    /*    background-color: #9c2458;*/
+    background-color: #d81b60;
     width: 100%;
     height: 35px;
 }
@@ -304,7 +305,8 @@ footer p {
     left: -250px; /* hidden by default */
     width: 250px;
     height: 100%;
-    background-color: #9c2458;
+    /*    background-color: #9c2458;*/
+    background-color: #d81b60;
     overflow-x: hidden;
     transition: 0.3s;
     padding-top: 60px;
@@ -385,7 +387,8 @@ footer p {
     }
 
 .switch-button {
-    background-color: #9c2458;
+    /*    background-color: #9c2458;*/
+    background-color: #d81b60;
     color: white;
     padding: 5px 10px;
     border: none;
@@ -1267,17 +1270,18 @@ table .edit-icon img {
 .option-box {
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 3px;
+    margin-bottom: 3px;
     background-color: #f9f9f9;
-    width:400px;
+    width:300px;
 }
 
 .option-label {
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
+    font-weight: 550;
     margin-bottom: 5px;
+    font-size:small;
 }
 
 .progress-bar {
