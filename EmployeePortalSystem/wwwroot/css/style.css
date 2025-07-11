@@ -1977,7 +1977,7 @@ input[type="radio"].highlight-radio:checked {
 
 .alert-success {
     color: #555;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .alert-error {
@@ -1996,3 +1996,10 @@ input[type="radio"].highlight-radio:checked {
     box-sizing: border-box;
 }
 
+}
+
+.alert-message {
+    color: darkgrey;
+    text-align: center;
+    margin: 10px 0;
+}

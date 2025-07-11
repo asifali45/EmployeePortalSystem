@@ -25,7 +25,12 @@
             <div class="emp_head">
                 <h2>Award List</h2>
             </div>
-
+            @if (TempData["Message6"] != null)
+            {
+                <div class="alert-message">
+                    @TempData["Message6"]
+                </div>
+            }
             <div class="empmaster_card">
                 <div class="table-responsive">
                     <table class="emp_table table" id="awardTable">

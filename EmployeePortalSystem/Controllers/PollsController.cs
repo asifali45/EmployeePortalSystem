@@ -273,13 +273,6 @@ namespace EmployeePortalSystem.Controllers
 
 
 
-
-
-
-
-
-
-
         public IActionResult EmployeeResults(int id)
         {
             var poll = _repo.GetById(id);

@@ -25,7 +25,12 @@
             <div class="emp_head">
                 <h2>Committee List</h2>
             </div>
-
+            @if (TempData["message2"] != null)
+            {
+                <div class="alert-message">
+                    @TempData["message2"]
+                </div>
+            }
             <div class="empmaster_card">
                 <div class="table-responsive">
                     <table class="emp_table table">
@@ -101,12 +106,7 @@
                             }
                         </tbody>
                     </table>
-                    @if (TempData["Messages"] != null)
-                    {
-                        <div class="alert alert-success mt-2">
-                            @TempData["Messages"]
-                        </div>
-                    }
+                    
                 </div>
             </div>
         </div>
