@@ -65,16 +65,7 @@
 
                             <!-- Like & Comment -->
                             <div class="blog-actions">
-                                @* <form method="post" asp-controller="Blogs" asp-action="ToggleLike"> *@
-                                @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
-                                @*     <button class="like-button" type="submit" > *@
-                                @*         <div class="like-content"> *@
-                                @*             <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" /> *@
-                                @*             <span>@blog.LikeCount</span> *@
-                                @*         </div> *@
-                                @*     </button> *@
-
-                                @* </form> *@
+                              
 
                             <button class="like-button" onclick="toggleLike(@blog.BlogId, this)" type="button">
                                 <div class="like-content">
@@ -108,12 +99,17 @@
                                 </div>
 
                                 <!-- Add New Comment -->
-                                <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post">
-                                    <input type="hidden" name="blogId" value="@blog.BlogId" />
-                                    <input  name="commentText" placeholder="Write your comment..." required>
-                                    <button  type="submit">Post</button>
-                                </form>
-                       
+                                @* <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post"> *@
+                                @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                @*     <input  name="commentText" placeholder="Write your comment..." required> *@
+                                @*     <button  type="submit">Post</button> *@
+                                @* </form> *@
+
+                            <form class="comment-text" onsubmit="return submitComment(@blog.BlogId, this)">
+                                <input type="text" name="commentText" placeholder="Write your comment..." required />
+                                <button type="submit">Post</button>
+                            </form>
+
                             </div>
 
                             @if (blog.AuthorId == currentEmpId)
