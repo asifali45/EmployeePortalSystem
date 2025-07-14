@@ -108,6 +108,15 @@ namespace EmployeePortalSystem.Repositories
 
             }
         }
+
+        public int GetLikeCount(int blogId)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "SELECT COUNT(*) FROM blog_like WHERE BlogId=@BlogId";
+
+            return connection.ExecuteScalar<int>(sql, new { BlogId = blogId });
+        }
+
         public List<BlogCommentViewModel> GetCommentsByBlogId(int blogId)
         {
             using var connection = _context.CreateConnection();
