@@ -15,6 +15,7 @@
                     <form method="post" asp-action="BlogDeleteConfirmed" asp-controller="Blogs">
 
                         <input type="hidden" name="id" value="@Model.BlogId" />
+                        <input type="hidden" name="returnTo" value="@ViewBag.ReturnTo" />
                         <button type="submit" class="del_button">Delete</button>
                     </form>
                 </div>

@@ -60,12 +60,7 @@
                                 <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
                                
 
-                                @* @if (!string.IsNullOrEmpty(Model.Employee.Photo)) *@
-                                @* { *@
-                                @*     <div class="photo-preview"> *@
-                                @*         <img src="@Model.Employee.Photo" alt="Employee Photo" class="employee-photo-frame" /> *@
-                                @*     </div> *@
-                                @* } *@
+                               
                             </div>
                         </div>
 
@@ -78,12 +73,7 @@
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-                    @if (TempData["Message1"] != null)
-                    {
-                        <div class="alert-success">
-                            @TempData["Message1"]
-                        </div>
-                    }
+                    
                 </form>
             </div>
         </div>

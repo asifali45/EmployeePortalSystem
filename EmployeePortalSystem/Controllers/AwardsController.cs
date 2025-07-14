@@ -123,7 +123,7 @@ namespace EmployeePortalSystem.Controllers
             };
 
             await _repository.CreateAsync(award);
-            TempData["Message"] = "Award successfully added.";
+            TempData["Message6"] = "Award added successfully.";
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -165,7 +165,7 @@ namespace EmployeePortalSystem.Controllers
 
             await _repository.UpdateAsync(award);
 
-            TempData["Message"] = "Award successfully updated.";
+            TempData["Message6"] = "Award updated successfully.";
             return RedirectToAction("Index");
         }
 
@@ -175,7 +175,7 @@ namespace EmployeePortalSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _repository.DeleteAwardAsync(id);
-            TempData["Message"] = "Award deleted successfully.";
+            TempData["Message6"] = "Award deleted successfully.";
             return RedirectToAction("Index");
         }
 

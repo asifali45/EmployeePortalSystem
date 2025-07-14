@@ -41,7 +41,7 @@ namespace EmployeePortalSystem.ViewModels
         public int CommentId { get; set; }
         public int BlogId { get; set; }
         public int EmployeeId { get; set; }
-        public string CommentText { get; set; }
+        public string? CommentText { get; set; }
         public DateTime CreatedAt { get; set; }
         public string EmployeeName { get; set; } // To display commenter's name
     }

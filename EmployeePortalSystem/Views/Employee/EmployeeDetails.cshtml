@@ -25,7 +25,12 @@
             <div class="emp_head">
                 <h2>Employees List</h2>
             </div>
-
+            @if (TempData["Message1"] != null)
+            {
+                <div class="alert-message">
+                    @TempData["Message1"]
+                </div>
+            }
             <div class="empmaster_card">
                 <div class="table-responsive">
                     <table class="emp_table table">
@@ -83,12 +88,12 @@
                     </table>
    
 
-                    @if (TempData["Messages"] != null)
-                    {
-                        <div class="alert alert-success mt-2">
-                            @TempData["Messages"]
-                        </div>
-                    }
+                    @* @if (TempData["Messages"] != null) *@
+                    @* { *@
+                    @*     <div class="alert alert-success mt-2"> *@
+                    @*         @TempData["Messages"] *@
+                    @*     </div> *@
+                    @* } *@
                 </div>
             </div>
         </div>
