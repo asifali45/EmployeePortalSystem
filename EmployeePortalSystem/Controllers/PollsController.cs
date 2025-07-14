@@ -59,16 +59,7 @@ namespace EmployeePortalSystem.Controllers
 
             TempData["Message"] = "Poll created successfully!";
 
-            // Redirect based on role
-            //var role = HttpContext.Session.GetString("Role");
-            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-            //{
-            //    return RedirectToAction("PollDetails");
-            //}
-            //else
-            //{
-            //    return RedirectToAction("EmployeePollDetails");
-            //}
+            
             if (currentDashboard == "Admin")
                 return RedirectToAction("PollDetails", "Polls");
             else
@@ -209,32 +200,78 @@ namespace EmployeePortalSystem.Controllers
         }
 
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
+        //{
+        //    var empId = HttpContext.Session.GetInt32("EmployeeId");
+        //    if (empId == null)
+        //        return RedirectToAction("Login", "UserAccess");
+
+
+
+        //    // Ensure the selected option is not null or empty
+        //    if (string.IsNullOrEmpty(selectedOption))
+        //    {
+        //        TempData["Error"] = "Please select an option before submitting.";
+
+        //        if (returnTo == "DashboardEmployee")
+        //            return RedirectToAction("DashboardEmployee", "UserAccess");
+
+        //        if (returnTo == "Profile")
+        //        {
+        //            TempData["ActiveTab"] = "polls";
+        //            return RedirectToAction("Profile", "MyProfile");
+        //        }
+
+               
+        //        return RedirectToAction("EmployeePollDetails");
+        //    }
+
+
+        //    if (!_repo.HasVoted(pollId, empId.Value))
+        //    {
+        //        var response = new PollResponse
+        //        {
+        //            PollId = pollId,
+        //            EmployeeId = empId.Value,
+        //            SelectedOption = selectedOption,
+        //            CreatedAt = DateTime.Now
+        //        };
+
+        //        _repo.SubmitResponse(response);
+        //    }
+        //    if (returnTo == "Profile")
+        //    { 
+        //        TempData["ActiveTab"] = "polls";
+        //        return RedirectToAction("Profile", "MyProfile");
+        //    }
+
+        //    if (returnTo == "DashboardEmployee")
+        //    {
+        //        return RedirectToAction("DashboardEmployee", "UserAccess");
+        //    }
+
+        //    return RedirectToAction("EmployeePollDetails");
+           
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
+        public JsonResult VoteFromList(int pollId, string selectedOption, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId");
             if (empId == null)
-                return RedirectToAction("Login", "UserAccess");
+                return Json(new { success = false, message = "Not logged in" });
 
 
 
             // Ensure the selected option is not null or empty
             if (string.IsNullOrEmpty(selectedOption))
             {
-                TempData["Error"] = "Please select an option before submitting.";
+                return Json(new { success = false, message = "Please select an option." });
 
-                if (returnTo == "DashboardEmployee")
-                    return RedirectToAction("DashboardEmployee", "UserAccess");
-
-                if (returnTo == "Profile")
-                {
-                    TempData["ActiveTab"] = "polls";
-                    return RedirectToAction("Profile", "MyProfile");
-                }
-
-               
-                return RedirectToAction("EmployeePollDetails");
             }
 
 
@@ -250,22 +287,15 @@ namespace EmployeePortalSystem.Controllers
 
                 _repo.SubmitResponse(response);
             }
-            if (returnTo == "Profile")
-            { 
-                TempData["ActiveTab"] = "polls";
-                return RedirectToAction("Profile", "MyProfile");
-            }
-
-            if (returnTo == "DashboardEmployee")
-            {
-                return RedirectToAction("DashboardEmployee", "UserAccess");
-            }
-
-            return RedirectToAction("EmployeePollDetails");
            
+            return Json(new
+            {
+                success = true,
+                message = "Vote submitted!",
+                returnTo = returnTo 
+            });
+
         }
-
-
 
         public IActionResult EmployeeResults(int id)
         {

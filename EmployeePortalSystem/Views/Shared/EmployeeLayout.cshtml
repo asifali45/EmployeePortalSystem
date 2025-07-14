@@ -234,6 +234,47 @@
             return false; // prevent form reload
         }
 
+        //poll section
+
+                function submitVote(pollId, form, returnTo) {
+            const selectedOption = form.querySelector('input[name="selectedOption"]:checked');
+            const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+             const messageDiv = document.getElementById(`vote-message-${pollId}`);
+
+            if (!selectedOption) {
+                alert("Please select an option.");
+                return false;
+            }
+
+            $.ajax({
+                url: '/Polls/VoteFromList',
+                type: 'POST',
+                data: {
+                    pollId: pollId,
+                    selectedOption: selectedOption.value,
+                    returnTo: returnTo,
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                     if (response.success) {
+                        // messageDiv.textContent = "✅ Vote submitted successfully!";
+                        messageDiv.style.color = "green";
+                        
+                        form.querySelector("button[type='submit']").style.display = "none";
+                        messageDiv.insertAdjacentHTML('afterend', '<span style="color: green; font-weight: 500;">✅ Vote submitted successfully!"</span>');
+            
+                       
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("Error submitting vote.");
+                }
+            });
+
+            return false; // Prevent default form submit
+        }
 
     </script>
     @RenderSection("Scripts", required: false)
