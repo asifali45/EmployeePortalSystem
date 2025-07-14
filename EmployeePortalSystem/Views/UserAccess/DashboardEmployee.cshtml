@@ -151,6 +151,61 @@
                                             <span class="blog-author">By @blog.AuthorName</span>
                                             <span class="blog-tags">on @blog.CreatedAt.ToString("dd MMM yyyy")</span>
                                         </div>
+
+                                        <!-- Bloglike nd comment -->
+                                        <div class="blog-actions">
+                                            @*     <form method="post" asp-controller="Blogs" asp-action="ToggleLike"> *@
+
+                                            @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                            @*         <input type="hidden" name="returnTo" value="Profile" /> *@
+                                            @*     <button class="like-button" type="submit"> *@
+                                            @*         <div class="like-content"> *@
+                                            @*             <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" /> *@
+                                            @*             <span>@blog.LikeCount</span> *@
+                                            @*         </div> *@
+                                            @*     </button> *@
+                                            @* </form> *@
+
+                                            <button type="button" class="like-button" onclick="toggleLike(@blog.BlogId, this, 'profile')">
+                                                <div class="like-content">
+                                                    <img src="~/img/heartfilled.png" width="20px" height="20px" />
+                                                    <span>@blog.LikeCount</span>
+                                                </div>
+                                            </button>
+
+
+                                            <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
+                                                <div class="comment-content">
+                                                    <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
+                                                    <span>Comments @blog.Comments.Count</span>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div id="comment-section-@blog.BlogId" class="comment-section" style="display: none; margin-top: 10px;">
+                                            <div class="existing-comments">
+                                                @foreach (var comment in blog.Comments)
+                                                {
+                                                    <div class="comment">
+                                                        <span>@comment.EmployeeName</span>: @comment.CommentText
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            @* <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post"> *@
+                                            @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                            @*         <input type="hidden" name="returnTo" value="Profile" /> *@
+                                            @*     <input name="commentText" placeholder="Write your comment..." required> *@
+                                            @*     <button type="submit">Post</button> *@
+                                            @* </form> *@
+
+                                            <form class="comment-text" onsubmit="return submitComment(@blog.BlogId, this)">
+                                                <input type="text" name="commentText" placeholder="Write your comment..." required>
+                                                <button type="submit">Post</button>
+                                            </form>
+
+                                        </div>
+
                                     </div>
                                 </div>
                                 <br /> <hr />

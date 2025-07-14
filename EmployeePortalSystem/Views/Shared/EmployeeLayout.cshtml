@@ -198,6 +198,42 @@
                     section.style.display = 'none';
                 }
             }
+
+            function submitComment(blogId, formElement, returnTo = null) {
+            const commentText = formElement.querySelector('input[name="commentText"]').value;
+
+            if (commentText.trim() === "") return false;
+
+            $.ajax({
+                url: '/Blogs/PostComment',
+                type: 'POST',
+                data: {
+                    blogId: blogId,
+                    commentText: commentText,
+                    returnTo: returnTo
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const newComment = document.createElement('div');
+                        newComment.className = 'comment';
+                        newComment.innerHTML = `<span>${response.employeeName}</span>: ${response.commentText}`;
+
+                        // Append to existing comments
+                        const commentContainer = document.querySelector(`#comment-section-${blogId} .existing-comments`);
+                        commentContainer.appendChild(newComment);
+
+                        formElement.reset();
+                    }
+                },
+                error: function () {
+                    alert("Failed to post comment.");
+                }
+            });
+
+            return false; // prevent form reload
+        }
+
+
     </script>
     @RenderSection("Scripts", required: false)
 
