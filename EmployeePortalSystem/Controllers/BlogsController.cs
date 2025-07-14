@@ -135,21 +135,38 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("EmployeeBlogDetails", "Blogs");
         }
 
+        //[HttpPost]
+        //public IActionResult ToggleLike(int blogId, string? returnTo)
+        //{
+        //    int empId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+        //    _repository.ToggleLike(blogId, empId);
+
+        //    if (!string.IsNullOrEmpty(returnTo) && returnTo.ToLower() == "profile")
+        //    {
+        //        TempData["ActiveTab"] = "blogs";
+        //        return RedirectToAction("Profile", "MyProfile");
+
+        //    }
+
+        //    return RedirectToAction("EmployeeBlogDetails");
+        //}
+
         [HttpPost]
-        public IActionResult ToggleLike(int blogId, string? returnTo)
+
+        public JsonResult ToggleLike(int blogId,string? returnTo)
         {
-            int empId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+            int empId=Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
             _repository.ToggleLike(blogId, empId);
 
             if (!string.IsNullOrEmpty(returnTo) && returnTo.ToLower() == "profile")
             {
-                TempData["ActiveTab"] = "blogs";
-                return RedirectToAction("Profile", "MyProfile");
-
+                TempData["ActiveTab"] = "blogs";               
             }
 
-            return RedirectToAction("EmployeeBlogDetails");
+            int updatedCount = _repository.GetLikeCount(blogId);
+            return Json(updatedCount);
         }
+
 
         //comment
 

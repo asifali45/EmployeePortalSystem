@@ -173,6 +173,31 @@
             });
 
         });
+        //BlogLike
+          function toggleLike(blogId, buttonElement,returnTo=null) {
+            $.ajax({
+                type: "POST",
+                url: "/Blogs/ToggleLike",
+                data: { blogId: blogId ,returnTo:returnTo},
+                success: function (updatedLikeCount) {
+                    const span = buttonElement.querySelector("span");
+                    span.textContent = updatedLikeCount;
+                },
+                error: function () {
+                    alert("Failed to update like.");
+                }
+            });
+        }
+
+        //Blog Comment
+            function toggleCommentSection(blogId) {
+                const section = document.getElementById(`comment-section-${blogId}`);
+                if (section.style.display === 'none') {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            }
     </script>
     @RenderSection("Scripts", required: false)
 
