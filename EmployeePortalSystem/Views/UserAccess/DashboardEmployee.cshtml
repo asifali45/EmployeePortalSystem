@@ -250,7 +250,7 @@
                                     <div class="blog-card-text">
                                         <h5 class="blog-title">@poll.Question</h5>
 
-                                        <form asp-controller="Polls" asp-action="VoteFromList" method="post">
+                                        <form onsubmit="return submitVote(@poll.PollId, this, 'DashboardEmployee')">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="pollId" value="@poll.PollId" />
                                             <input type="hidden" name="returnTo" value="DashboardEmployee" />
@@ -286,6 +286,7 @@
                                                     @if (!isVotedPoll)
                                                     {
                                                         <button type="submit" class="pollbtn btn btn-success btn-sm">🗳 Submit Vote</button>
+                                                        <div id="vote-message-@poll.PollId" style="color: green;"></div>
                                                     }
                                                     else
                                                     {
