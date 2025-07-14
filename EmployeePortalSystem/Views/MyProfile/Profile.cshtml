@@ -166,12 +166,18 @@
                                             }
                                         </div>
 
-                                        <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post">
-                                            <input type="hidden" name="blogId" value="@blog.BlogId" />
-                                                <input type="hidden" name="returnTo" value="Profile" />
-                                            <input name="commentText" placeholder="Write your comment..." required>
-                                            <button type="submit">Post</button>
-                                        </form>
+                                        @* <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post"> *@
+                                        @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                        @*         <input type="hidden" name="returnTo" value="Profile" /> *@
+                                        @*     <input name="commentText" placeholder="Write your comment..." required> *@
+                                        @*     <button type="submit">Post</button> *@
+                                        @* </form> *@
+
+                                            <form class="comment-text" onsubmit="return submitComment(@blog.BlogId, this, 'Profile')">
+                                                <input type="text" name="commentText" placeholder="Write your comment..." required>
+                                                <button type="submit">Post</button>
+                                            </form>
+
                                     </div>
                                         @if (blog.AuthorId == currentEmpId)
                                         {

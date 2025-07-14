@@ -170,8 +170,27 @@ namespace EmployeePortalSystem.Controllers
 
         //comment
 
+        //[HttpPost]
+        //public IActionResult PostComment(int blogId, string commentText, string? returnTo)
+        //{
+        //    int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+
+        //    if (!string.IsNullOrWhiteSpace(commentText))
+        //    {
+        //        _repository.AddComment(blogId, employeeId, commentText);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
+        //    {
+        //        TempData["ActiveTab"] = "blogs";
+        //        return RedirectToAction("Profile", "MyProfile");
+
+        //    }
+        //    return RedirectToAction("EmployeeBlogDetails");
+        //}
+
         [HttpPost]
-        public IActionResult PostComment(int blogId, string commentText, string? returnTo)
+        public JsonResult PostComment(int blogId, string commentText, string? returnTo)
         {
             int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
 
@@ -183,11 +202,16 @@ namespace EmployeePortalSystem.Controllers
             if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
             {
                 TempData["ActiveTab"] = "blogs";
-                return RedirectToAction("Profile", "MyProfile");
-
+                
             }
-            return RedirectToAction("EmployeeBlogDetails");
+            
+            return Json(new
+            {
+                success = true,
+                employeeName = _repository.GetEmployeeName(employeeId),
+                commentText,
+                createdAt = DateTime.Now.ToString("dd MMM yyyy hh:mm tt")
+            });
         }
-
     }
 }
