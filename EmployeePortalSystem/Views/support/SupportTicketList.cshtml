@@ -14,15 +14,15 @@
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>
-            <div class="right_btn">
-                <form method="get" asp-action="RaiseTicket" asp-controller="SupportTicket">
-                    <button type="submit" class="create_emp_btn">Raise Ticket</button>
-                </form>
-            </div>
+            @* <div class="right_btn"> *@
+            @*     <form method="get" asp-action="RaiseTicket" asp-controller="SupportTicket"> *@
+            @*         <button type="submit" class="create_emp_btn">Raise Ticket</button> *@
+            @*     </form> *@
+            @* </div> *@
         </div>
 
         <div class="emp_head">
-            <h2>Ticket List - Admin Panel</h2>
+            <h2>Ticket List</h2>
         </div>
 
         <div class="empmaster_card">
@@ -33,6 +33,7 @@
                         <th>Employee</th>
                         <th>Issue</th>
                         <th>Description</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Response</th>
                         <th>Assign</th>
@@ -50,19 +51,19 @@
                             <td>@ticket.EmployeeName</td>
                             <td>@ticket.IssueTitle</td>
                             <td>@ticket.Description</td>
-
+                            <td>@ticket.Type</td>
                             <td>@ticket.Status</td>
 
                             <td>
                                @ticket.Response
                             </td>
-
+                            <td>@ticket.AssignedToName</td>
 
 
                             <td>
                                     @ticket.EscalatedToName
                             </td>
-                            <td>@ticket.AssignedToName</td>
+                           
 
                             <td>
                                 <span style="display: flex; gap: 15px; justify-content: center;">

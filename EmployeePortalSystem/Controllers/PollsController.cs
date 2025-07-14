@@ -31,11 +31,17 @@ namespace EmployeePortalSystem.Controllers
             return View(polls); // Views/Polls/PollDetails.cshtml
         }
 
+
+
         [HttpGet]
         public IActionResult Create()
         {
-            return View(); // Return Create.cshtml
+            return View(); // Make sure Views/Polls/Create.cshtml exists
         }
+
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -45,19 +51,131 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
 
             model.CreatedAt = DateTime.Now;
-            model.CreatedBy = 1; // Replace with session value if available
+            model.CreatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
 
             _repo.Add(model);
 
             TempData["Message"] = "Poll created successfully!";
-            return RedirectToAction("PollDetails");
+
+            // Redirect based on role
+            //var role = HttpContext.Session.GetString("Role");
+            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+            //{
+            //    return RedirectToAction("PollDetails");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("EmployeePollDetails");
+            //}
+            if (currentDashboard == "Admin")
+                return RedirectToAction("PollDetails", "Polls");
+            else
+                return RedirectToAction("EmployeePollDetails", "Polls");
         }
 
-        public IActionResult Delete(int id)
+
+
+
+        //[HttpGet]
+        //public IActionResult Delete(int id)
+        //{
+        //    var poll = _repo.GetById(id);
+        //    if (poll == null)
+        //        return NotFound();
+
+        //    var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+        //    var isAdmin = IsAdmin(empId);
+
+        //    // Only allow delete if admin or creator
+        //    if (!isAdmin && poll.CreatedBy != empId)
+        //    {
+        //        TempData["Error"] = "You are not authorized to delete this poll.";
+        //        var role = HttpContext.Session.GetString("Role")?.ToLower();
+        //        return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
+        //    }
+
+
+        //    HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
+
+
+        //    return View(poll); // Goes to Views/Polls/Delete.cshtml
+        //}
+
+
+        [HttpGet]
+        public IActionResult Delete(int id, string? returnTo)
         {
+            var poll = _repo.GetById(id);
+            if (poll == null)
+                return NotFound();
+
+            var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var isAdmin = IsAdmin(empId); // <- this uses the "Role" session string
+
+            if (!isAdmin && poll.CreatedBy != empId)
+            {
+                TempData["Error"] = "You are not authorized to delete this poll.";
+                var role = HttpContext.Session.GetString("Role")?.ToLower();
+                return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
+            }
+
+            HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
+            ViewBag.ReturnTo = returnTo;
+            return View(poll); // This should render Delete.cshtml
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id, string? returnTo)
+        {
+            var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
+            var poll = _repo.GetById(id);
+            if (poll == null)
+                return NotFound();
+
+            if (poll.CreatedBy != empId && !IsAdmin(empId))
+                return Forbid();
+
             _repo.Delete(id);
             TempData["Message"] = "Poll deleted.";
-            return RedirectToAction("PollDetails");
+
+            if (!string.IsNullOrEmpty(returnTo))
+            {
+                if (returnTo.ToLower() == "profile")
+                {
+                    TempData["ActiveTab"] = "polls";
+                    return RedirectToAction("Profile", "MyProfile");
+                }
+
+                if (returnTo == "EmployeePollDetails")
+                    return RedirectToAction("EmployeePollDetails", "Polls");
+
+                if (returnTo == "PollDetails")
+                    return RedirectToAction("PollDetails", "Polls");
+            }
+
+            if (currentDashboard == "Admin")
+                return RedirectToAction("PollDetails", "Polls");
+
+            return RedirectToAction("EmployeePollDetails", "Polls");
+        }
+            //var role = HttpContext.Session.GetString("Role");
+            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
+            //    return RedirectToAction("PollDetails");
+
+            //return RedirectToAction("EmployeePollDetails");
+
+
+        // Helper method to check admin (you can adjust logic accordingly)
+        private bool IsAdmin(int empId)
+        {
+            // Example logic: You can replace this with your actual admin check
+            var role = HttpContext.Session.GetString("Role");
+            return role != null && role.ToLower() == "admin";
+
         }
 
         public IActionResult Results(int id)
@@ -76,6 +194,10 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult EmployeePollDetails()
         {
+            var empId = HttpContext.Session.GetInt32("EmployeeId");
+            if (empId == null)
+                return RedirectToAction("Login", "UserAccess");
+
             var polls = _repo.GetAll();
 
             var results = new Dictionary<int, Dictionary<string, int>>();
@@ -84,23 +206,45 @@ namespace EmployeePortalSystem.Controllers
                 results[poll.PollId] = _repo.GetResults(poll.PollId);
             }
 
+            var selectedOptions = _repo.GetSelectedOptionsForEmployee(empId.Value); // get past votes
+
+            ViewBag.SelectedOptions = selectedOptions;
             ViewBag.Results = results;
+
             return View(polls); // Views/Polls/EmployeePollDetails.cshtml
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VoteFromList(int pollId, string selectedOption)
+        public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId");
             if (empId == null)
                 return RedirectToAction("Login", "UserAccess");
 
-            if (_repo.HasVoted(pollId, empId.Value))
+
+
+            // Ensure the selected option is not null or empty
+            if (string.IsNullOrEmpty(selectedOption))
             {
-                TempData["Error"] = "You have already voted on this poll.";
+                TempData["Error"] = "Please select an option before submitting.";
+
+                if (returnTo == "DashboardEmployee")
+                    return RedirectToAction("DashboardEmployee", "UserAccess");
+
+                if (returnTo == "Profile")
+                {
+                    TempData["ActiveTab"] = "polls";
+                    return RedirectToAction("Profile", "MyProfile");
+                }
+
+               
+                return RedirectToAction("EmployeePollDetails");
             }
-            else
+
+
+            if (!_repo.HasVoted(pollId, empId.Value))
             {
                 var response = new PollResponse
                 {
@@ -111,22 +255,23 @@ namespace EmployeePortalSystem.Controllers
                 };
 
                 _repo.SubmitResponse(response);
-                TempData["Message"] = "Vote submitted!";
+            }
+            if (returnTo == "Profile")
+            { 
+                TempData["ActiveTab"] = "polls";
+                return RedirectToAction("Profile", "MyProfile");
             }
 
-            // Refresh polls and results
-            var polls = _repo.GetAll();
-            var results = new Dictionary<int, Dictionary<string, int>>();
-            foreach (var poll in polls)
+            if (returnTo == "DashboardEmployee")
             {
-                results[poll.PollId] = _repo.GetResults(poll.PollId);
+                return RedirectToAction("DashboardEmployee", "UserAccess");
             }
 
-            ViewBag.ResultsPollId = pollId;
-            ViewBag.Results = results;
-
-            return View("EmployeePollDetails", polls);
+            return RedirectToAction("EmployeePollDetails");
+           
         }
+
+
 
         public IActionResult EmployeeResults(int id)
         {

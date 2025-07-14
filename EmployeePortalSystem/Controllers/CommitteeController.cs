@@ -95,8 +95,8 @@ namespace EmployeePortalSystem.Controllers
                     committee.UpdatedAt = DateTime.Now;
 
                     _repository.CreateCommittee(committee);
-                    TempData["Success"] = "Committee created successfully.";
-                    TempData.Remove("Success");
+                    TempData["message2"] = "Committee created successfully.";
+                    
                 }
                 else
                 {
@@ -105,8 +105,8 @@ namespace EmployeePortalSystem.Controllers
                     committee.UpdatedAt = DateTime.Now;
 
                     _repository.UpdateCommittee(committee);
-                    TempData["Success"] = "Committee updated successfully.";
-                    TempData.Remove("Success");
+                    TempData["message2"] = "Committee updated successfully.";
+                    
                 }
 
                 return RedirectToAction("CommitteeDetails");
@@ -130,7 +130,7 @@ namespace EmployeePortalSystem.Controllers
         {
             _repository.DeleteCommittee(cid);
 
-            TempData["Messages"] = "Committee deleted successfully!";
+            TempData["message2"] = "Committee deleted successfully!";
 
             return RedirectToAction("CommitteeDetails","Committee");
         }
@@ -223,7 +223,7 @@ namespace EmployeePortalSystem.Controllers
                 existingMember.UpdatedBy = UserId;
                 _repository.UpdateCommitteeMember(existingMember);
 
-                TempData["Messages"] = "Member updated successfully.";
+                TempData["message3"] = "Member updated successfully.";
             }
             else
             {
@@ -239,7 +239,7 @@ namespace EmployeePortalSystem.Controllers
                 };
 
                 _repository.AddCommitteeMember(newMember);
-                TempData["Messages"] = "Member added successfully.";
+                TempData["message3"] = "Member added successfully.";
             }
             return RedirectToAction("CommitteeMembers", new { id = model.CommitteeId });
         }
@@ -277,7 +277,7 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteCommitteeMemberConfirmed(int committeeMemberId, int committeeId)
         {
             _repository.DeleteCommitteeMember(committeeMemberId);
-            TempData["Messages"] = "Member deleted successfully.";
+            TempData["message3"] = "Member deleted successfully.";
             return RedirectToAction("CommitteeMembers", new { id = committeeId });
         }
 

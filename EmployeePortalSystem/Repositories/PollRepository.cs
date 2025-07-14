@@ -23,7 +23,7 @@ namespace EmployeePortalSystem.Repositories
             using var conn = _context.CreateConnection();
             string sql = @"
                 SELECT p.PollId, p.Question, p.Option1, p.Option2, p.Option3, p.Option4,
-                       p.CreatedAt, e.Name AS CreatedByName
+                       p.CreatedAt, p.CreatedBy, e.Name AS CreatedByName
                 FROM polls p
                 JOIN employee e ON p.CreatedBy = e.EmployeeId
                 ORDER BY p.CreatedAt DESC";
@@ -35,7 +35,10 @@ namespace EmployeePortalSystem.Repositories
         public Poll GetById(int id)
         {
             using var conn = _context.CreateConnection();
-            return conn.QuerySingleOrDefault<Poll>("SELECT * FROM polls WHERE PollId = @Id", new { Id = id });
+            return conn.QuerySingleOrDefault<Poll>(
+    "SELECT PollId, Question, Option1, Option2, Option3, Option4, CreatedAt, CreatedBy FROM polls WHERE PollId = @Id",
+    new { Id = id });
+
         }
 
         // Add a new poll
@@ -48,21 +51,7 @@ namespace EmployeePortalSystem.Repositories
             conn.Execute(sql, poll);
         }
 
-        // Update an existing poll
-        public void Update(Poll poll)
-        {
-            using var conn = _context.CreateConnection();
-            string sql = @"
-                UPDATE polls SET
-                    Question = @Question,
-                    Option1 = @Option1,
-                    Option2 = @Option2,
-                    Option3 = @Option3,
-                    Option4 = @Option4
-                WHERE PollId = @PollId";
-            conn.Execute(sql, poll);
-        }
-
+      
         // Delete a poll
         public void Delete(int id)
         {
@@ -124,6 +113,40 @@ namespace EmployeePortalSystem.Repositories
 
             return conn.Query<PollResponseViewModel>(sql, new { PollId = pollId }).ToList();
         }
+
+
+
+
+        public Dictionary<int, string> GetSelectedOptionsForEmployee(int employeeId)
+        {
+            using var conn = _context.CreateConnection();
+
+            string sql = @"
+        SELECT PollId, SelectedOption
+        FROM poll_response
+        WHERE EmployeeId = @EmployeeId";
+
+            var responses = conn.Query<(int PollId, string SelectedOption)>(sql, new { EmployeeId = employeeId });
+
+            return responses.ToDictionary(r => r.PollId, r => r.SelectedOption);
+        }
+
+        //poll method for dashbpard
+
+        public List<PollViewModel> GetAll(int count=2)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+                SELECT p.PollId, p.Question, p.Option1, p.Option2, p.Option3, p.Option4,
+                       p.CreatedAt, p.CreatedBy, e.Name AS CreatedByName
+                FROM polls p
+                JOIN employee e ON p.CreatedBy = e.EmployeeId
+                ORDER BY p.CreatedAt DESC
+                LIMIT @Count";
+
+            return conn.Query<PollViewModel>(sql, new {Count=count}).ToList();
+        }
+
 
     }
 }

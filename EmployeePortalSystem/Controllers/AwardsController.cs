@@ -53,7 +53,10 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
-            var recipientName = await _repository.GetEmployeeNameByIdAsync(award.RecipientId);
+            var recipientName = award.RecipientId.HasValue
+    ? await _repository.GetEmployeeNameByIdAsync(award.RecipientId.Value)
+    : string.Empty;
+
 
             var model = new AwardViewModel
             {
@@ -76,8 +79,10 @@ namespace EmployeePortalSystem.Controllers
             var award = await _repository.GetAwardByIdAsync(id);
             if (award == null)
                 return NotFound();
-            return View(award);
+
+            return View(award); // View name should be Delete.cshtml
         }
+
         [HttpGet]
         public async Task<JsonResult> SearchEmployeeNames(string term)
         {
@@ -98,29 +103,27 @@ namespace EmployeePortalSystem.Controllers
             }
 
             int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
-            if (recipientId == 0)
-            {
-                ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                return View("AwardForm", model);
-            }
+            int? finalRecipientId = recipientId > 0 ? recipientId : (int?)null;
 
             var award = new Award
             {
                 Type = model.Type,
                 EventDate = model.EventDate.Value,
 
-                RecipientId = recipientId,
+                RecipientId = finalRecipientId,
+                RecipientName = model.RecipientName,
                 GivenBy = model.GivenBy,
                 Description = model.Description,
                 DisplayOrder = model.DisplayOrder,
                 CreatedBy = model.CreatedBy,
                 UpdatedBy = model.UpdatedBy,
+
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
 
             await _repository.CreateAsync(award);
-            TempData["Message"] = "Award successfully added.";
+            TempData["Message6"] = "Award added successfully.";
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -132,12 +135,17 @@ namespace EmployeePortalSystem.Controllers
                 return View("AwardForm", model);
             }
 
-            int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
-            if (recipientId == 0)
+            int? recipientId = null;
+            if (!string.IsNullOrWhiteSpace(model.RecipientName))
             {
-                ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                return View("AwardForm", model);
+                recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
+                if (recipientId == 0)
+                {
+                    ModelState.AddModelError("RecipientName", "Invalid employee name.");
+                    return View("AwardForm", model);
+                }
             }
+
 
             var award = await _repository.GetByIdAsync(model.AwardId);
             if (award == null)
@@ -157,16 +165,17 @@ namespace EmployeePortalSystem.Controllers
 
             await _repository.UpdateAsync(award);
 
-            TempData["Message"] = "Award successfully updated.";
+            TempData["Message6"] = "Award updated successfully.";
             return RedirectToAction("Index");
         }
 
         // POST: Final delete
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _repository.DeleteAwardAsync(id);
+            TempData["Message6"] = "Award deleted successfully.";
             return RedirectToAction("Index");
         }
 

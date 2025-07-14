@@ -1,0 +1,39 @@
+﻿@model EmployeePortalSystem.Models.Poll
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var currentDashboard = HttpContextAccessor.HttpContext?.Session.GetString("CurrentDashboard");
+
+}
+
+<div class="container">
+    <div class="empmaster_card">
+        <div class="del_emp">
+            <h3>Are you sure you want to delete the poll: "<strong>@Model.Question</strong>"?</h3>
+
+            <div class="employee_deletion">
+                <div class="left_del">
+                    <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.PollId" asp-route-returnTo="@ViewBag.ReturnTo">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="del_button">Delete</button>
+                    </form>
+
+                </div>
+                <div class="right_cancel">
+                    <form method="get"
+                          asp-action="@(ViewBag.ReturnTo == "Profile" ? "Profile" :
+                    ViewBag.ReturnTo == "EmployeePollDetails" ? "EmployeePollDetails" : "PollDetails")"
+                          asp-controller="@(ViewBag.ReturnTo == "Profile" ? "MyProfile" : "Polls")"
+                          asp-route-activeTab="@(ViewBag.ReturnTo == "Profile" ? "polls" : null)">
+                        <button type="submit" class="cancel_button">Cancel</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

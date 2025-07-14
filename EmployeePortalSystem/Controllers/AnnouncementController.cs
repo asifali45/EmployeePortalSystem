@@ -8,23 +8,35 @@ namespace EmployeePortalSystem.Controllers
 {
     public class AnnouncementController : Controller
     {
-        private readonly AnnouncementRepository _repo;
+        private readonly AnnouncementRepository _announcementrepo;
+        private readonly DepartmentRepository _repo;
+        private readonly CommitteeRepository _repository;
 
-        public AnnouncementController(AnnouncementRepository repo)
+        public AnnouncementController(
+            AnnouncementRepository announcementRepo,
+            DepartmentRepository departmentRepo,
+            CommitteeRepository committeeRepo)
         {
-            _repo = repo;
+            _announcementrepo = announcementRepo;
+            _repo = departmentRepo;
+            _repository = committeeRepo;
         }
+
 
         public IActionResult Index()
         {
-            var announcements = _repo.GetAll();
-                                  
+            var announcements = _announcementrepo.GetAll();                     
             return View(announcements);
      
         }
+
+
         [HttpGet]
         public IActionResult Create()
+
         {
+            ViewBag.Departments = new SelectList(_repo.GetAll(), "DepartmentId", "Name");
+            ViewBag.Committees = new SelectList(_repository.GetAllCommittees(), "CommitteeId", "Name");
             return View();
         }
 
@@ -36,15 +48,20 @@ namespace EmployeePortalSystem.Controllers
             ModelState.Remove("AnnouncementId");
 
             if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = new SelectList(_repo.GetAll(), "DepartmentId", "Name");
+                ViewBag.Committees = new SelectList(_repository.GetAllCommittees(), "CommitteeId", "Name");
                 return View(announcement);
+
+            }
 
             // Set server-side fields
             announcement.PostDate = DateTime.Now;
             announcement.CreatedBy = 1;
 
-            _repo.Add(announcement);
+            _announcementrepo.Add(announcement);
 
-            TempData["Message"] = "Announcement created successfully!";
+            TempData["Message5"] = "Announcement created successfully!";
             return RedirectToAction("Index");
         }
 
@@ -52,10 +69,13 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult Edit(int id)
         {
-            var announcement = _repo.GetById(id);
+            var announcement = _announcementrepo.GetById(id);
             if (announcement == null) return NotFound();
 
             ViewBag.VisibleToOptions = GetVisibleToOptions();
+            ViewBag.Departments = new SelectList(_repo.GetAll(), "DepartmentId", "Name");
+            ViewBag.Committees = new SelectList(_repository.GetAllCommittees(), "CommitteeId", "Name");
+
             return View(announcement);
         }
 
@@ -70,22 +90,22 @@ namespace EmployeePortalSystem.Controllers
             }
 
             // Get existing record
-            var existing = _repo.GetById(model.AnnouncementId);
+            var existing = _announcementrepo.GetById(model.AnnouncementId);
             if (existing == null) return NotFound();
 
             model.PostDate = existing.PostDate; // Preserve original PostDate
             model.UpdatedBy = 1;
             model.UpdatedAt = DateTime.Now;
 
-            _repo.Update(model);
-
+            _announcementrepo.Update(model);
+            TempData["Message5"] = "Announcement updated successfully!";
             return RedirectToAction("Index");
         }
 
 
         public IActionResult Delete(int id)
         {
-            var announcement = _repo.GetById(id);
+            var announcement = _announcementrepo.GetById(id);
             if (announcement == null) return NotFound();
 
             return View(announcement);
@@ -94,7 +114,8 @@ namespace EmployeePortalSystem.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            _repo.Delete(id);
+            _announcementrepo.Delete(id);
+            TempData["Message5"] = "Announcement deleted successfully!";
             return RedirectToAction("Index");
         }
 
@@ -110,9 +131,28 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult EmployeeAnnouncement()
         {
-            var announcements = _repo.GetAll(); // Or filter based on employee, department, etc.
-            return View("EmployeeAnnouncement", announcements);
+            // Get the current employee's ID from session
+            int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            if (employeeId == null)
+                return RedirectToAction("Login", "Account");
+
+            // Get department and committee IDs for the employee
+            var employeeDeptId = _repo.GetDepartmentIdByEmployeeId(employeeId.Value);
+            var employeeCommitteeIds = _repository.GetCommitteeIdsByEmployeeId(employeeId.Value);
+
+            // Get all announcements
+            var allAnnouncements = _announcementrepo.GetAll();
+
+            // Filter announcements based on visibility
+            var filtered = allAnnouncements.Where(a =>
+                a.VisibleTo == "All"
+                || (a.VisibleTo == "Department" && a.VisibleToDepartmentId == employeeDeptId)
+                || (a.VisibleTo == "Committee" && employeeCommitteeIds.Contains(a.VisibleToCommitteeId ?? 0))
+            ).ToList();
+
+            return View("EmployeeAnnouncement", filtered);
         }
+
 
 
     }

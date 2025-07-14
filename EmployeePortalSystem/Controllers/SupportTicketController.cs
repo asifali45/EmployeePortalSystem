@@ -74,6 +74,7 @@ namespace EmployeePortalSystem.Controllers
                 EmployeeId = employeeId,
                 IssueTitle = model.IssueTitle,
                 Description = model.Description,
+                Type = model.Type,
                 Status = "Open",
                 CreatedAt = DateTime.Now
             };
@@ -111,6 +112,7 @@ namespace EmployeePortalSystem.Controllers
                 TicketId = ticket.TicketId,
                 IssueTitle = ticket.IssueTitle,
                 Description = ticket.Description,
+                Type = ticket.Type,
                 Status = ticket.Status,
                 Response = ticket.Response,
                 DepartmentList = (await _repository.GetDepartmentsAsync())
@@ -135,8 +137,40 @@ namespace EmployeePortalSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTicket(SupportTicketViewModel model)
         {
+            // ✅ Conditional Validation
+            if (model.Status == "Assigned")
+            {
+                if (string.IsNullOrWhiteSpace(model.AssignedTo))
+                    ModelState.AddModelError("AssignedTo", "Assigned To is required when status is Assigned.");
+
+                // ✅ Clear unrelated
+                ModelState.Remove("EscalationName");
+            }
+            else if (model.Status == "Escalated")
+            {
+                if (string.IsNullOrWhiteSpace(model.EscalationName))
+                    ModelState.AddModelError("EscalationName", "Escalation Name is required when status is Escalated.");
+
+                // ✅ Clear unrelated
+                ModelState.Remove("AssignedTo");
+            }
+            else
+            {
+                // ✅ Neither Assigned nor Escalated — remove both
+                ModelState.Remove("AssignedTo");
+                ModelState.Remove("EscalationName");
+            }
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState)
+                {
+                    Console.WriteLine($"Key: {error.Key}");
+                    foreach (var e in error.Value.Errors)
+                    {
+                        Console.WriteLine($"Error: {e.ErrorMessage}");
+                    }
+                }
                 // repopulate dropdowns
                 model.DepartmentList = (await _repository.GetDepartmentsAsync())
                     .Select(d => new SelectListItem { Value = d.DepartmentId.ToString(), Text = d.Name }).ToList();
@@ -157,14 +191,16 @@ namespace EmployeePortalSystem.Controllers
 
             ticket.Status = model.Status;
             ticket.Response = model.Response;
-            ticket.AssignedTo = !string.IsNullOrEmpty(model.AssignedTo)
-                ? await _repository.GetEmployeeIdByNameAsync(model.AssignedTo)
-                : null;
+            if (!string.IsNullOrEmpty(model.AssignedTo))
+            {
+                ticket.AssignedTo = await _repository.GetEmployeeIdByNameAsync(model.AssignedTo);
+            }
 
-            ticket.EscalatedTo = !string.IsNullOrEmpty(model.EscalationName)
-                ? await _repository.GetEmployeeIdByNameAsync(model.EscalationName)
-                : null;
-
+            // EscalatedTo: only update if not empty
+            if (!string.IsNullOrEmpty(model.EscalationName))
+            {
+                ticket.EscalatedTo = await _repository.GetEmployeeIdByNameAsync(model.EscalationName);
+            }
             ticket.EscalationLevel = int.TryParse(model.EscalationLevel, out int level) ? level : 0;
             ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             ticket.UpdatedAt = DateTime.Now;

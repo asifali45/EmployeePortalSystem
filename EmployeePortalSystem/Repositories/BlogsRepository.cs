@@ -2,6 +2,7 @@
 using EmployeePortalSystem.Context;
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.ViewModels;
+using Mysqlx.Crud;
 
 namespace EmployeePortalSystem.Repositories
 {
@@ -14,25 +15,7 @@ namespace EmployeePortalSystem.Repositories
             _context = context;
         }
 
-        //public List<BlogViewModel> GetBlogDetails()
-        //{
-        //    using var connection=_context.CreateConnection();
-
-        //    string sql = @"
-        //            SELECT
-        //                b.BlogId,
-        //                b.Title,
-        //                b.Content,
-        //                b.Image,
-        //                b.Tags,
-        //                e.Name as AuthorName,
-        //                b.CreatedAt,
-        //                b.UpdatedAt
-        //            FROM Blog b 
-        //            LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId";
-        //    return connection.Query<BlogViewModel>(sql).ToList();
-        //}
-
+       
         public List<BlogViewModel> GetBlogDetails(int employeeId)
         {
             using var connection = _context.CreateConnection();
@@ -44,6 +27,7 @@ namespace EmployeePortalSystem.Repositories
             b.Content,
             b.Image,
             b.Tags,
+            b.AuthorId,
             e.Name AS AuthorName,
             b.CreatedAt,
             b.UpdatedAt,
@@ -53,7 +37,8 @@ namespace EmployeePortalSystem.Repositories
                 WHERE bl.BlogId = b.BlogId
             ) AS LikeCount
         FROM Blog b
-        LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId";
+        LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId
+         ORDER BY b.CreatedAt DESC"; 
 
             var blogs= connection.Query<BlogViewModel>(sql).ToList();
 
@@ -87,6 +72,7 @@ namespace EmployeePortalSystem.Repositories
             b.Tags,
             b.CreatedAt,
             b.UpdatedAt,
+            b.AuthorId,
             e.Name AS AuthorName
         FROM Blog b
         LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId
@@ -122,6 +108,15 @@ namespace EmployeePortalSystem.Repositories
 
             }
         }
+
+        public int GetLikeCount(int blogId)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "SELECT COUNT(*) FROM blog_like WHERE BlogId=@BlogId";
+
+            return connection.ExecuteScalar<int>(sql, new { BlogId = blogId });
+        }
+
         public List<BlogCommentViewModel> GetCommentsByBlogId(int blogId)
         {
             using var connection = _context.CreateConnection();
@@ -146,8 +141,52 @@ namespace EmployeePortalSystem.Repositories
             connection.Execute(sql, new { BlogId = blogId, EmployeeId = employeeId, CommentText = commentText });
         }
 
+        public string GetEmployeeName(int employeeId)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = "SELECT Name FROM Employee WHERE EmployeeId = @EmployeeId";
+            return connection.ExecuteScalar<string>(sql, new { EmployeeId = employeeId });
+        }
 
 
+
+        //For blogs showing in the dashboard
+        public List<BlogViewModel> GetLatestBlogsForDashboard(int count = 2)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = @"
+    SELECT
+        b.BlogId,
+        b.Title,
+        b.Content,
+        b.Image,
+        b.Tags,
+        e.Name AS AuthorName,
+        b.CreatedAt,
+        b.UpdatedAt,
+        (
+            SELECT COUNT(*) 
+            FROM blog_like bl 
+            WHERE bl.BlogId = b.BlogId
+        ) AS LikeCount
+    FROM Blog b
+    LEFT JOIN Employee e ON b.AuthorId = e.EmployeeId
+    ORDER BY b.CreatedAt DESC
+    LIMIT @Count";
+
+            var blogs = connection.Query<BlogViewModel>(sql, new { Count = count }).ToList();
+
+            foreach (var blog in blogs)
+            {
+                blog.Comments = GetCommentsByBlogId(blog.BlogId.Value);
+            }
+
+            return blogs;
+        }
+
+       
 
 
     }

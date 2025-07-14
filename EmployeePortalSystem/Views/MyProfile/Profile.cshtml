@@ -1,0 +1,350 @@
+﻿@model EmployeePortalSystem.ViewModels.MyProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+@{
+    int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+}
+
+<div class="container">
+    <div class="emp_head">
+        <h2>My Profile</h2>
+    </div>
+    <div class="profile-wrapper">
+    <div class="profile-card">
+        <div class="profile-photo">
+            @if (!string.IsNullOrEmpty(Model.Photo))
+            {
+                <img src="@Url.Content("~/uploads/" + Model.Photo)" alt="Profile Photo" />
+            }
+            else
+            {
+               
+                    <img src="~/img/avatar_11852100.png"  alt="Profile image" />
+            }
+                <div style="margin-top: px;">
+                    <a asp-action="EditPhoto" asp-controller="MyProfile" class="btn-edit-photo">
+                        <img src="~/img/edit Icon.png" alt="edit" class="profile-edit" />
+                        
+                    </a>
+                </div>
+        </div>
+
+        <div class="profile-details">
+            <div class="p-name">
+            <h2>@Model.Name</h2>
+            <h3>@Model.Designation</h3>
+            </div>
+            <div class="p-details">
+                <div class="p-details1">
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                </div>
+                <div class="p-details2">
+                    <p><strong>Department:</strong> @Model.DepartmentName</p>
+                    @* <p><strong>Committee:</strong> </p> *@
+                    @if (Model.Committees != null && Model.Committees.Any())
+                    {
+                        <p><strong>Committee:</strong> @string.Join(", ", Model.Committees)</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="profile-card2">
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('awards')">Awards</button>
+                <button class="tab-btn" onclick="showTab('blogs')">Blogs</button>
+                <button class="tab-btn" onclick="showTab('polls')">Polls</button>
+            </div>
+
+            <div class="tab-content" id="awards" style="display: block;">
+                <div class="tab-inner">
+                @if (Model.Awards != null && Model.Awards.Any())
+                {
+                    foreach (var award in Model.Awards)
+                    {
+                        <div class="pro-card">
+                            <div class="blog-card-content">
+                                <div class="blog-card-text">
+                                    <div class="award-logo">
+                                        @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                                        {
+                                            <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/avatar_11852100.png" class="blog-float-image" alt="Profile image" />
+                                        }
+                                    </div>
+
+                                    <h3 class="blog-title">@award.Type</h3>
+
+                                    <p class="blog-description">
+                                        <strong>Description:</strong> @award.Description<br />
+                                        <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                                        <strong>Recipient:</strong> @award.RecipientName<br />
+                                        <strong>Given By:</strong> @award.GivenBy<br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No awards to display.</p>
+                }
+                </div>
+            </div>
+
+
+            <div class="tab-content" id="blogs" style="display: none;">
+                <div class="tab-inner">
+                @if (Model.Blogs != null && Model.Blogs.Any())
+                {
+                    foreach (var blog in Model.Blogs)
+                    {
+                        <div class="pro-card">
+                            <div class="blog-card-content">
+                                <div class="blog-card-text">
+                                    @if (!string.IsNullOrEmpty(blog.Image))
+                                    {
+                                        <img src="~/uploads/@blog.Image" class="blog-float-image" alt="Blog Image">
+                                    }
+
+                                    <h3 class="blog-title">@blog.Title</h3>
+
+                                    <p class="blog-description">
+                                        @blog.Content
+                                    </p>
+
+                                    <div class="blog-meta">
+                                        <span class="blog-author">By @blog.AuthorName</span>
+                                        <span class="blog-tags">#@blog.Tags</span>
+                                    </div>
+
+                                    <div class="blog-actions">
+                                        @*     <form method="post" asp-controller="Blogs" asp-action="ToggleLike"> *@
+                                                
+                                        @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                        @*         <input type="hidden" name="returnTo" value="Profile" /> *@
+                                        @*     <button class="like-button" type="submit"> *@
+                                        @*         <div class="like-content"> *@
+                                        @*             <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" /> *@
+                                        @*             <span>@blog.LikeCount</span> *@
+                                        @*         </div> *@
+                                        @*     </button> *@
+                                        @* </form> *@
+
+                                            <button type="button" class="like-button" onclick="toggleLike(@blog.BlogId, this, 'profile')">
+                                                <div class="like-content">
+                                                    <img src="~/img/heartfilled.png" width="20px" height="20px" />
+                                                    <span>@blog.LikeCount</span>
+                                                </div>
+                                            </button>
+
+
+                                        <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
+                                            <div class="comment-content">
+                                                <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
+                                                <span>Comments @blog.Comments.Count</span>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <div id="comment-section-@blog.BlogId" class="comment-section" style="display: none; margin-top: 10px;">
+                                        <div class="existing-comments">
+                                            @foreach (var comment in blog.Comments)
+                                            {
+                                                <div class="comment">
+                                                    <span>@comment.EmployeeName</span>: @comment.CommentText
+                                                </div>
+                                            }
+                                        </div>
+
+                                        @* <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post"> *@
+                                        @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
+                                        @*         <input type="hidden" name="returnTo" value="Profile" /> *@
+                                        @*     <input name="commentText" placeholder="Write your comment..." required> *@
+                                        @*     <button type="submit">Post</button> *@
+                                        @* </form> *@
+
+                                            <form class="comment-text" onsubmit="return submitComment(@blog.BlogId, this, 'Profile')">
+                                                <input type="text" name="commentText" placeholder="Write your comment..." required>
+                                                <button type="submit">Post</button>
+                                            </form>
+
+                                    </div>
+                                        @if (blog.AuthorId == currentEmpId)
+                                        {
+                                            <div class="blog-del">
+                                                <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId , returnTo = "Profile"})" title="Delete Blog">
+                                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                                </a>
+                                            </div>
+                                        }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No blogs found.</p>
+                }
+                </div>
+            </div>
+
+
+            <div class="tab-content" id="polls" style="display: none;">
+                <div class="tab-inner">
+                @if (Model.Polls != null && Model.Polls.Any())
+                {
+                    var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
+                    var empId = Context.Session.GetInt32("EmployeeId") ?? 0;
+
+                    foreach (var poll in Model.Polls)
+                    {
+                        var isVoted = selectedOptions != null && selectedOptions.ContainsKey(poll.PollId);
+                        var selected = isVoted ? selectedOptions[poll.PollId] : null;
+                        var options = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
+
+                        <div class="pro-card" style="margin-bottom: 30px;">
+                            <div class="blog-card-content">
+                                <div class="blog-card-text">
+                                    <h3 class="blog-title">@poll.Question</h3>
+
+                                    <form asp-action="VoteFromList" asp-controller="Polls" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="pollId" value="@poll.PollId" />
+                                        <input type="hidden" name="returnTo" value="Profile" /> 
+
+                                        @for (int i = 0; i < options.Length; i++)
+                                        {
+                                            var val = (i + 1).ToString();
+                                            var text = options[i];
+                                            if (!string.IsNullOrEmpty(text))
+                                            {
+                                                var isSel = selected == val;
+
+                                                <div style="margin-bottom: 6px;">
+                                                    <input type="radio"
+                                                           name="selectedOption"
+                                                           value="@val"
+                                                    @(isSel ? "checked" : "")
+                                                    @(isVoted ? "disabled" : "")
+                                                           style="accent-color: @(isSel ? "green" : "#999"); margin-right: 6px;" />
+                                                    <label>@text</label>
+                                                </div>
+                                            }
+                                        }
+
+                                        <div class="blog-meta" style="margin-top: 5px; font-size: 12px;">
+                                            <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                                        </div>
+
+                                        <div class="p-poll-actions" style="margin-top: 10px;">
+                                            @if (!isVoted)
+                                            {
+                                                <button type="submit" class="pollbtn">
+                                                    🗳 Submit Vote
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <span style="color: green; font-weight: 500;">
+                                                    ✅ You already voted
+                                                </span>
+                                            }
+                                           
+                                            <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn" style="margin-left: 15px;">
+                                                📊 View Results
+                                            </a>
+                                                <a asp-action="Delete" asp-controller="Polls" asp-route-id="@poll.PollId" asp-route-returnTo="Profile" title="Delete Poll">
+                                                    <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                                </a>
+
+                
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No polls found.</p>
+                }
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+@section Scripts {
+    <script>
+        function toggleCommentSection(blogId) {
+            const section = document.getElementById(`comment-section-${blogId}`);
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            contents.forEach(tab => tab.style.display = 'none');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) {
+                activeContent.style.display = 'block';
+            }
+
+            const activeButton = [...buttons].find(btn => btn.textContent.toLowerCase().includes(tabId.toLowerCase()));
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const activeTab = "@ViewBag.ActiveTab" || "awards";
+            showTab(activeTab);
+        });
+    </script>
+}
+
+
+@* <script> *@
+@*     function showTab(tabId) { *@
+@*         const contents = document.querySelectorAll('.tab-content'); *@
+@*         const buttons = document.querySelectorAll('.tab-btn'); *@
+
+@*         contents.forEach(tab => tab.style.display = 'none'); *@
+@*         buttons.forEach(btn => btn.classList.remove('active')); *@
+
+@*         const activeContent = document.getElementById(tabId); *@
+@*         if (activeContent) { *@
+@*             activeContent.style.display = 'block'; *@
+@*         } *@
+
+@*         const activeButton = [...buttons].find(btn => btn.textContent.toLowerCase().includes(tabId.toLowerCase())); *@
+@*         if (activeButton) { *@
+@*             activeButton.classList.add('active'); *@
+@*         } *@
+@*     } *@
+
+@*     window.addEventListener("DOMContentLoaded", function () { *@
+@*         const activeTab = "@ViewBag.ActiveTab" || "awards"; // default to awards *@
+@*         showTab(activeTab); *@
+@*     }); *@
+@* </script> *@

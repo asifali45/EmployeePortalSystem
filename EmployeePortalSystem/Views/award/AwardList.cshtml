@@ -25,7 +25,12 @@
             <div class="emp_head">
                 <h2>Award List</h2>
             </div>
-
+            @if (TempData["Message6"] != null)
+            {
+                <div class="alert-message">
+                    @TempData["Message6"]
+                </div>
+            }
             <div class="empmaster_card">
                 <div class="table-responsive">
                     <table class="emp_table table" id="awardTable">
@@ -49,6 +54,9 @@
                                     <td>@award.Type</td>
                                     <td>@award.EventDate?.ToString("dd-MM-yyyy")</td>
                                     <td>@award.RecipientName</td>
+
+
+
                                     <td>@award.GivenBy</td>
                                     <td>@award.Description</td>
                                     <td>@award.DisplayOrder</td>

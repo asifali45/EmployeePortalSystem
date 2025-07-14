@@ -83,12 +83,12 @@ namespace EmployeePortalSystem.Controllers
             int? loggedInAdminId = HttpContext.Session.GetInt32("EmployeeId");
             if (id == loggedInAdminId)
             {
-                TempData["Error"] = "You cannot delete your own account.";
+                TempData["Message1"] = "You cannot delete your own account.";
                 return RedirectToAction("EmployeeDetails");
             }
 
             _repo.DeleteEmployee(id);
-            TempData["Messages"] = "Employee deleted successfully!";
+            TempData["Message1"] = "Employee deleted successfully!";
             return RedirectToAction("EmployeeDetails");
         }
 
@@ -164,7 +164,7 @@ namespace EmployeePortalSystem.Controllers
 
                 TempData["Message1"] = "Employee added successfully!";
             }
-            return RedirectToAction("EmployeeInsertion");
+            return RedirectToAction("EmployeeDetails");
         }
 
     }

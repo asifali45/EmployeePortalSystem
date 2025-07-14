@@ -2,6 +2,7 @@
 using EmployeePortalSystem.Repositories;
 using EmployeePortalSystem.ViewModels;
 using EmployeePortalSystem.Models;
+using System.Reflection.Metadata;
 
 namespace EmployeePortalSystem.Controllers
 {
@@ -81,7 +82,7 @@ namespace EmployeePortalSystem.Controllers
             }
 
             TempData["Message1"] = "Blog created successfully!";
-            TempData.Remove("Message1");
+            
 
 
 
@@ -92,37 +93,104 @@ namespace EmployeePortalSystem.Controllers
         
 
         [HttpGet]
-        public IActionResult BlogDelete(int id)
+        public IActionResult BlogDelete(int id, string? returnTo)
         {
             var blog = _repository.GetBlogById(id);
             if (blog == null)
                 return NotFound();
+            ViewBag.ReturnTo = returnTo;
             return View("BlogDelete", blog);
         }
 
         [HttpPost]
-        public IActionResult BlogDeleteConfirmed(int id)
+        public IActionResult BlogDeleteConfirmed(int id, string? returnTo)
         {
-            _repository.DeleteBlog(id);
+            var blog=_repository.GetBlogById(id);
 
-            TempData["Mess"] = "Blog deleted successfully!";
+            if (blog == null)
+                return NotFound();
 
-            return RedirectToAction("BlogDetails", "Blogs");
+            int loggedInEmpId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
+
+            // Allow if Admin OR Author of the blog
+            if (currentDashboard == "Admin" || blog.AuthorId == loggedInEmpId)
+            {
+                _repository.DeleteBlog(id);
+                TempData["Mess"] = "Blog deleted successfully!";
+
+
+                if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
+                {
+                    return RedirectToAction("Profile", "MyProfile", new { activeTab = "blogs" });
+                }
+
+                if (currentDashboard == "Admin")
+                    return RedirectToAction("BlogDetails", "Blogs");
+                else
+                    return RedirectToAction("EmployeeBlogDetails", "Blogs");
+            }
+            
+
+            return RedirectToAction("EmployeeBlogDetails", "Blogs");
         }
+
+        //[HttpPost]
+        //public IActionResult ToggleLike(int blogId, string? returnTo)
+        //{
+        //    int empId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+        //    _repository.ToggleLike(blogId, empId);
+
+        //    if (!string.IsNullOrEmpty(returnTo) && returnTo.ToLower() == "profile")
+        //    {
+        //        TempData["ActiveTab"] = "blogs";
+        //        return RedirectToAction("Profile", "MyProfile");
+
+        //    }
+
+        //    return RedirectToAction("EmployeeBlogDetails");
+        //}
 
         [HttpPost]
-        public IActionResult ToggleLike(int blogId)
+
+        public JsonResult ToggleLike(int blogId,string? returnTo)
         {
-            int empId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+            int empId=Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
             _repository.ToggleLike(blogId, empId);
 
-            return RedirectToAction("EmployeeBlogDetails");
+            if (!string.IsNullOrEmpty(returnTo) && returnTo.ToLower() == "profile")
+            {
+                TempData["ActiveTab"] = "blogs";               
+            }
+
+            int updatedCount = _repository.GetLikeCount(blogId);
+            return Json(updatedCount);
         }
+
 
         //comment
 
+        //[HttpPost]
+        //public IActionResult PostComment(int blogId, string commentText, string? returnTo)
+        //{
+        //    int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+
+        //    if (!string.IsNullOrWhiteSpace(commentText))
+        //    {
+        //        _repository.AddComment(blogId, employeeId, commentText);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
+        //    {
+        //        TempData["ActiveTab"] = "blogs";
+        //        return RedirectToAction("Profile", "MyProfile");
+
+        //    }
+        //    return RedirectToAction("EmployeeBlogDetails");
+        //}
+
         [HttpPost]
-        public IActionResult PostComment(int blogId, string commentText)
+        public JsonResult PostComment(int blogId, string commentText, string? returnTo)
         {
             int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
 
@@ -131,8 +199,19 @@ namespace EmployeePortalSystem.Controllers
                 _repository.AddComment(blogId, employeeId, commentText);
             }
 
-            return RedirectToAction("EmployeeBlogDetails");
+            if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
+            {
+                TempData["ActiveTab"] = "blogs";
+                
+            }
+            
+            return Json(new
+            {
+                success = true,
+                employeeName = _repository.GetEmployeeName(employeeId),
+                commentText,
+                createdAt = DateTime.Now.ToString("dd MMM yyyy hh:mm tt")
+            });
         }
-
     }
 }

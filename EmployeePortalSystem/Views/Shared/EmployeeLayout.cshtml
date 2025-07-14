@@ -33,7 +33,7 @@
                     </div>
                     <div class="nav_right">
                         <div class="profile">
-                            <a href="#" class="profile-image"><img src="~/img/Profile Avatar.png" /></a>
+                            <a href="@Url.Action("Profile","MyProfile")" class="profile-image"><img src="~/img/Profile Avatar.png" /></a>
                             <div class="user_info">
                                 <h6>@name</h6>
                                 <p>@designation</p>
@@ -107,7 +107,7 @@
         <div id="sidebar" class="sidebar">
             
             <ul class="sidebar_menu">
-                <li><a href="#">My Profile</a></li>
+                <li><a href="@Url.Action("Profile","MyProfile")">My Profile</a></li>
 
                 @if (currentDashboard == "Admin")
                 {
@@ -168,10 +168,72 @@
     <script>
         $(document).ready(function () {
             $('.emp_table').DataTable({
-                responsive: true
+                responsive: true,
+                order:[]
             });
 
         });
+        //BlogLike
+          function toggleLike(blogId, buttonElement,returnTo=null) {
+            $.ajax({
+                type: "POST",
+                url: "/Blogs/ToggleLike",
+                data: { blogId: blogId ,returnTo:returnTo},
+                success: function (updatedLikeCount) {
+                    const span = buttonElement.querySelector("span");
+                    span.textContent = updatedLikeCount;
+                },
+                error: function () {
+                    alert("Failed to update like.");
+                }
+            });
+        }
+
+        //Blog Comment
+            function toggleCommentSection(blogId) {
+                const section = document.getElementById(`comment-section-${blogId}`);
+                if (section.style.display === 'none') {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            }
+
+            function submitComment(blogId, formElement, returnTo = null) {
+            const commentText = formElement.querySelector('input[name="commentText"]').value;
+
+            if (commentText.trim() === "") return false;
+
+            $.ajax({
+                url: '/Blogs/PostComment',
+                type: 'POST',
+                data: {
+                    blogId: blogId,
+                    commentText: commentText,
+                    returnTo: returnTo
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const newComment = document.createElement('div');
+                        newComment.className = 'comment';
+                        newComment.innerHTML = `<span>${response.employeeName}</span>: ${response.commentText}`;
+
+                        // Append to existing comments
+                        const commentContainer = document.querySelector(`#comment-section-${blogId} .existing-comments`);
+                        commentContainer.appendChild(newComment);
+
+                        formElement.reset();
+                    }
+                },
+                error: function () {
+                    alert("Failed to post comment.");
+                }
+            });
+
+            return false; // prevent form reload
+        }
+
+
     </script>
     @RenderSection("Scripts", required: false)
 

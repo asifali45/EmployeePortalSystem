@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeePortalSystem.Context;
 using EmployeePortalSystem.Models;
+using EmployeePortalSystem.ViewModels;
 using MySql.Data.MySqlClient;
 
 namespace EmployeePortalSystem.Repositories
@@ -37,8 +38,8 @@ namespace EmployeePortalSystem.Repositories
         }
         public async Task<int> CreateAsync(Award award)
         {
-            var query = @"INSERT INTO Awards (Type, EventDate, RecipientId, GivenBy, Description, DisplayOrder, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
-                  VALUES (@Type, @EventDate, @RecipientId, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
+            var query = @"INSERT INTO Awards (Type, EventDate, RecipientId,  RecipientName, GivenBy, Description, DisplayOrder, CreatedBy, CreatedAt, UpdatedBy, UpdatedAt) 
+                  VALUES (@Type, @EventDate, @RecipientId, @RecipientName, @GivenBy, @Description, @DisplayOrder, @CreatedBy, @CreatedAt, @UpdatedBy, @UpdatedAt);
                   SELECT LAST_INSERT_ID();";
 
             using var connection = _context.CreateConnection();
@@ -52,12 +53,12 @@ namespace EmployeePortalSystem.Repositories
         public async Task<IEnumerable<Award>> GetAllAsync()
         {
             var query = @"SELECT  a.AwardId, a.Type, a.EventDate, 
-                    a.RecipientId, e.Name as RecipientName,
+                    a.RecipientId, COALESCE(a.RecipientName, e.Name) as RecipientName,
                     e.Photo as RecipientPhoto,
-                    a.GivenBy, a.Description, a.DisplayOrder
+                    a.GivenBy, a.Description, a.DisplayOrder,a.CreatedAt
                   FROM Awards a
-                  JOIN Employee e ON a.RecipientId = e.EmployeeId
-                  ORDER BY a.DisplayOrder";
+                  LEFT JOIN Employee e ON a.RecipientId = e.EmployeeId
+                  ORDER BY a.DisplayOrder ASC,a.CreatedAt DESC";
 
             using var connection = _context.CreateConnection();
             return await connection.QueryAsync<Award>(query);
@@ -119,5 +120,24 @@ namespace EmployeePortalSystem.Repositories
                 return await connection.ExecuteAsync(query, new { AwardId = id });
             }
         }
+
+        public List<AwardViewModel> GetAwardsForDashboard(int count = 2)
+        {
+            var query = @"SELECT  a.AwardId, a.Type, a.EventDate, 
+                    a.RecipientId, COALESCE(a.RecipientName, e.Name) as RecipientName,
+                    e.Photo as RecipientPhoto,
+                    a.GivenBy, a.Description, a.DisplayOrder,a.CreatedAt
+                  FROM Awards a
+                  LEFT JOIN Employee e ON a.RecipientId = e.EmployeeId
+                  ORDER BY a.DisplayOrder ASC,a.CreatedAt DESC
+                  LIMIT @Count";
+
+            using var connection = _context.CreateConnection();
+            var awards = connection.Query<AwardViewModel>(query, new { Count = count }).ToList();
+
+            return awards;
+
+        }
+   
     }
 }
