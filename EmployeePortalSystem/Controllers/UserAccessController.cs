@@ -154,6 +154,9 @@ namespace EmployeePortalSystem.Controllers
                 { "Awards", cardcounts.TotalAwards }
             };
 
+            var monthlyData = _repository.GetMonthlyContributionForEmployee(empid);
+
+
             var model = new DashboardCardViewModel
             {
                 TotalAwards = cardcounts.TotalAwards,
@@ -163,7 +166,8 @@ namespace EmployeePortalSystem.Controllers
                 LatestAnnouncements = latestAnnouncements.ToList(),
                 LatestAwards= latestawards.ToList(),
                 LatestPolls=latestpolls.ToList(),
-                ContributionChartData = contributionData
+                ContributionChartData = contributionData,
+                MonthlyContributionData = monthlyData
             };
 
             return View(model);

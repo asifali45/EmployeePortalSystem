@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="motor_card_box">
-                <h2 style="font-weight: bold; font-size: 20px;">Monthly Activity Trends</h2>
+                <h2 style="font-weight: bold; font-size: 20px;">Current Month Overview</h2>
                 <div class="chart-container">
                     <canvas id="mychart" style="width:100%; height: 100%;"></canvas>
                 </div>
@@ -318,33 +318,56 @@
                         }
                     });
 
-                     const ctx = document.getElementById('mychart').getContext('2d');
+                    const ctx = document.getElementById('mychart').getContext('2d');
 
-                    const TestingChart = {
-                        labels: ['Red','Blue','Green'],
-                        datasets: [{
-                            label: 'Testing Line Chart',
-                            data: [10,12,13],
-                            backgroundColor: ['#1bc9f2', '#df0052', '#ff6c03'],
-                            // hoverOffset: 10
-                        }]
-                    };
-
-                    const config={
-                        type: 'bar',
-                        data:TestingChart,
-                        options: {
-                            responsive: true,
-                            scales:{
-                                y:{
-                                    beginAtZero:true
-                                }
-                            }
-                            
+                        const monthlyData = {
+                        labels: [
+                        @foreach (var item in Model.MonthlyContributionData.Keys)
+                        {
+                            @Html.Raw($"'{item}',")
                         }
-                    }
+                        ],
+                        datasets: [{
+                        label: 'Monthly Activity',
+                        data: [
+                        @foreach (var value in Model.MonthlyContributionData.Values)
+                        {
+                            @Html.Raw($"{value},")
+                        }
+                        ],
+                        backgroundColor: ['#1bc9f2', '#df0052', '#ff6c03'],
+                        }]
+                        };
 
-                    new Chart(ctx,config);
+                        new Chart(ctx, {
+                        type: 'bar',
+                        data: monthlyData,
+                        options: {
+                        responsive: true,
+                        scales: {
+                        y: {
+                        beginAtZero: true
+                        },
+                        x: {
+                            ticks: {
+                            callback: function(value, index, values) {
+                            const labelMap = {
+                            'Blogs': 'Blogs Written',
+                            'Polls': 'Polls Voted',
+                            'Awards': 'Awards'
+                            };
+                            return labelMap[this.getLabelForValue(value)] || this.getLabelForValue(value);
+                            }
+                            }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                            display: false 
+                            }
+                            }
+                        }
+                        });
                 </script>
             }
 

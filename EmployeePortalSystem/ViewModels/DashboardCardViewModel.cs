@@ -20,5 +20,6 @@ namespace EmployeePortalSystem.ViewModels
         public List<PollViewModel> LatestPolls { get; set; }
 
         public Dictionary<string, int> ContributionChartData { get; set; }
+        public Dictionary<string, int> MonthlyContributionData { get; set; } = new();
     }
 }

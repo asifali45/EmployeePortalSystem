@@ -884,10 +884,12 @@ svg {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-/*    text-align: center;*/
+    text-align: center;
     box-sizing: border-box;
 }
-
+#mychart{
+    margin-top:20px;
+}
 /* Top row cards (charts) */
 .policy_card .motor_card_box {
     min-height: 400px;
