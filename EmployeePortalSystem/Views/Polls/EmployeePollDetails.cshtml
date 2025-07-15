@@ -40,7 +40,7 @@
                     <h3 class="blog-title">@poll.Question</h3>
 
                     <!-- ✅ Voting Form -->
-                    <form asp-action="VoteFromList" method="post">
+                    <form onsubmit ="return submitVote(@poll.PollId, this)">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="pollId" value="@poll.PollId" />
 
@@ -74,10 +74,12 @@
                                 @if (!isVotedPoll)
                                 {
                                     <button type="submit" class="pollbtn">🗳 Submit Vote</button>
+                                    <div id="vote-message-@poll.PollId" style="margin-top: 5px; color: green;"></div>
                                 }
                                 else
                                 {
                                     <span style="color: green; font-weight: 500;">✅ You already voted</span>
+                                   
                                 }
 
                                 <a asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="comment-btn">
@@ -101,7 +103,7 @@
                                     @*     <img src="~/img/trash-xmark (1).png" width="15px" height="15px" /> *@
                                     @* </a> *@
                                     <a asp-action="Delete"
-                                       asp-route-id="@poll.PollId"
+                                       asp-route-id="@poll.PollId"  
                                        asp-route-returnTo="EmployeePollDetails"
                                        title="Delete Poll">
                                         <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
@@ -109,7 +111,9 @@
                                 }
                             </div>
                         </div>
+                       
                     </form>
+                    
                 </div>
             </div>
         </div>
