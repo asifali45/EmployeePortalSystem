@@ -4,6 +4,10 @@
 }
 @model EmployeePortalSystem.ViewModels.DashboardCardViewModel
 
+@{
+    var dashboard = Context.Session.GetString("CurrentDashboard");
+}
+
 
 <div class="container">
     <div class="dashboard-contents">
@@ -103,6 +107,49 @@
                                         <div class="blog-meta">
                                             <span class="blog-author">By @blog.AuthorName</span>
                                             <span class="blog-tags">on @blog.CreatedAt.ToString("dd MMM yyyy")</span>
+                                        </div>
+
+                                        <!-- Like & Comment -->
+                                        <div class="blog-actions">
+                                            <div class="like-content">
+                                                <img src="~/img/heartfilled.png" alt="Like" width="20px" height="20px" />
+                                                <span>@blog.LikeCount</span>
+                                            </div>
+
+
+                                            <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
+                                                <div class="comment-content">
+                                                    <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
+                                                    <span>Comments @blog.Comments.Count</span>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <!-- Comment Section Initially Hidden -->
+                                        <div id="comment-section-@blog.BlogId" class="comment-section" style="display: none; margin-top: 10px;">
+
+                                            <!-- Existing Comments -->
+                                            <div class="existing-comments">
+                                                @foreach (var comment in blog.Comments)
+                                                {
+                                                    <div class="comment" id="comment-@comment.CommentId">
+                                                        <span>@comment.EmployeeName</span>: @comment.CommentText
+                                                        @* <div class="comment-date">@comment.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div> *@
+                                                        @if (dashboard == "Admin")
+                                                        {
+                                                            <a href="#" onclick="deleteComment(@comment.CommentId, @blog.BlogId); return false;" title="Delete Comment">
+                                                                <img src="~/img/trash-xmark (1).png" width="12px" height="12px" style="margin-left: 20px;" />
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div class="blog-del">
+                                            <a href="@Url.Action("BlogDelete", "Blogs", new { id = blog.BlogId })">
+                                                <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
