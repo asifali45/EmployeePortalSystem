@@ -54,9 +54,8 @@ namespace EmployeePortalSystem.Controllers
             }
 
             var recipientName = award.RecipientId.HasValue
-    ? await _repository.GetEmployeeNameByIdAsync(award.RecipientId.Value)
-    : string.Empty;
-
+                ? await _repository.GetEmployeeNameByIdAsync(award.RecipientId.Value)
+                : string.Empty;
 
             var model = new AwardViewModel
             {
@@ -71,8 +70,9 @@ namespace EmployeePortalSystem.Controllers
                 UpdatedBy = award.UpdatedBy
             };
 
-            return View("AwardForm", model); // ✅ reuse AwardForm.cshtml
+            return View("Edit", model); // ✅ Change this from "AwardForm" to "Edit"
         }
+
         // GET: Show confirmation page
         public async Task<IActionResult> Delete(int id)
         {
@@ -123,8 +123,8 @@ namespace EmployeePortalSystem.Controllers
             };
 
             await _repository.CreateAsync(award);
-            TempData["Message6"] = "Award added successfully.";
-            return RedirectToAction("Index");
+            ViewBag.Message6 = "Award added successfully.";
+            return View("AwardForm", model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -132,7 +132,7 @@ namespace EmployeePortalSystem.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("AwardForm", model);
+                return View("Edit", model);
             }
 
             int? recipientId = null;
@@ -142,7 +142,7 @@ namespace EmployeePortalSystem.Controllers
                 if (recipientId == 0)
                 {
                     ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                    return View("AwardForm", model);
+                    return View("Edit", model);
                 }
             }
 
@@ -157,16 +157,23 @@ namespace EmployeePortalSystem.Controllers
             award.Type = model.Type;
             award.EventDate = model.EventDate.Value;
             award.RecipientId = recipientId;
+            award.RecipientName = model.RecipientName;
             award.GivenBy = model.GivenBy;
             award.Description = model.Description;
             award.DisplayOrder = model.DisplayOrder;
-            award.UpdatedBy = model.UpdatedBy;
+            award.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             award.UpdatedAt = DateTime.Now;
 
-            await _repository.UpdateAsync(award);
+            var updated = await _repository.UpdateAsync(award);
+            if (!updated)
+            {
+                Console.WriteLine("Update failed.");
+                ModelState.AddModelError("", "Update failed.");
+                return View("Edit", model);
+            }
 
-            TempData["Message6"] = "Award updated successfully.";
-            return RedirectToAction("Index");
+            ViewBag.Message6 = "Award updated successfully.";
+            return View("Edit", model);
         }
 
         // POST: Final delete

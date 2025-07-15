@@ -10,7 +10,7 @@
         <div class="container_emp">
             <div class="emp_btn">
                 <div class="left_btn">
-                    <form method="get" asp-action="EmployeeDetails" asp-controller="Employee">
+                    <form method="get" asp-action="Index" asp-controller="Award">
                         <button type="submit" class="create_emp_btn">Back</button>
                     </form>
                 </div>
@@ -89,12 +89,11 @@
                         <button type="reset" class="btn-cancel">Cancel</button>
                     </div>
 
-                    @if (TempData["Message"] != null)
+                    @if (ViewBag.Message6 != null)
                     {
-                        <div id="successMessage" class="alert alert-success mt-2">
-                            @TempData["Message"]
-                        </div>
+                        <div class="alert alert-success mt-2">@ViewBag.Message6</div>
                     }
+
                 </form>
             </div>
         </div>

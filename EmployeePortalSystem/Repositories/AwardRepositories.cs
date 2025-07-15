@@ -98,10 +98,12 @@ namespace EmployeePortalSystem.Repositories
                           Type = @Type, 
                           EventDate = @EventDate, 
                           RecipientId = @RecipientId, 
+                           RecipientName = @RecipientName,
                           GivenBy = @GivenBy, 
                           Description = @Description, 
                           DisplayOrder = @DisplayOrder,
-                          UpdatedBy = @UpdatedBy
+                          UpdatedBy = @UpdatedBy,
+                          UpdatedAt = @UpdatedAt
                           WHERE AwardId = @AwardId";
 
             using var connection = _context.CreateConnection();
