@@ -99,11 +99,7 @@
                                 </div>
 
                                 <!-- Add New Comment -->
-                                @* <form class="comment-text" asp-controller="Blogs" asp-action="PostComment" method="post"> *@
-                                @*     <input type="hidden" name="blogId" value="@blog.BlogId" /> *@
-                                @*     <input  name="commentText" placeholder="Write your comment..." required> *@
-                                @*     <button  type="submit">Post</button> *@
-                                @* </form> *@
+                               
 
                             <form class="comment-text" onsubmit="return submitComment(@blog.BlogId, this)">
                                 <input type="text" name="commentText" placeholder="Write your comment..." required />
