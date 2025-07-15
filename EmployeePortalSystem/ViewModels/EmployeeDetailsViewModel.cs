@@ -10,5 +10,7 @@
         public string DepartmentName { get; set; }
         public string? Photo { get; set; }
 
+
+
     }
 }

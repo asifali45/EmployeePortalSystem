@@ -87,26 +87,21 @@
                        
                         @if (currentDashboard == "Admin")
                         {
-                            <form method="get" asp-action="PollDetails" asp-controller="Polls">
+                            @* <form method="get" asp-action="PollDetails" asp-controller="Polls"> *@
                                 <button type="submit" class="custom-button">Submit</button>
-                            </form>
+                            @* </form> *@
                         }
                         else
                         {
-                            <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls">
+                            @* <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls"> *@
                                 <button type="submit" class="custom-button">Submit</button>
-                            </form>
+                            @* </form> *@
                         }
 
                         <button type="reset" class="custom-button">Cancel</button>
                     </div>
 
-                    @if (TempData["Message"] != null)
-                    {
-                        <div class="alert alert-success mt-2">
-                            @TempData["Message"]
-                        </div>
-                    }
+                   
                 </form>
             </div>
         </div>

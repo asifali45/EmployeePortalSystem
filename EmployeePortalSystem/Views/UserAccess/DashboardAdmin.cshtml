@@ -8,33 +8,83 @@
 <div class="container">
     <div class="dashboard-contents">
 
-        <div class="policy_card">
-            <div class="motor_card_box">
-                <div class="motor_text">
-                    <h2 style="font-weight: bold; font-size: 20px;">Activity Contribution</h2>
-                </div>
-                <div class="chart-container">
-                    <canvas id="mychart1" style="width:100%; height: 100%;"></canvas>
-                </div>
-            </div>
+        
 
-            <div class="motor_card_box">
-                <h2 style="font-weight: bold; font-size: 20px;">Monthly Activity Trends</h2>
-                <div class="chart-container">
-                    <canvas id="mychart" style="width:100%; height: 100%;"></canvas>
+        <!-- Announcement Section -->
+
+        @if (Model.LatestAnnouncements != null && Model.LatestAnnouncements.Any())
+        {
+            <div class="dashboard-card">
+                <div class="details">
+                <h3>Latest Announcements</h3>
+                </div>
+                <div class="announcement-list-row">
+                    @foreach (var ann in Model.LatestAnnouncements)
+                    {
+                        <div class="announcement-box">
+                            <strong class="announcement-title">@ann.Title</strong>
+                            <p class="announcement-message">@ann.Message</p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("Index", "Announcement")" class="btn btn-secondary btn-sm">View All Announcements</a>
                 </div>
             </div>
-        </div>
+        }
+
+
+        <!-- Award Section -->
+        @if (Model.LatestAwards != null && Model.LatestAwards.Any())
+        {
+            <div class="dashboard-card">
+                <div class="details">
+                <h3>New Awards</h3>
+                </div>
+                <div class="announcement-list-row">
+                    @foreach (var award in Model.LatestAwards)
+                    {
+                        <div class="announcement-box">
+                            <div class="award-logo">
+                                <!-- Recipient Photo -->
+                                @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                                {
+                                    <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/avatar_11852100.png" class="blog-float-image" alt="Profile image" />
+                                }
+                            </div>
+                            <!-- Award Type -->
+                            <h3 class="blog-title">@award.Type</h3>
+
+                            <!-- Award Details -->
+                            <p class="blog-description">
+                                @award.Description<br /><br />
+                                <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                                <strong>Recipient:</strong> @award.RecipientName<br />
+                                <strong>Given By:</strong> @award.GivenBy<br />
+
+                            </p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("Index", "Award")" class="btn btn-secondary btn-sm">View All Awards</a>
+                </div>
+            </div>
+        }
 
         <div class="table_card">
             <!-- First Table -->
             <div class="motor_card_box">
                 <div class="details">
                     <div class="details-header">
-                        <h6>Latest Blogs</h6>
+                        <h3>Latest Blogs</h3>
                     </div>
                     <div class="table-responsive">
-                        <div class="blog-card">
+                        <div class="blog-poll">
                             @foreach (var blog in Model.LatestBlogs)
                             {
                                 <div class="blog-card-content">
@@ -44,10 +94,10 @@
                                     }
 
                                     <div class="blog-card-text">
-                                        <h3 class="blog-title">@blog.Title</h3>
+                                        <h4 class="blog-title">@blog.Title</h4>
 
                                         <p class="blog-description">
-                                            @blog.Content.Substring(0, Math.Min(blog.Content.Length, 180))...
+                                            @blog.Content.Substring(0, Math.Min(blog.Content.Length, 230))...
                                         </p>
 
                                         <div class="blog-meta">
@@ -73,28 +123,91 @@
             <div class="motor_card_box">
                 <div class="details">
                     <div class="details-header">
-                        <h6>Active Polls</h6>
+                        <h3>Active Polls</h3>
                     </div>
-                    <div class="table-responsive">
-                        @* <table class="table" id="table2"> *@
-                        @*     <thead> *@
-                        @*         <tr> *@
-                        @*             <th>Action</th> *@
-                        @*             <th>Quotation</th> *@
-                        @*             <th>Policy Issue</th> *@
-                        @*             <th>Policy End</th> *@
-                        @*             <th>Status</th> *@
-                        @*         </tr> *@
-                        @*     </thead> *@
-                        @*     <tbody> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/409</td><td>2023-06-10</td><td>2024-06-09</td><td>Pending</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/410</td><td>2023-07-12</td><td>2024-07-11</td><td>Issued</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/411</td><td>2023-08-05</td><td>2024-08-04</td><td>Cancelled</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/412</td><td>2023-09-12</td><td>2024-09-11</td><td>Renewed</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/413</td><td>2023-10-12</td><td>2024-10-11</td><td>Building</td></tr> *@
-                        @*     </tbody> *@
-                        @* </table> *@
-                    </div>
+                    @if (Model.LatestPolls != null && Model.LatestPolls.Count > 0)
+                    {
+                        <div class="table-responsive mt-4">
+                            <div class="blog-poll">
+                                @foreach (var poll in Model.LatestPolls)
+                                {
+                                    var result = ViewBag.Results != null && ViewBag.Results.ContainsKey(poll.PollId)
+                                    ? (Dictionary<string, int>)ViewBag.Results[poll.PollId]
+                                    : new Dictionary<string, int>();
+
+                                    int totalVotes = result.Values.Sum();
+
+                                    var options = new[]
+                                    {
+                            new { Key = "1", Text = poll.Option1 },
+                            new { Key = "2", Text = poll.Option2 },
+                            new { Key = "3", Text = poll.Option3 },
+                            new { Key = "4", Text = poll.Option4 }
+                            };
+
+                                    <div class="blog-card-content" style="margin-bottom: 30px;">
+                                        <div class="blog-card-text">
+                                            <h5 class="blog-title">@poll.Question</h5>
+
+                                            <div class="poll-options mt-2">
+                                                @foreach (var option in options)
+                                                {
+                                                    if (!string.IsNullOrEmpty(option.Text))
+                                                    {
+                                                        var count = result.ContainsKey(option.Key) ? result[option.Key] : 0;
+                                                        var percentage = totalVotes > 0 ? (count * 100 / totalVotes) : 0;
+
+                                                        var fillClass = percentage switch
+                                                        {
+                                                            >= 75 => "fill-top",
+                                                            >= 50 => "fill-high",
+                                                            >= 25 => "fill-medium",
+                                                            _ => "fill-low"
+                                                        };
+
+                                                        <div class="option-box mb-2">
+                                                            <div class="option-label d-flex justify-content-between">
+                                                                <span>@option.Text</span>
+                                                                <span>@percentage% (@count vote@(count == 1 ? "" : "s"))</span>
+                                                            </div>
+                                                            <div class="progress-bar" style="background: #f0f0f0; height: 8px; border-radius: 4px;">
+                                                                <div class="progress-fill @fillClass" style="background-color: #007bff; height: 100%; width: @percentage%; border-radius: 4px;"></div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+
+                                            <div class="blog-meta mt-2" style="font-size: 12px;">
+                                                <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                                            </div>
+
+                                            <div class="blog-actions mt-2">
+                                                <div class="like-content d-flex gap-3 align-items-center">
+                                                    <a asp-controller="Polls" asp-action="Results" asp-route-id="@poll.PollId" class="btn btn-outline-primary btn-sm">
+                                                        📊 View Responses
+                                                    </a>
+                                                    <a asp-controller="Polls" asp-action="Delete" asp-route-id="@poll.PollId" asp-route-returnTo="DashboardAdmin" title="Delete Poll">
+                                                        <img src="~/img/trash-xmark (1).png" width="15px" height="15px" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                }
+
+                                <div class="text-end mt-2">
+                                    <a href="@Url.Action("PollDetails", "Polls")" class="btn btn-secondary btn-sm">View All Polls</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No recent polls available.</p>
+                    }
+
                 </div>
             </div>
         </div>

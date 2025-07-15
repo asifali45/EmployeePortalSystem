@@ -26,7 +26,12 @@
             <div class="emp_head">
                 <h2>Department List</h2>
             </div>
-
+            @if (TempData["Message4"] != null)
+            {
+                <div class="alert-message">
+                    @TempData["Message4"]
+                </div>
+            }
 
 
             <div class="empmaster_card">

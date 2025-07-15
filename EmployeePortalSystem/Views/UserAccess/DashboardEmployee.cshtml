@@ -40,6 +40,69 @@
             </div>
         </div>
 
+
+        @if (Model.LatestAnnouncements != null && Model.LatestAnnouncements.Any())
+        {
+            <div class="dashboard-card">
+                <div class="details">
+                <h3>Latest Announcements</h3>
+                </div>
+                <div class="announcement-list-row">
+                    @foreach (var ann in Model.LatestAnnouncements)
+                    {
+                        <div class="announcement-box">
+                            <strong class="announcement-title">@ann.Title</strong>
+                            <p class="announcement-message">@ann.Message</p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("EmployeeAnnouncement", "Announcement")" class="btn btn-secondary btn-sm">View All Announcements</a>
+                </div>
+            </div>
+        }
+
+        @if (Model.LatestAwards != null && Model.LatestAwards.Any())
+        {
+            <div class="dashboard-card">
+                <div class="details">
+                <h3>New Awards</h3>
+                </div>
+                <div class="announcement-list-row">
+                    @foreach (var award in Model.LatestAwards)
+                    {
+                        <div class="announcement-box">
+                            <div class="award-logo">
+                                <!-- Recipient Photo -->
+                                @if (!string.IsNullOrEmpty(award.RecipientPhoto))
+                                {
+                                    <img src="~/uploads/@award.RecipientPhoto" class="blog-float-image" alt="Recipient Photo" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/avatar_11852100.png" class="blog-float-image" alt="Profile image" />
+                                }
+                            </div>
+                            <!-- Award Type -->
+                            <h3 class="blog-title">@award.Type</h3>
+
+                            <!-- Award Details -->
+                            <p class="blog-description">
+                                @award.Description<br /><br />
+                                <strong>Event Date:</strong> @award.EventDate?.ToString("dd MMM yyyy")<br />
+                                <strong>Recipient:</strong> @award.RecipientName<br />
+                                <strong>Given By:</strong> @award.GivenBy<br />
+
+                            </p>
+                        </div>
+                    }
+                </div>
+                <div class="text-end mt-2">
+                    <a href="@Url.Action("EmployeeAwardList","Award")" class="btn btn-secondary btn-sm">View All Awards</a>
+                </div>
+            </div>
+        }
+
         <!-- Blog and Polls card -->
         <div class="table_card">
             <!-- First Table -->
@@ -50,7 +113,7 @@
                     </div>
                     <div class="table-responsive">
 
-                        <div class="blog-card">
+                        <div class="blog-poll">
                             @foreach (var blog in Model.LatestBlogs)
                             {
                                 <div class="blog-card-content">
@@ -60,7 +123,7 @@
                                     }
 
                                     <div class="blog-card-text">
-                                        <h3 class="blog-title">@blog.Title</h3>
+                                        <h4 class="blog-title">@blog.Title</h4>
 
                                         <p class="blog-description">
                                             @blog.Content.Substring(0, Math.Min(blog.Content.Length, 180))...
@@ -96,26 +159,97 @@
                     <div class="details-header">
                         <h3>Active Polls</h3>
                     </div>
-                    <div class="table-responsive">
-                        @* <table class="table" id="table2"> *@
-                        @*     <thead> *@
-                        @*         <tr> *@
-                        @*             <th>Action</th> *@
-                        @*             <th>Quotation</th> *@
-                        @*             <th>Policy Issue</th> *@
-                        @*             <th>Policy End</th> *@
-                        @*             <th>Status</th> *@
-                        @*         </tr> *@
-                        @*     </thead> *@
-                        @*     <tbody> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/409</td><td>2023-06-10</td><td>2024-06-09</td><td>Pending</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/410</td><td>2023-07-12</td><td>2024-07-11</td><td>Issued</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/411</td><td>2023-08-05</td><td>2024-08-04</td><td>Cancelled</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/412</td><td>2023-09-12</td><td>2024-09-11</td><td>Renewed</td></tr> *@
-                        @*         <tr><td><a href="#" class="edit-icon"><img src="~/img/edit Icon.png" width="15px" height="15px"></a></td><td>q/11/413</td><td>2023-10-12</td><td>2024-10-11</td><td>Building</td></tr> *@
-                        @*     </tbody> *@
-                        @* </table> *@
+                    <div class="table-responsive mt-4">
+                        <div class="blog-poll">
+                            
+                            @{
+                                var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
+                                int currentEmpId = ViewBag.CurrentEmployeeId != null ? (int)ViewBag.CurrentEmployeeId : 0;
+                            }
+
+                            @foreach (var poll in Model.LatestPolls)
+                            {
+                                var isVotedPoll = selectedOptions != null && selectedOptions.ContainsKey(poll.PollId);
+                                var selectedOption = isVotedPoll ? selectedOptions[poll.PollId] : null;
+                                var optionTexts = new[] { poll.Option1, poll.Option2, poll.Option3, poll.Option4 };
+
+                                <div class="blog-card-content" style="margin-bottom: 30px;">
+                                    <div class="blog-card-text">
+                                        <h5 class="blog-title">@poll.Question</h5>
+
+                                        <form asp-controller="Polls" asp-action="VoteFromList" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="pollId" value="@poll.PollId" />
+                                            <input type="hidden" name="returnTo" value="DashboardEmployee" />
+
+
+                                            @for (int i = 0; i < optionTexts.Length; i++)
+                                            {
+                                                var optionValue = (i + 1).ToString();
+                                                var optionText = optionTexts[i];
+
+                                                if (!string.IsNullOrEmpty(optionText))
+                                                {
+                                                    var isSelected = selectedOption == optionValue;
+
+                                                    <div style="margin-bottom: 6px;">
+                                                        <input type="radio"
+                                                               name="selectedOption"
+                                                               value="@optionValue"
+                                                        @(isSelected ? "checked" : "")
+                                                        @(isVotedPoll ? "disabled" : "")
+                                                               style="accent-color: @(isSelected ? "green" : "#999"); margin-right: 6px;" />
+                                                        <label>@optionText</label>
+                                                    </div>
+                                                }
+                                            }
+
+                                            <div class="blog-meta" style="margin-top: 5px; font-size: 12px;">
+                                                <span>By @poll.CreatedByName • @poll.CreatedAt.ToString("dd MMM yyyy")</span>
+                                            </div>
+
+                                            <div class="blog-actions" style="margin-top: 10px;">
+                                                <div class="like-content" style="display: flex; align-items: center; gap: 15px;">
+                                                    @if (!isVotedPoll)
+                                                    {
+                                                        <button type="submit" class="pollbtn btn btn-success btn-sm">🗳 Submit Vote</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="color: green; font-weight: 500;">✅ You already voted</span>
+                                                    }
+
+                                                    <a asp-controller="Polls" asp-action="EmployeeResults" asp-route-id="@poll.PollId" class="btn btn-outline-secondary btn-sm">
+                                                        📊 View Results
+                                                    </a>
+
+                                                    @* @if (poll.CreatedBy == currentEmpId) *@
+                                                    @* { *@
+                                                    @*     <a asp-controller="Polls" *@
+                                                    @*        asp-action="Delete" *@
+                                                    @*        asp-route-id="@poll.PollId" *@
+                                                    @*        asp-route-returnTo="DashboardEmployee" *@
+                                                    @*        title="Delete Poll"> *@
+                                                    @*         <img src="~/img/trash-xmark (1).png" width="15px" height="15px" /> *@
+                                                    @*     </a> *@
+                                                    @* } *@
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                 <hr />
+
+                                <br />
+                            }
+
+                            <div class="text-end mt-2">
+                                <a href="@Url.Action("EmployeePollDetails", "Polls")" class="btn btn-secondary btn-sm">View All Polls</a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -138,12 +272,10 @@
             </div>
         </div>
 
-        <div class="dashboard-card">
-            <h4>Announcements</h4>
-            <div class="blog-card-content">
-                
-            </div>
-        </div>
+        
+      
+
+
 
        
 

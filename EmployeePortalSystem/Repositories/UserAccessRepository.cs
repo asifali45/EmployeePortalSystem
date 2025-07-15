@@ -26,7 +26,7 @@ namespace EmployeePortalSystem.Repositories
                 SELECT e.EmployeeId, e.Name, r.RoleName, e.IsAdmin
                 FROM employee e
                 JOIN role r ON e.RoleId = r.RoleId
-                WHERE e.Email = @Email AND e.Password = @Password";
+                WHERE e.Email = @Email AND e.Password = @Password AND e.IsCurrentEmployee = 1";
 
 
                 var employee = connection.QueryFirstOrDefault<LoginViewModel>(query, new { Email = email, Password = password });
@@ -49,8 +49,24 @@ namespace EmployeePortalSystem.Repositories
 
             return conn.QueryFirst<DashboardCardViewModel>(sql, new { EmpId = empid });
         }
+        public bool UpdatePasswordIfEmailExists(string email, string newPassword)
+        {
+            using var conn = _context.CreateConnection();
+            conn.Open();
 
-        
+            string checkSql = "SELECT COUNT(*) FROM employee WHERE Email = @Email AND IsCurrentEmployee = 1";
+            int count = conn.ExecuteScalar<int>(checkSql, new { Email = email });
+
+            if (count == 0)
+                return false;
+
+            string updateSql = "UPDATE employee SET Password = @Password WHERE Email = @Email";
+            conn.Execute(updateSql, new { Email = email, Password = newPassword });
+
+            return true;
+        }
+
+
     }
 
 }
