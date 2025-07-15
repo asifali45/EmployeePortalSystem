@@ -2,6 +2,7 @@
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities;
 
 namespace EmployeePortalSystem.Controllers
 {
@@ -93,7 +94,6 @@ namespace EmployeePortalSystem.Controllers
         //    return View(poll); // Goes to Views/Polls/Delete.cshtml
         //}
 
-
         [HttpGet]
         public IActionResult Delete(int id, string? returnTo)
         {
@@ -102,7 +102,7 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
 
             var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-            var isAdmin = IsAdmin(empId); // <- this uses the "Role" session string
+            var isAdmin = IsAdmin(empId);
 
             if (!isAdmin && poll.CreatedBy != empId)
             {
@@ -111,9 +111,8 @@ namespace EmployeePortalSystem.Controllers
                 return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
             }
 
-            HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
             ViewBag.ReturnTo = returnTo;
-            return View(poll); // This should render Delete.cshtml
+            return View(poll);
         }
 
 
@@ -122,7 +121,8 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteConfirmed(int id, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
+
+
             var poll = _repo.GetById(id);
             if (poll == null)
                 return NotFound();
@@ -146,21 +146,15 @@ namespace EmployeePortalSystem.Controllers
 
                 if (returnTo == "PollDetails")
                     return RedirectToAction("PollDetails", "Polls");
-            }
 
-            if (currentDashboard == "Admin")
-                return RedirectToAction("PollDetails", "Polls");
+                if (returnTo == "DashboardEmployee")
+                    return RedirectToAction("DashboardEmployee", "UserAccess");
+            }
 
             return RedirectToAction("EmployeePollDetails", "Polls");
         }
-            //var role = HttpContext.Session.GetString("Role");
-            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-            //    return RedirectToAction("PollDetails");
 
-            //return RedirectToAction("EmployeePollDetails");
-
-
-        // Helper method to check admin (you can adjust logic accordingly)
+ 
         private bool IsAdmin(int empId)
         {
             // Example logic: You can replace this with your actual admin check
