@@ -4,9 +4,11 @@
     }
 
     @model List<EmployeePortalSystem.ViewModels.BlogViewModel>
-    @{
-        int? currentEmpId = Context.Session.GetInt32("EmployeeId");
-    }
+@{
+    int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+    var dashboard = Context.Session.GetString("CurrentDashboard");
+   
+}
 
 
 
@@ -79,7 +81,7 @@
                                 <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
                                     <div class="comment-content">
                                     <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
-                                        <span>Comments @blog.Comments.Count</span>
+                                    <span id="comment-count-@blog.BlogId">Comments @blog.Comments.Count</span>
                                     </div>
                                 </button>
                             </div>
@@ -91,10 +93,17 @@
                                 <div class="existing-comments">
                                     @foreach (var comment in blog.Comments)
                                     {
-                                        <div class="comment">
+                                    <div class="comment" id="comment-@comment.CommentId">
                                             <span>@comment.EmployeeName</span>: @comment.CommentText
                                             @* <div class="comment-date">@comment.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div> *@
-                                        </div>
+
+                                        @if (comment.EmployeeId == currentEmpId ||dashboard=="Admin")
+                                        {
+                                            <a href="#" onclick="deleteComment(@comment.CommentId, @blog.BlogId); return false;" title="Delete Comment">
+                                                <img src="~/img/trash-xmark (1).png" width="12px" height="12px" style="margin-left: 20px;" />
+                                            </a>
+                                        }
+                                     </div>
                                     }
                                 </div>
 
