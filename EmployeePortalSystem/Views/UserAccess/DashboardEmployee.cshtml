@@ -4,6 +4,14 @@
 }
 @model EmployeePortalSystem.ViewModels.DashboardCardViewModel
 
+@{
+    var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
+    int currentEmpId = ViewBag.CurrentEmployeeId != null ? (int)ViewBag.CurrentEmployeeId : 0;
+    int? currentEmpId1 = Context.Session.GetInt32("EmployeeId");
+    var dashboard = Context.Session.GetString("CurrentDashboard");
+}
+
+
 
 
 <div class="container">
@@ -177,7 +185,7 @@
                                             <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
                                                 <div class="comment-content">
                                                     <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
-                                                    <span>Comments @blog.Comments.Count</span>
+                                                    <span id="comment-count-@blog.BlogId">Comments @blog.Comments.Count</span>
                                                 </div>
                                             </button>
                                         </div>
@@ -186,8 +194,14 @@
                                             <div class="existing-comments">
                                                 @foreach (var comment in blog.Comments)
                                                 {
-                                                    <div class="comment">
+                                                    <div class="comment" id="comment-@comment.CommentId">
                                                         <span>@comment.EmployeeName</span>: @comment.CommentText
+                                                        @if (comment.EmployeeId == currentEmpId1 || dashboard == "Admin")
+                                                        {
+                                                            <a href="#" onclick="deleteComment(@comment.CommentId, @blog.BlogId,'Dashboard'); return false;" title="Delete Comment">
+                                                                <img src="~/img/trash-xmark (1).png" width="12px" height="12px" style="margin-left: 20px;" />
+                                                            </a>
+                                                        }
                                                     </div>
                                                 }
                                             </div>
@@ -235,10 +249,7 @@
                     <div class="table-responsive mt-4">
                         <div class="blog-poll">
                             
-                            @{
-                                var selectedOptions = ViewBag.SelectedOptions as Dictionary<int, string>;
-                                int currentEmpId = ViewBag.CurrentEmployeeId != null ? (int)ViewBag.CurrentEmployeeId : 0;
-                            }
+                          
 
                             @foreach (var poll in Model.LatestPolls)
                             {

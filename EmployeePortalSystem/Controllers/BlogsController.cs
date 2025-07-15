@@ -170,24 +170,6 @@ namespace EmployeePortalSystem.Controllers
 
         //comment
 
-        //[HttpPost]
-        //public IActionResult PostComment(int blogId, string commentText, string? returnTo)
-        //{
-        //    int employeeId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
-
-        //    if (!string.IsNullOrWhiteSpace(commentText))
-        //    {
-        //        _repository.AddComment(blogId, employeeId, commentText);
-        //    }
-
-        //    if (!string.IsNullOrEmpty(returnTo) && returnTo == "Profile")
-        //    {
-        //        TempData["ActiveTab"] = "blogs";
-        //        return RedirectToAction("Profile", "MyProfile");
-
-        //    }
-        //    return RedirectToAction("EmployeeBlogDetails");
-        //}
 
         [HttpPost]
         public JsonResult PostComment(int blogId, string commentText, string? returnTo)
@@ -212,6 +194,34 @@ namespace EmployeePortalSystem.Controllers
                 commentText,
                 createdAt = DateTime.Now.ToString("dd MMM yyyy hh:mm tt")
             });
+
+
         }
+
+        [HttpPost]
+        public JsonResult DeleteComment(int commentId,string? returnTo)
+        {
+            int empId = Convert.ToInt32(HttpContext.Session.GetInt32("EmployeeId"));
+            string? dashboard = HttpContext.Session.GetString("CurrentDashboard");
+
+            var comment = _repository.GetCommentById(commentId);
+
+            if (comment == null)
+            {
+                return Json(new { success = false });
+            }
+
+            if (comment.EmployeeId != empId && dashboard!="Admin")
+            {
+                return Json(new { success = false });
+            }
+
+            _repository.DeleteComment(commentId);
+
+           
+
+            return Json(new { success = true });
+        }
+
     }
 }
