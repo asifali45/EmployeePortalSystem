@@ -124,7 +124,7 @@ namespace EmployeePortalSystem.Controllers
 
             await _repository.CreateAsync(award);
             ViewBag.Message6 = "Award added successfully.";
-            return View("AwardForm", model);
+            return RedirectToAction("Index");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -132,7 +132,7 @@ namespace EmployeePortalSystem.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Edit", model);
+                return View("AwardForm", model);
             }
 
             int? recipientId = null;
@@ -173,7 +173,7 @@ namespace EmployeePortalSystem.Controllers
             }
 
             ViewBag.Message6 = "Award updated successfully.";
-            return View("Edit", model);
+            return RedirectToAction("Index");
         }
 
         // POST: Final delete

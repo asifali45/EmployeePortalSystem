@@ -210,6 +210,42 @@ namespace EmployeePortalSystem.Controllers
             TempData["Message"] = "Ticket updated successfully!";
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public async Task<IActionResult> AssignedTickets()
+        {
+            int empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var tickets = await _repository.GetAssignedTicketsAsync(empId);  // this returns List<SupportTicket>
+
+            // Convert to ViewModel list
+            var viewModelList = tickets.Select(t => new SupportTicketViewModel
+            {
+                TicketId = t.TicketId,
+                IssueTitle = t.IssueTitle,
+                Description = t.Description,
+                Status = t.Status,
+                Response = t.Response
+            }).ToList();
+
+            return View("~/Views/Support/AssignedTickets.cshtml", viewModelList);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateResolution(int TicketId, string Resolved)
+        {
+            var ticket = await _repository.GetByIdAsync(TicketId);
+            if (ticket == null)
+                return NotFound();
+
+            ticket.Resolved = Resolved;
+            ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            ticket.UpdatedAt = DateTime.Now;
+
+            await _repository.UpdateTicketAsync(ticket);
+
+            TempData["Message"] = "Resolution updated successfully!";
+            return RedirectToAction("AssignedTickets");
+        }
 
 
 
