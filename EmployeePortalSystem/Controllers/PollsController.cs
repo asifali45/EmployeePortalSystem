@@ -2,6 +2,7 @@
 using EmployeePortalSystem.Models;
 using EmployeePortalSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities;
 
 namespace EmployeePortalSystem.Controllers
 {
@@ -58,16 +59,7 @@ namespace EmployeePortalSystem.Controllers
 
             TempData["Message"] = "Poll created successfully!";
 
-            // Redirect based on role
-            //var role = HttpContext.Session.GetString("Role");
-            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-            //{
-            //    return RedirectToAction("PollDetails");
-            //}
-            //else
-            //{
-            //    return RedirectToAction("EmployeePollDetails");
-            //}
+            
             if (currentDashboard == "Admin")
                 return RedirectToAction("PollDetails", "Polls");
             else
@@ -102,7 +94,6 @@ namespace EmployeePortalSystem.Controllers
         //    return View(poll); // Goes to Views/Polls/Delete.cshtml
         //}
 
-
         [HttpGet]
         public IActionResult Delete(int id, string? returnTo)
         {
@@ -111,7 +102,7 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
 
             var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-            var isAdmin = IsAdmin(empId); // <- this uses the "Role" session string
+            var isAdmin = IsAdmin(empId);
 
             if (!isAdmin && poll.CreatedBy != empId)
             {
@@ -120,9 +111,8 @@ namespace EmployeePortalSystem.Controllers
                 return RedirectToAction(role == "admin" ? "PollDetails" : "EmployeePollDetails");
             }
 
-            HttpContext.Session.SetString("CurrentDashboard", isAdmin ? "Admin" : "Employee");
             ViewBag.ReturnTo = returnTo;
-            return View(poll); // This should render Delete.cshtml
+            return View(poll);
         }
 
 
@@ -131,7 +121,8 @@ namespace EmployeePortalSystem.Controllers
         public IActionResult DeleteConfirmed(int id, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
+
+
             var poll = _repo.GetById(id);
             if (poll == null)
                 return NotFound();
@@ -155,21 +146,15 @@ namespace EmployeePortalSystem.Controllers
 
                 if (returnTo == "PollDetails")
                     return RedirectToAction("PollDetails", "Polls");
-            }
 
-            if (currentDashboard == "Admin")
-                return RedirectToAction("PollDetails", "Polls");
+                if (returnTo == "DashboardEmployee")
+                    return RedirectToAction("DashboardEmployee", "UserAccess");
+            }
 
             return RedirectToAction("EmployeePollDetails", "Polls");
         }
-            //var role = HttpContext.Session.GetString("Role");
-            //if (!string.IsNullOrEmpty(role) && role.ToLower() == "admin")
-            //    return RedirectToAction("PollDetails");
 
-            //return RedirectToAction("EmployeePollDetails");
-
-
-        // Helper method to check admin (you can adjust logic accordingly)
+ 
         private bool IsAdmin(int empId)
         {
             // Example logic: You can replace this with your actual admin check
@@ -215,32 +200,78 @@ namespace EmployeePortalSystem.Controllers
         }
 
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
+        //{
+        //    var empId = HttpContext.Session.GetInt32("EmployeeId");
+        //    if (empId == null)
+        //        return RedirectToAction("Login", "UserAccess");
+
+
+
+        //    // Ensure the selected option is not null or empty
+        //    if (string.IsNullOrEmpty(selectedOption))
+        //    {
+        //        TempData["Error"] = "Please select an option before submitting.";
+
+        //        if (returnTo == "DashboardEmployee")
+        //            return RedirectToAction("DashboardEmployee", "UserAccess");
+
+        //        if (returnTo == "Profile")
+        //        {
+        //            TempData["ActiveTab"] = "polls";
+        //            return RedirectToAction("Profile", "MyProfile");
+        //        }
+
+               
+        //        return RedirectToAction("EmployeePollDetails");
+        //    }
+
+
+        //    if (!_repo.HasVoted(pollId, empId.Value))
+        //    {
+        //        var response = new PollResponse
+        //        {
+        //            PollId = pollId,
+        //            EmployeeId = empId.Value,
+        //            SelectedOption = selectedOption,
+        //            CreatedAt = DateTime.Now
+        //        };
+
+        //        _repo.SubmitResponse(response);
+        //    }
+        //    if (returnTo == "Profile")
+        //    { 
+        //        TempData["ActiveTab"] = "polls";
+        //        return RedirectToAction("Profile", "MyProfile");
+        //    }
+
+        //    if (returnTo == "DashboardEmployee")
+        //    {
+        //        return RedirectToAction("DashboardEmployee", "UserAccess");
+        //    }
+
+        //    return RedirectToAction("EmployeePollDetails");
+           
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VoteFromList(int pollId, string selectedOption, string? returnTo)
+        public JsonResult VoteFromList(int pollId, string selectedOption, string? returnTo)
         {
             var empId = HttpContext.Session.GetInt32("EmployeeId");
             if (empId == null)
-                return RedirectToAction("Login", "UserAccess");
+                return Json(new { success = false, message = "Not logged in" });
 
 
 
             // Ensure the selected option is not null or empty
             if (string.IsNullOrEmpty(selectedOption))
             {
-                TempData["Error"] = "Please select an option before submitting.";
+                return Json(new { success = false, message = "Please select an option." });
 
-                if (returnTo == "DashboardEmployee")
-                    return RedirectToAction("DashboardEmployee", "UserAccess");
-
-                if (returnTo == "Profile")
-                {
-                    TempData["ActiveTab"] = "polls";
-                    return RedirectToAction("Profile", "MyProfile");
-                }
-
-               
-                return RedirectToAction("EmployeePollDetails");
             }
 
 
@@ -256,22 +287,15 @@ namespace EmployeePortalSystem.Controllers
 
                 _repo.SubmitResponse(response);
             }
-            if (returnTo == "Profile")
-            { 
-                TempData["ActiveTab"] = "polls";
-                return RedirectToAction("Profile", "MyProfile");
-            }
-
-            if (returnTo == "DashboardEmployee")
-            {
-                return RedirectToAction("DashboardEmployee", "UserAccess");
-            }
-
-            return RedirectToAction("EmployeePollDetails");
            
+            return Json(new
+            {
+                success = true,
+                message = "Vote submitted!",
+                returnTo = returnTo 
+            });
+
         }
-
-
 
         public IActionResult EmployeeResults(int id)
         {
