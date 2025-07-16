@@ -117,6 +117,7 @@
                     <li><a href="@Url.Action("Index", "Announcement")">Announcement</a></li>
                     <li><a href="@Url.Action("Index", "Departments")">Departments</a></li>
                     <li><a href="@Url.Action("CommitteeDetails", "Committee")">Committees</a></li>
+                    <li><a href="@Url.Action("RolesList", "Roles")">Job Roles</a></li>
                 }
                 else
                 {
@@ -128,7 +129,7 @@
                     <li><a href="@Url.Action("EmployeeCommitteeDetails", "Committee")">Committees</a></li>
                 }
 
-                <li><a href="#">About</a></li>
+                
                 <li><a href="@Url.Action("Login", "UserAccess")">Logout</a></li>
 
             </ul>
@@ -189,6 +190,43 @@
             });
         }
 
+                // Blog Comment Delete
+        function deleteComment(commentId, blogId,returnTo = null) {
+            if (!confirm("Are you sure you want to delete this comment?")) return;
+
+            $.ajax({
+                url: '/Blogs/DeleteComment',
+                type: 'POST',
+                data: { commentId: commentId,
+                        returnTo: returnTo},
+                success: function (response) {
+                    if (response.success) {
+                        // Remove the comment element from DOM
+                        const commentElement = document.getElementById(`comment-${commentId}`);
+                        if (commentElement) {
+                            commentElement.remove();
+                        }
+
+                        // Update the comment count
+                        const countSpan = document.querySelector(`#comment-count-${blogId}`);
+                        if (countSpan) {
+                            const match = countSpan.textContent.match(/\d+/);
+                            if (match) {
+                                let currentCount = parseInt(match[0]);
+                                countSpan.textContent = `Comments ${Math.max(0, currentCount - 1)}`;
+                            }
+                        }
+                    } else {
+                        alert("Failed to delete comment.");
+                    }
+                },
+                error: function () {
+                    alert("Error deleting comment.");
+                }
+            });
+        }
+
+
         //Blog Comment
             function toggleCommentSection(blogId) {
                 const section = document.getElementById(`comment-section-${blogId}`);
@@ -221,6 +259,17 @@
                         // Append to existing comments
                         const commentContainer = document.querySelector(`#comment-section-${blogId} .existing-comments`);
                         commentContainer.appendChild(newComment);
+
+                        const countSpan = document.querySelector(`#comment-count-${blogId}`);
+                        if (countSpan) {
+                            
+                            const match = countSpan.textContent.match(/\d+/);
+                            if (match) {
+                                const currentCount = parseInt(match[0]);
+                                const newCount = currentCount + 1;
+                                countSpan.textContent = `Comments ${newCount}`;
+                            }
+                        }
 
                         formElement.reset();
                     }

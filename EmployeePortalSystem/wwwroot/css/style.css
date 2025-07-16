@@ -1998,10 +1998,23 @@ input[type="radio"].highlight-radio:checked {
     text-align:start;
 }
 
-}
+
 
 .alert-message {
+    display:flex;
     color: darkgrey;
-    text-align: center;
+    justify-content: center;
     margin: 10px 0;
 }
+
+
+.role-input {
+    display: block;
+    width: 100%;
+}
+
+    .role-input input {
+        width: 99%;
+        margin-bottom: 10px;
+       
+    }

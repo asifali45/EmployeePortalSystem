@@ -5,6 +5,7 @@
 }
 @{
     int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+    var dashboard = Context.Session.GetString("CurrentDashboard");
 }
 
 <div class="container">
@@ -23,7 +24,7 @@
                
                     <img src="~/img/avatar_11852100.png"  alt="Profile image" />
             }
-                <div style="margin-top: px;">
+                <div style="margin-top: 1px;">
                     <a asp-action="EditPhoto" asp-controller="MyProfile" class="btn-edit-photo">
                         <img src="~/img/edit Icon.png" alt="edit" class="profile-edit" />
                         
@@ -56,9 +57,9 @@
     <div class="profile-card2">
         <div class="tab-container">
             <div class="tab-buttons">
-                <button class="tab-btn active" onclick="showTab('awards')">Awards</button>
-                <button class="tab-btn" onclick="showTab('blogs')">Blogs</button>
-                <button class="tab-btn" onclick="showTab('polls')">Polls</button>
+                <button class="tab-btn active" onclick="showTab('awards')">My Awards</button>
+                <button class="tab-btn" onclick="showTab('blogs')">My Blogs</button>
+                <button class="tab-btn" onclick="showTab('polls')">My Polls</button>
             </div>
 
             <div class="tab-content" id="awards" style="display: block;">
@@ -151,7 +152,7 @@
                                         <button type="button" class="comment-btn" onclick="toggleCommentSection(@blog.BlogId)">
                                             <div class="comment-content">
                                                 <img src="~/img/bubble-chat.png" alt="Comment" width="20px" height="20px" />
-                                                <span>Comments @blog.Comments.Count</span>
+                                                    <span id="comment-count-@blog.BlogId">Comments @blog.Comments.Count</span>
                                             </div>
                                         </button>
                                     </div>
@@ -160,8 +161,14 @@
                                         <div class="existing-comments">
                                             @foreach (var comment in blog.Comments)
                                             {
-                                                <div class="comment">
+                                                    <div class="comment" id="comment-@comment.CommentId">
                                                     <span>@comment.EmployeeName</span>: @comment.CommentText
+                                                        @if (comment.EmployeeId == currentEmpId || dashboard == "Admin")
+                                                        {
+                                                            <a href="#" onclick="deleteComment(@comment.CommentId, @blog.BlogId,'Profile'); return false;" title="Delete Comment">
+                                                                <img src="~/img/trash-xmark (1).png" width="12px" height="12px" style="margin-left: 20px;" />
+                                                            </a>
+                                                        }
                                                 </div>
                                             }
                                         </div>
