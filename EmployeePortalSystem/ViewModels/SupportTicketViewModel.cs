@@ -47,6 +47,8 @@ namespace EmployeePortalSystem.ViewModels
 
         //  only if used in RaiseTicket
         public List<string> EmployeeNameList { get; set; } = new();
+        public string? Resolved { get; set; }
+
     }
     public class SupportEmployeeListItem
     {

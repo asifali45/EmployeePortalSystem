@@ -14,10 +14,14 @@
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>
-            <div class="right_btn">
+            <div class="right_btn" style="display: flex; flex-direction: column; gap: 10px;">
                 <form method="get" asp-action="RaiseTicket" asp-controller="SupportTicket">
                     <button type="submit" class="create_emp_btn">Raise Ticket</button>
                 </form>
+                <form method="get" asp-action="AssignedTickets" asp-controller="SupportTicket">
+                    <button type="submit" class="create_emp_btn">Assigned To Me</button>
+                </form>
+
             </div>
         </div>
 
