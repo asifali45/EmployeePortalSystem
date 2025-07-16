@@ -96,6 +96,8 @@ namespace EmployeePortalSystem.Controllers
             }
             ViewBag.Results = results;
 
+
+
             var model = new DashboardCardViewModel
             {
                 LatestBlogs = latestblogs,
@@ -144,6 +146,17 @@ namespace EmployeePortalSystem.Controllers
             ViewBag.SelectedOptions = selectedOptions;
             ViewBag.Results = results;
 
+            //  Prepare chart data
+            var contributionData = new Dictionary<string, int>
+            {
+                { "Blogs", cardcounts.BlogsWritten },
+                { "Polls", cardcounts.PollsVoted },
+                { "Awards", cardcounts.TotalAwards }
+            };
+
+            var monthlyData = _repository.GetMonthlyContributionForEmployee(empid);
+
+
             var model = new DashboardCardViewModel
             {
                 TotalAwards = cardcounts.TotalAwards,
@@ -152,7 +165,9 @@ namespace EmployeePortalSystem.Controllers
                 LatestBlogs = latestblogs,
                 LatestAnnouncements = latestAnnouncements.ToList(),
                 LatestAwards= latestawards.ToList(),
-                LatestPolls=latestpolls.ToList()
+                LatestPolls=latestpolls.ToList(),
+                ContributionChartData = contributionData,
+                MonthlyContributionData = monthlyData
             };
 
             return View(model);

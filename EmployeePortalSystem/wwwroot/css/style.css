@@ -104,7 +104,7 @@ body {
         height: 24px;
         padding: 0 10px;
         font-size: 14px;
-        margin-bottom: 10px;
+        margin: 7px auto;
     }
 
 .remember {
@@ -136,7 +136,7 @@ body {
 .signup {
     color: #7c7c7c;
     font-size: 10px;
-    text-align: right;
+    text-align: start;
     padding-top: 20px;
 }
 
@@ -884,10 +884,12 @@ svg {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-/*    text-align: center;*/
+    text-align: center;
     box-sizing: border-box;
 }
-
+#mychart{
+    margin-top:20px;
+}
 /* Top row cards (charts) */
 .policy_card .motor_card_box {
     min-height: 400px;
@@ -1636,7 +1638,6 @@ table .edit-icon img {
     border-radius: 4px;
     border: 1px solid #cbcbcb;
     font-size: 12px;
-    width: 430px;
     height: 30px;
     margin-left: 0;
     box-sizing: border-box;
@@ -1994,6 +1995,7 @@ input[type="radio"].highlight-radio:checked {
     overflow: hidden;
     padding: 16px;
     box-sizing: border-box;
+    text-align:start;
 }
 
 }
