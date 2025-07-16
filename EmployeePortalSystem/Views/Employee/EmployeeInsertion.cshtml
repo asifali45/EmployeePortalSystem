@@ -32,7 +32,7 @@
 
                             <label>Name<span class="imp_field">*</span></label>
                             <div class="val">
-                            <input asp-for="Employee.Name" type="text" placeholder="Enter the Employee Name here" class="form-control" />
+                                <input asp-for="Employee.Name" type="text" placeholder="Enter the Employee Name here" class="form-control" maxlength="100" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" />
                             <span asp-validation-for="Employee.Name" class="text-danger"></span>
                             </div>
                            
@@ -50,7 +50,7 @@
                         <div class="form_group">
                             <label>Phone<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" class="form-control" />
+                                <input asp-for="Employee.Phone" type="tel" placeholder="Enter the Phone number of the Employee" class="form-control" maxlength="10" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             <span asp-validation-for="Employee.Phone" class="text-danger"></span>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             
                             <label>Photo</label>
                             <div class="photo_edit">
-                            <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" class="form-control" />
+                                <input name="Photo" type="file" accept=".png, .jpg, .jpeg" placeholder="Recent Photo of the Employee" class="form-control" maxlength="255" />
                             @if (!string.IsNullOrEmpty(Model.Employee.Photo))
                             {
                                 <div class="photo-preview">

@@ -44,7 +44,8 @@ namespace EmployeePortalSystem.Repositories
                             FROM support_tickets t
                         LEFT JOIN Employee emp ON t.EmployeeId = emp.EmployeeId
                      LEFT JOIN Employee assign ON t.AssignedTo = assign.EmployeeId
-                     LEFT JOIN Employee escal ON t.EscalatedTo = escal.EmployeeId";
+                     LEFT JOIN Employee escal ON t.EscalatedTo = escal.EmployeeId
+                    ORDER BY t.UpdatedAt DESC";
                 using var connection = _context.CreateConnection();
                 return await connection.QueryAsync<SupportTicket>(query);
         }

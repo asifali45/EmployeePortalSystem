@@ -1430,7 +1430,7 @@ table .edit-icon img {
 }
 
 .committee-card {
-    background: white;
+    background: #fff6f6;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: calc(50% - 20px); /* 2 cards per row with 20px gap */
@@ -1495,7 +1495,7 @@ table .edit-icon img {
 }
 
 .department-card {
-    background: white;
+    background: #fff6f6;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: calc(50% - 30px); /* 2 cards per row with 20px gap */
@@ -1552,13 +1552,10 @@ table .edit-icon img {
 
 
 
-
-
-
 .announcement-card {
     width: 100%;
     max-width: 850px;
-    background: #fff;
+    background: #fff6f6;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
