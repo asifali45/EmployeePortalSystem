@@ -1976,6 +1976,22 @@ input[type="radio"].highlight-radio:checked {
 
 }
 
+
+@media (max-width: 768px) {
+    .d-flex.flex-row {
+        flex-direction: column;
+    }
+
+    .announcement-image-container img {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/*added for announcement */
+
+
+
 .alert-success {
     color: #555;
     font-size: 12px;

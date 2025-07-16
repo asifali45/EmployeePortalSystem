@@ -40,6 +40,7 @@
                                 <th>Message</th>
                                 <th>Visible To</th>
                                 <th>Post Date</th>
+                                <th>Photo</th>
                                 <th>Is Event</th>
                                 <th>Event Date</th>
                                 <th>Event Time</th>
@@ -69,6 +70,18 @@
                                     </td>
                                     <td>@a.VisibleTo</td>
                                     <td>@(a.PostDate.HasValue ? a.PostDate.Value.ToString("yyyy-MM-dd") : "NULL")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(a.ImagePath))
+                                        {
+                                            <a href="javascript:void(0);" onclick="openModal('@a.Title', '@Url.Content(a.ImagePath)')">View Photo</a>
+
+                                        }
+                                        else
+                                        {
+                                            <span>No Photo</span>
+                                        }
+                                    </td>
+
                                     <td>@(a.IsEvent == true ? "Yes" : "No")</td>
                                     <td>@a.EventDate?.ToString("yyyy-MM-dd")</td>
                                     <td>@a.EventTime?.ToString(@"hh\:mm")</td>
@@ -95,6 +108,16 @@
     </div>
 </div>
 
+<div id="photoModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-close" onclick="closeModal()">&times;</span>
+        <h4 id="modalTitle" style="margin-bottom: 10px;"></h4>
+        <img id="modalPhoto" src="" alt="Announcement Photo" style="max-width:100%; height:auto; border-radius:8px;" />
+        <button class="modal-close-btn" style="margin-top: 10px;" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
@@ -112,6 +135,18 @@
                 fullSpan.style.display = "inline";
             }
         }
+
+
+             function openModal(title, photoUrl) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPhoto').src = photoUrl;
+            document.getElementById('photoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('photoModal').style.display = 'none';
+        }
+        
     </script>
 }
 
