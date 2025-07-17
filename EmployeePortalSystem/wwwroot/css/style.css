@@ -1595,6 +1595,7 @@ table .edit-icon img {
     font-size: 14px;
     color: #555;
     margin-bottom: 10px;
+    margin-left:8px;
 }
 
 
@@ -1619,6 +1620,16 @@ table .edit-icon img {
     font-size: 14px;
     color: #555;
 }
+
+.blog-title1 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #5b3333;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
 
 /*  comment   */
 
@@ -1941,6 +1952,8 @@ input[type="radio"].highlight-radio:checked {
 }
 
 
+
+
 .announcement-list-row {
     display: flex;
     flex-direction: row;
@@ -1949,6 +1962,8 @@ input[type="radio"].highlight-radio:checked {
     justify-content: space-between;
     flex-wrap: wrap; /* Makes it responsive */
 }
+
+
 
 .announcement-box {
     background-color: #fff6f6;
@@ -1977,18 +1992,33 @@ input[type="radio"].highlight-radio:checked {
 }
 
 
-@media (max-width: 768px) {
-    .d-flex.flex-row {
-        flex-direction: column;
-    }
+/*added*/
 
-    .announcement-image-container img {
-        width: 100%;
-        max-width: 100%;
-    }
+.image-content-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
 }
 
-/*added for announcement */
+.img-container {
+    width: 220px;
+    max-height: 200px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.announcement-img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.content-container {
+    flex-grow: 1;
+    overflow: hidden;
+}
 
 
 

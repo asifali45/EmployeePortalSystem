@@ -22,7 +22,7 @@
 
         <div class="container_emp mb-20">
             <div class="empmaster_card">
-                <form asp-action="Edit" asp-controller="Announcement" method="post" class="emp_form">
+                <form asp-action="Edit" asp-controller="Announcement" method="post" enctype="multipart/form-data" class="emp_form">
                     <input type="hidden" asp-for="AnnouncementId" />
 
                     <div class="form_row">
@@ -142,7 +142,7 @@
 
                     <div class="form_row">
                         <button type="submit" class="custom-button">Update</button>
-                        <button type="reset" class="custom-button">Cancel</button>
+                        <button type="reset" >Cancel</button>
                     </div>
 
                 </form>
