@@ -65,22 +65,24 @@
                         <div class="form_group">
                             <label>Head Id<span class="imp_field">*</span></label>
                             <div class="val">
-                                @* <select asp-for="HeadId" asp-items="@(new SelectList(ViewBag.Employees, "EmployeeId", "Name"))" class="form-control"> *@
-                                @*     <option value="">-- Select Head --</option> *@
-                                @* </select> *@
+                                
 
-                                @* <span asp-validation-for="HeadId" class="text-danger"></span> *@
+                                 <div class="head position-relative"> 
+                                     <input id="headNameInput" type="text" placeholder="Search Head Name" class="form-control" />  
+                                     <input type="hidden" asp-for="HeadId" /> 
+                                     <ul id="headSuggestions" class="suggestions-list"></ul> 
+                                 </div>
 
-                                <input asp-for="HeadId" class="form-control" list="headList" placeholder="Select Head by ID or Name" />
-                                <datalist id="headList">
-                                    @if (ViewBag.Employees is List<EmployeePortalSystem.Models.Employee> employees)
-                                    {
-                                        foreach (var emp in employees)
-                                        {
-                                            <option value="@emp.EmployeeId">@emp.Name</option>
-                                        }
-                                    }
-                                </datalist>
+                                @* <input asp-for="HeadId" class="form-control" list="headList" placeholder="Select Head by ID or Name" />  *@
+                                @* <datalist id="headList">  *@
+                                @*     @if (ViewBag.Employees is List<EmployeePortalSystem.Models.Employee> employees)  *@
+                                @*      {  *@
+                                @*          foreach (var emp in employees)  *@
+                                @*          {  *@
+                                @*             <option value="@emp.EmployeeId">@emp.Name</option>  *@
+                                @*         }   *@
+                                @*     }  *@
+                                @*  </datalist> *@
                                 <span asp-validation-for="HeadId" class="text-danger"></span>
                             </div>
                         </div>
@@ -138,4 +140,47 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script> 
+        const headInput = document.getElementById('headNameInput'); 
+        const suggestions = document.getElementById('headSuggestions'); 
+        headInput.addEventListener('input', function () 
+        { 
+            const query = this.value.trim(); 
+            if (query.length < 2) 
+            {
+                suggestions.style.display = 'none'; 
+                return; 
+            }
+            fetch(`/Committee/SearchCurrentEmployeesByName?term=${encodeURIComponent(query)}`) .then(response => response.json()) .then(data => 
+                { 
+                    suggestions.innerHTML = ''; 
+                    if (data.length > 0) 
+                    {
+                        data.forEach(emp => 
+                            {
+                                const li = document.createElement('li');
+                                li.textContent = emp.name; 
+                                li.dataset.id = emp.employeeId;
+                                li.classList.add('suggestion-item'); 
+                                suggestions.appendChild(li); 
+                            }); 
+                            suggestions.style.display = 'block';
+                    } 
+                    else
+                    {
+                        suggestions.style.display = 'none';
+                    }
+                }); 
+            }); 
+            suggestions.addEventListener('click', function (e) 
+            { if (e.target && e.target.matches('li.suggestion-item')) 
+            { headInput.value = e.target.textContent; document.querySelector('input[name="HeadId"]').value = e.target.dataset.id; 
+            suggestions.style.display = 'none';
+            } });
+            document.addEventListener('click', function (e) { if (!suggestions.contains(e.target) && e.target !== headInput)
+                {
+                    suggestions.style.display = 'none'; 
+                } 
+            }); 
+    </script>
 }
