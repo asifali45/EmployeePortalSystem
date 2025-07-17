@@ -32,7 +32,7 @@
                     }
                 </div>
                 <div class="text-end mt-2">
-                    <a href="@Url.Action("Index", "Announcement")" class="btn btn-secondary btn-sm">View All Announcements</a>
+                    <a href="@Url.Action("Index", "Announcement")" class="button-81" role="button">View All Announcements</a>
                 </div>
             </div>
         }
@@ -75,7 +75,7 @@
                     }
                 </div>
                 <div class="text-end mt-2">
-                    <a href="@Url.Action("Index", "Award")" class="btn btn-secondary btn-sm">View All Awards</a>
+                    <a href="@Url.Action("Index", "Award")" class="button-81" role="button">View All Awards</a>
                 </div>
             </div>
         }
@@ -158,7 +158,7 @@
                                 <br />
                             }
                             <div class="text-end mt-2">
-                                <a href="@Url.Action("BlogDetails", "Blogs")" class="btn btn-secondary btn-sm">View All Blogs</a>
+                                <a href="@Url.Action("BlogDetails", "Blogs")" class="button-81" role="button">View All Blogs</a>
                             </div>
 
                         </div>
@@ -245,7 +245,7 @@
                                 }
 
                                 <div class="text-end mt-2">
-                                    <a href="@Url.Action("PollDetails", "Polls")" class="btn btn-secondary btn-sm">View All Polls</a>
+                                    <a href="@Url.Action("PollDetails", "Polls")" class="button-81" role="button">View All Polls</a>
                                 </div>
                             </div>
                         </div>
@@ -259,26 +259,7 @@
             </div>
         </div>
 
-        <!-- Edit Modal -->
-        <div id="edit-modal" class="modal">
-            <h2>Edit Policy Details</h2>
-            <form>
-                <label>Quotation:</label>
-                <input type="text" id="quotation" name="quotation" />
-
-                <label>Policy Issue:</label>
-                <input type="date" id="policyIssue" name="policyIssue" />
-
-                <label>Policy End:</label>
-                <input type="date" id="policyEnd" name="policyEnd" />
-
-                <label>Status:</label>
-                <input type="text" id="status" name="status" />
-
-                <button type="submit" class="submit-button">Submit</button>
-                <button type="button" id="cancel-button">Cancel</button>
-            </form>
-        </div>
+       
 
         <script>
             let selectedRow = null;

@@ -119,12 +119,18 @@
     }
 
     .back_footer {
-        font - size: 9px;
-        text - align: center;
-        margin - top: 20px;
-        color: rgb(24, 58, 138);
+        font-size: 9px;
+        text-align: center;
+        margin-top: 20px;
+        color:rgb(24, 58, 138);
     }
 }
+
+
+    .button-81 {
+/*        font-size: 1rem;*/
+        padding: 1rem 2rem;
+    }
 
 @media only screen and (max-width: 480px) {
     /* nav logo */
