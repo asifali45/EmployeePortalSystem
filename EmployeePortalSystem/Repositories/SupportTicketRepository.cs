@@ -220,12 +220,13 @@ namespace EmployeePortalSystem.Repositories
         // for new resolved 
         public async Task UpdateResolvedAsync(int ticketId, string resolved, int updatedBy)
         {
-            using var connection = _context.CreateConnection();
-            var query = @"
-        UPDATE support_tickets 
-        SET Resolved = @Resolved, UpdatedBy = @UpdatedBy, UpdatedAt = NOW()
-        WHERE TicketId = @TicketId";
+            var query = @"UPDATE support_tickets 
+                  SET Resolved = @Resolved, 
+                      UpdatedBy = @UpdatedBy, 
+                      UpdatedAt = NOW()
+                  WHERE TicketId = @TicketId";
 
+            using var connection = _context.CreateConnection();
             await connection.ExecuteAsync(query, new
             {
                 TicketId = ticketId,
@@ -233,6 +234,8 @@ namespace EmployeePortalSystem.Repositories
                 UpdatedBy = updatedBy
             });
         }
+
+
 
     }
 }
