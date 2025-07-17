@@ -202,6 +202,7 @@ namespace EmployeePortalSystem.Repositories
                     AssignedTo = @AssignedTo,
                     EscalatedTo = @EscalatedTo,
                     EscalationLevel = @EscalationLevel,
+                    Resolved = @Resolved,
                     UpdatedBy = @UpdatedBy,
                     UpdatedAt = @UpdatedAt
                   WHERE TicketId = @TicketId";
@@ -209,6 +210,33 @@ namespace EmployeePortalSystem.Repositories
             using var connection = _context.CreateConnection();
             return await connection.ExecuteAsync(query, ticket);
         }
+        //AssignedTickets
+        public async Task<IEnumerable<SupportTicket>> GetAssignedTicketsAsync(int employeeId)
+        {
+            using var connection = _context.CreateConnection();
+            var query = @"SELECT * FROM support_tickets WHERE AssignedTo = @employeeId";
+            return await connection.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
+        }
+        // for new resolved 
+        public async Task UpdateResolvedAsync(int ticketId, string resolved, int updatedBy)
+        {
+
+            var query = @"UPDATE support_tickets 
+                  SET Resolved = @Resolved, 
+                      UpdatedBy = @UpdatedBy, 
+                      UpdatedAt = NOW()
+                  WHERE TicketId = @TicketId";
+
+            using var connection = _context.CreateConnection();
+
+            await connection.ExecuteAsync(query, new
+            {
+                TicketId = ticketId,
+                Resolved = resolved,
+                UpdatedBy = updatedBy
+            });
+        }
+
 
     }
 }

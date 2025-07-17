@@ -18,8 +18,11 @@
         public int EscalationLevel { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string? Resolved { get; set; }
 
-        
+
+
+
         public string? AssignedToName { get; set; }
         public string? EscalatedToName { get; set; }
     }

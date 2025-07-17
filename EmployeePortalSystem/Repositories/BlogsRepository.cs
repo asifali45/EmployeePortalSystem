@@ -148,6 +148,20 @@ namespace EmployeePortalSystem.Repositories
             string sql = "SELECT Name FROM Employee WHERE EmployeeId = @EmployeeId";
             return connection.ExecuteScalar<string>(sql, new { EmployeeId = employeeId });
         }
+        public BlogCommentViewModel? GetCommentById(int commentId)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = "SELECT * FROM blog_comment WHERE CommentId = @CommentId";
+            return connection.QueryFirstOrDefault<BlogCommentViewModel>(sql, new { CommentId = commentId });
+        }
+        public void DeleteComment(int commentId)
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = "DELETE FROM blog_comment WHERE CommentId = @CommentId";
+            connection.Execute(sql, new { CommentId = commentId });
+        }
 
 
 
@@ -189,5 +203,7 @@ namespace EmployeePortalSystem.Repositories
        
 
 
+
     }
 }
+

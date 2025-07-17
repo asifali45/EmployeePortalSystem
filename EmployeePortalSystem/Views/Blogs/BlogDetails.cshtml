@@ -4,6 +4,11 @@
 }
 
 @model List<EmployeePortalSystem.ViewModels.BlogViewModel>
+@{
+    int? currentEmpId = Context.Session.GetInt32("EmployeeId");
+    var dashboard = Context.Session.GetString("CurrentDashboard");
+
+}
 
 
 
@@ -69,9 +74,15 @@
                             <div class="existing-comments">
                                 @foreach (var comment in blog.Comments)
                                 {
-                                    <div class="comment">
+                                    <div class="comment" id="comment-@comment.CommentId">
                                         <span>@comment.EmployeeName</span>: @comment.CommentText
                                         @* <div class="comment-date">@comment.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div> *@
+                                        @if ( dashboard == "Admin")
+                                        {
+                                            <a href="#" onclick="deleteComment(@comment.CommentId, @blog.BlogId); return false;" title="Delete Comment">
+                                                <img src="~/img/trash-xmark (1).png" width="12px" height="12px" style="margin-left: 20px;" />
+                                            </a>
+                                        }
                                     </div>
                                 }
                             </div>
