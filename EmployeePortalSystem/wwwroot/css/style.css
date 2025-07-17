@@ -981,98 +981,6 @@ table .edit-icon img {
 
 
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    z-index: 1000;
-    border: 2px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-
-    .modal form {
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #888;
-        border-radius: 8px;
-    }
-
-    .modal h2 {
-        text-align: center;
-    }
-
-
-#edit-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    max-width: 90%;
-    background-color: #ffffff;
-    padding: 30px 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: none;
-}
-
-    #edit-modal form {
-        display: flex;
-        flex-direction: column;
-    }
-
-        #edit-modal form label {
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        #edit-modal form input {
-            margin-bottom: 15px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        #edit-modal form .button-group {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* Style for Save and Cancel buttons */
-        #edit-modal form button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-            /* Save button */
-            #edit-modal form button[type="submit"] {
-                background-color: #f22772;
-                color: white;
-            }
-
-            /* Cancel button */
-            #edit-modal form button#cancel-button {
-                background-color: white;
-                color: #f22772;
-                border: 1px solid #f22772;
-                
-            }
-
-            #edit-modal form button:hover {
-                opacity: 0.9;
-            }
 
 .dataTables_filter {
     margin-bottom: 15px!important; 
@@ -2063,4 +1971,32 @@ input[type="radio"].highlight-radio:checked {
         width: 99%;
         margin-bottom: 10px;
        
+        }
+
+/* CSS */
+.button-81 {
+    background-color: #fff6f6;
+    border: 0 solid #e2e8f0;
+    border-radius: 1.5rem;
+    box-sizing: border-box;
+    color: #0d172a;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    padding: 0.5rem 1rem !important;
+    text-align: center;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    transition: all .1s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+    .button-81:hover {
+        background-color: #f22772;
+        color: #fff;
     }
+        
