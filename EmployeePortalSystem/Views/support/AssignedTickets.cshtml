@@ -21,7 +21,9 @@
         </div>
 
         <div class="empmaster_card">
+
             <table class="table emp_table" id="assignedTicketsTable">
+
                 <thead>
                     <tr>
                         <th>Ticket ID</th>
@@ -35,15 +37,17 @@
                 <tbody>
                     @foreach (var ticket in Model)
                     {
+
                       <tr>
                         <form method="post" asp-action="UpdateResolution" asp-controller="SupportTicket">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="TicketId" value="@ticket.TicketId" />
-                        
+
                             <td>@ticket.TicketId</td>
                             <td>@ticket.IssueTitle</td>
                             <td>@ticket.Description</td>
                             <td>@ticket.Status</td>
+
                             <td>
                                 <select name="Resolved" class="form-control resolved-dropdown">
                                     <option value="">-- Select Resolution --</option>
@@ -63,6 +67,36 @@
                         
                     }
 
+<!--                              <td>
+                                <select name="Resolved" class="form-control">
+                                    <option value="">-- Select Resolution --</option>
+
+                                    @if (ticket.Resolved == "Closed")
+                                    {
+                                        <option value="Closed" selected>Closed</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Closed">Closed</option>
+                                    }
+
+                                    @if (ticket.Resolved == "Set to Senior")
+                                    {
+                                        <option value="Set to Senior" selected>Set to Senior</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Set to Senior">Set to Senior</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            </td>
+                            </form>
+                        </tr>
+                    } -->
+
                 </tbody>
             </table>
         </div>
@@ -77,6 +111,7 @@
             $('#assignedTicketsTable').DataTable();
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const selects = document.querySelectorAll('.resolved-dropdown');
@@ -98,6 +133,7 @@
             });
         });
     </script>
+
 
 
 }
