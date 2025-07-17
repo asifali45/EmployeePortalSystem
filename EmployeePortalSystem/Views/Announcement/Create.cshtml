@@ -22,7 +22,7 @@
 
         <div class="container_emp mb-20">
             <div class="empmaster_card">
-                <form asp-action="Create" asp-controller="Announcement" method="post" class="emp_form">
+                <form asp-action="Create" asp-controller="Announcement" method="post" enctype="multipart/form-data" class="emp_form">
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -120,6 +120,20 @@
                             <span asp-validation-for="EventTime" class="text-danger"></span>
                         </div>
                     </div>
+
+
+
+                    <div class="form_group">
+
+                        <label>Photo</label>
+                        <div class="val">
+                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+
+
+
+                        </div>
+                    </div>
+
 
                     <div class="form_row">
                         <button type="submit" class="custom-button">Save</button>
