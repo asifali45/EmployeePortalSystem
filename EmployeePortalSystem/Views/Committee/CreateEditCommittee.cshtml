@@ -67,9 +67,9 @@
                             <div class="val">
                                 
 
-                                 <div class="head position-relative"> 
-                                     <input id="headNameInput" type="text" placeholder="Search Head Name" class="form-control" />  
-                                     <input type="hidden" asp-for="HeadId" /> 
+                                 <div class="head position-relative">
+                                    <input id="headNameInput" type="text" placeholder="Search Head Name" class="form-control" value="@ViewBag.HeadName" />
+                                    <input type="hidden" asp-for="HeadId" /> 
                                      <ul id="headSuggestions" class="suggestions-list"></ul> 
                                  </div>
 
@@ -146,7 +146,7 @@
         headInput.addEventListener('input', function () 
         { 
             const query = this.value.trim(); 
-            if (query.length < 2) 
+            if (query.length < 1) 
             {
                 suggestions.style.display = 'none'; 
                 return; 

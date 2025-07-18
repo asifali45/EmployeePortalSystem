@@ -71,7 +71,7 @@
         $(document).ready(function () { 
             $('#employeeSearch').on('input', function () { 
                 var query = $(this).val(); var committeeId = '@Model.CommitteeId'; 
-                if (query.length < 2) return; $.get('/Committee/SearchAvailableEmployees', 
+                if (query.length < 1) return; $.get('/Committee/SearchAvailableEmployees', 
                 { 
                     committeeId: committeeId, term: query 
                 }, 
