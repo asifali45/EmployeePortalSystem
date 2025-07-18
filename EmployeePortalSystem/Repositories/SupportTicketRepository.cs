@@ -215,7 +215,8 @@ namespace EmployeePortalSystem.Repositories
         public async Task<IEnumerable<SupportTicket>> GetAssignedTicketsAsync(int employeeId)
         {
             using var connection = _context.CreateConnection();
-            var query = @"SELECT * FROM support_tickets WHERE AssignedTo = @employeeId";
+            var query = @"SELECT * FROM support_tickets 
+                  WHERE AssignedTo = @EmployeeId OR EscalatedTo = @EmployeeId";
             return await connection.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
         }
         // for new resolved 
