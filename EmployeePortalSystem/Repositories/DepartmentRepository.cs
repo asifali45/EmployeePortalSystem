@@ -109,21 +109,23 @@ namespace EmployeePortalSystem.Repositories
 
             using var db = _context.CreateConnection();
             return db.QueryFirstOrDefault<string>(
-                "SELECT Name FROM employee WHERE EmployeeId = @id", new { id = headId });
+                "SELECT Name FROM employee WHERE EmployeeId = @id AND IsCurrentEmployee = 1", new { id = headId });
         }
 
         public IEnumerable<Employee> SearchEmployeesByName(string term)
         {
             using var db = _context.CreateConnection();
             return db.Query<Employee>(
-                "SELECT EmployeeId, Name FROM employee WHERE Name LIKE @term",
+                @"SELECT EmployeeId, Name 
+          FROM employee 
+          WHERE Name LIKE @term AND IsCurrentEmployee = 1",
                 new { term = "%" + term + "%" });
         }
 
         public IEnumerable<Employee> GetAllEmployees()
         {
             using var db = _context.CreateConnection();
-            return db.Query<Employee>("SELECT EmployeeId, Name FROM employee");
+            return db.Query<Employee>("SELECT EmployeeId, Name FROM employee WHERE IsCurrentEmployee = 1");
         }
 
         public bool HasEmployees(int departmentId)
