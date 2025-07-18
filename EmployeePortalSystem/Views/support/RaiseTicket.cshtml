@@ -32,14 +32,14 @@
                         <div class="form_group">
                             <label>Issue Title <span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="IssueTitle" class="form-control" placeholder="Enter Issue Title" />
+                                <input asp-for="IssueTitle" class="form-control" placeholder="Enter Issue Title" maxlength="255" />
                                 <span asp-validation-for="IssueTitle" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
                             <label>Type<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Type" class="form-control" placeholder="Enter Type" />
+                                <input asp-for="Type" class="form-control" placeholder="Enter Type" maxlength="100" />
                                 <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
                         </div>
