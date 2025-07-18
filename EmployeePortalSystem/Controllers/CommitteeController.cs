@@ -281,8 +281,23 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("CommitteeMembers", new { id = committeeId });
         }
 
+        [HttpGet]
+        public JsonResult SearchAvailableEmployees(int committeeId, string term)
+        {
+            var employees = _repository.SearchAvailableEmployees(committeeId, term);
+            return Json(employees);
+        }
 
+        [HttpGet]
+        public JsonResult SearchCurrentEmployeesByName(string term)
+        {
+            var employees = _repository.GetAllEmployees()
+             .Where(e => e.IsCurrentEmployee && e.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+             .Select(e => new { employeeId = e.EmployeeId, name = e.Name })
+             .ToList(); 
 
+            return Json(employees);
+        }
     }
 
 }

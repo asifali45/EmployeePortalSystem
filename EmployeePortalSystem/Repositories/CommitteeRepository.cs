@@ -51,7 +51,7 @@ namespace EmployeePortalSystem.Repositories
         public List<Employee> GetAllEmployees()
         {
             using var connection = _context.CreateConnection();
-            string sql = "SELECT EmployeeId,Name FROM Employee";
+            string sql = "SELECT EmployeeId,Name, IsCurrentEmployee FROM Employee ";
             return connection.Query<Employee>(sql).ToList();
         }
 
@@ -169,10 +169,24 @@ namespace EmployeePortalSystem.Repositories
         {
             using var db = _context.CreateConnection();
            return db.Query<int>(
-    "SELECT CommitteeId FROM committee_member WHERE EmployeeId = @employeeId",
-    new { employeeId }
-).ToList();
+            "SELECT CommitteeId FROM committee_member WHERE EmployeeId = @employeeId",
+            new { employeeId }
+            ).ToList();
 
+        }
+
+        public List<Employee> SearchAvailableEmployees(int committeeId, string term)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = @"
+                SELECT e.EmployeeId, e.Name
+                FROM Employee e
+                WHERE e.IsCurrentEmployee = 1
+                AND e.Name LIKE @SearchTerm
+                AND e.EmployeeId NOT IN (
+                SELECT EmployeeId FROM committee_member WHERE CommitteeId = @CommitteeId
+                )";
+            return conn.Query<Employee>(sql, new { SearchTerm = $"%{term}%", CommitteeId = committeeId }).ToList();
         }
     }
 }
