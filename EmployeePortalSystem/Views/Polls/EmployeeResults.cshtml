@@ -1,16 +1,14 @@
 ﻿@model EmployeePortalSystem.Models.Poll
 @{
     ViewData["Title"] = "Poll Results";
-    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml"; // Adjust if you're using a shared layout
 
     var results = ViewBag.Results as Dictionary<string, int>;
     int totalVotes = results?.Values.Sum() ?? 0;
 }
 
-
-
 <div class="container mt-4">
-    <div class="emp_head1">
+    <div class="emp_head1 d-flex justify-content-between align-items-center mb-3">
         <div class="left_btn">
             <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls">
                 <button type="submit" class="create_emp_btn">Back</button>
@@ -22,43 +20,53 @@
     <div class="blog-card">
         <div class="blog-card-content">
             <div class="blog-card-text">
-                <!-- Poll Question -->
-                <h4 class="blog-title mb-4">@Model.Question</h4>
+                <!-- Question -->
+                <h3 class="blog-title1">@Model.Question</h3>
 
-                <!-- Option-wise Result Summary -->
-                <div class="blog-description">
-                    @{
-                        var options = new[] {
-                    new { Text = Model.Option1, Key = "1" },
-                    new { Text = Model.Option2, Key = "2" },
-                    new { Text = Model.Option3, Key = "3" },
-                    new { Text = Model.Option4, Key = "4" }
-                    };
+                <!-- Options and Vote Summary -->
+                @{
+                    var options = new[]
+                    {
+                new { Key = "1", Text = Model.Option1 },
+                new { Key = "2", Text = Model.Option2 },
+                new { Key = "3", Text = Model.Option3 },
+                new { Key = "4", Text = Model.Option4 }
+                };
+                }
 
-                        int index = 1;
-                    }
-
+                <div class="poll-options">
                     @foreach (var option in options)
                     {
-                        if (!string.IsNullOrWhiteSpace(option.Text))
+                        if (!string.IsNullOrEmpty(option.Text))
                         {
                             var count = results != null && results.ContainsKey(option.Key) ? results[option.Key] : 0;
-                            var percent = totalVotes > 0 ? (int)((count * 100.0) / totalVotes) : 0;
+                            var percentage = totalVotes > 0 ? (count * 100 / totalVotes) : 0;
+
+                            var fillClass = percentage switch
+                            {
+                                >= 75 => "fill-top",
+                                >= 50 => "fill-high",
+                                >= 25 => "fill-medium",
+                                _ => "fill-low"
+                            };
+
                             <div class="option-box">
-                                <div class="option-fill" style="width:@percent%"></div>
-                                <div class="option-content">
-                                    <span class="option-label">@index. @option.Text</span>
-                                    <span class="option-percentage">@percent% (@count votes)</span>
+                                <div class="option-label">
+                                    <span>@option.Text</span>
+                                    <span>@percentage% (@count vote@(count == 1 ? "" : "s"))</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill @fillClass" style="width: @percentage%"></div>
                                 </div>
                             </div>
-                            index++;
                         }
                     }
                 </div>
 
-                @* <!-- Back Button --> *@
-                @* <div class="blog-actions mt-4 text-center"> *@
-                @*     <a asp-action="EmployeePollDetails" class="btn btn-outline-secondary">⬅ Back to Polls</a> *@
+                @* <!-- Metadata --> *@
+                @* <div class="blog-meta"> *@
+                @*     <span class="blog-author">Created by: @Model.CreatedByName</span> *@
+                @*     <span class="blog-tags">Created on: @Model.CreatedAt.ToString("dd MMM yyyy")</span> *@
                 @* </div> *@
             </div>
         </div>

@@ -29,12 +29,12 @@ namespace EmployeePortalSystem.ViewModels
         public string EscalationLevel { get; set; } = "0";
 
         public string? AssignedToName { get; set; } = string.Empty;
-        public string? EscalatedToName { get; set; } 
+        public string? EscalatedToName { get; set; }
         public string EscalationLevelName { get; set; } = string.Empty;
 
         //  Employee Info
         public string EmployeeName { get; set; } = string.Empty;
-       
+
 
 
         // Dropdown Options

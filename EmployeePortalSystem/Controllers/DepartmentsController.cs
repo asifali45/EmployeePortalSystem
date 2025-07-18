@@ -42,6 +42,7 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.HeadName = ""; //
             ViewBag.ParentDepartments = GetParentDepartmentsDropdown();
             return View(new Department());
         }
