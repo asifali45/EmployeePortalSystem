@@ -118,6 +118,28 @@
                         </div>
                     </div>
 
+
+                   
+                    <div class="form_group">
+                        <label>Photo</label>
+                        <div class="val">
+                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                            @if (!string.IsNullOrEmpty(Model.ImagePath))
+                            {
+                                <div style="margin-top: 10px;">
+                                    <img src="@Model.ImagePath" alt="Announcement Image"
+                                         style="max-width: 100px; height: auto; border-radius: 8px; border: 1px solid #ccc; padding: 4px;" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+
+
+
                     <div class="form_row">
                         <button type="submit" class="custom-button">Update</button>
                         <button type="reset" class="custom-button">Cancel</button>

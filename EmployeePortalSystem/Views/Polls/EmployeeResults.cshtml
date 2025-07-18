@@ -11,6 +11,11 @@
 
 <div class="container mt-4">
     <div class="emp_head1">
+        <div class="left_btn">
+            <form method="get" asp-action="EmployeePollDetails" asp-controller="Polls">
+                <button type="submit" class="create_emp_btn">Back</button>
+            </form>
+        </div>
         <h2 class="text-center text-primary">Poll Results</h2>
     </div>
 
@@ -51,10 +56,10 @@
                     }
                 </div>
 
-                <!-- Back Button -->
-                <div class="blog-actions mt-4 text-center">
-                    <a asp-action="EmployeePollDetails" class="btn btn-outline-secondary">⬅ Back to Polls</a>
-                </div>
+                @* <!-- Back Button --> *@
+                @* <div class="blog-actions mt-4 text-center"> *@
+                @*     <a asp-action="EmployeePollDetails" class="btn btn-outline-secondary">⬅ Back to Polls</a> *@
+                @* </div> *@
             </div>
         </div>
     </div>

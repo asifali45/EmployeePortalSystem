@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EmployeePortalSystem.Models
 {
@@ -26,6 +27,12 @@ namespace EmployeePortalSystem.Models
         public DateTime? PostDate { get; set; }
         public DateTime? EventDate { get; set; }
         public TimeSpan? EventTime { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
+
+        public string? ImagePath { get; set; }
+
         public string? Location { get; set; }
         public int CreatedBy { get; set; }
         public int? UpdatedBy { get; set; }

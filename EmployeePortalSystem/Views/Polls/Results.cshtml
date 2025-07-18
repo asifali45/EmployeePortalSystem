@@ -9,11 +9,18 @@
 
 <div class="container">
     <div class="emp_head1">
+        <div class="left_btn">
+            <form method="get" asp-action="PollDetails" asp-controller="Polls">
+                <button type="submit" class="create_emp_btn">Back</button>
+            </form>
+        </div>
         <h2>Poll Results</h2>
     </div>
 
     <div class="blog-card">
+        
         <div class="blog-card-content">
+
             <div class="blog-card-text">
                 <h3 class="blog-title">@Model.Question</h3>
 
@@ -70,9 +77,9 @@
                     }
                 </div>
 
-                <div class="blog-actions">
-                    <a asp-action="PollDetails" class="comment-btn">⬅ Back to Polls</a>
-                </div>
+                @* <div class="blog-actions"> *@
+                @*     <a asp-action="PollDetails" class="comment-btn">⬅ Back to Polls</a> *@
+                @* </div> *@
             </div>
         </div>
     </div>

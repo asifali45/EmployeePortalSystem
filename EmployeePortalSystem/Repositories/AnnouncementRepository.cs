@@ -32,9 +32,9 @@ namespace EmployeePortalSystem.Repositories
 
             string sql = @"
                 INSERT INTO announcement
-                (Title, Message, PostDate, VisibleTo, VisibleToDepartmentId, VisibleToCommitteeId, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy)
+                (Title, Message, PostDate, VisibleTo, VisibleToDepartmentId, VisibleToCommitteeId, DisplayOrder, IsEvent, EventDate, EventTime, Location, CreatedBy,ImagePath)
                 VALUES
-                (@Title, @Message, @PostDate, @VisibleTo, @VisibleToDepartmentId, @VisibleToCommitteeId, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy)";
+                (@Title, @Message, @PostDate, @VisibleTo, @VisibleToDepartmentId, @VisibleToCommitteeId, @DisplayOrder, @IsEvent, @EventDate, @EventTime, @Location, @CreatedBy, @ImagePath)";
 
 
             var parameters = new
@@ -50,7 +50,8 @@ namespace EmployeePortalSystem.Repositories
                 EventDate = (announcement.IsEvent ?? false) ? announcement.EventDate : null,
                 EventTime = (announcement.IsEvent ?? false) ? announcement.EventTime : null,
                 announcement.Location,
-                announcement.CreatedBy
+                announcement.CreatedBy,
+                announcement.ImagePath
             };
 
             var rows = db.Execute(sql, parameters);
@@ -73,7 +74,8 @@ namespace EmployeePortalSystem.Repositories
                     EventTime = @EventTime,
                     Location = @Location,
                     UpdatedBy = @UpdatedBy,
-                    UpdatedAt = NOW()
+                    UpdatedAt = NOW(),
+                    ImagePath = @ImagePath
                 WHERE AnnouncementId = @AnnouncementId";
 
             db.Execute(sql, announcement);
