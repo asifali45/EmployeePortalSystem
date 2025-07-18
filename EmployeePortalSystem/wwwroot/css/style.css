@@ -2025,3 +2025,7 @@ input[type="radio"].highlight-radio:checked {
 .position-relative {
     position: relative;
 }
+
+.btn btn-outline-secondary btn-sm {
+    text-decoration:none;
+}

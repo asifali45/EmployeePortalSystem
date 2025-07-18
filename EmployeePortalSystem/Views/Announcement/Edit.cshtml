@@ -28,7 +28,7 @@
                     <div class="form_row">
                         <div class="form_group">
                             <label>Title</label>
-                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title" />
+                            <input asp-for="Title" class="form-control" placeholder="Enter the Announcement Title" maxlength="255" />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
                         <div class="form_group">
@@ -100,7 +100,7 @@
                         </div>
                         <div class="form_group">
                             <label>Location</label>
-                            <input asp-for="Location" class="form-control" placeholder="Enter Location" />
+                            <input asp-for="Location" class="form-control" placeholder="Enter Location" maxlength="255" />
                             <span asp-validation-for="Location" class="text-danger"></span>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="form_group">
                         <label>Photo</label>
                         <div class="val">
-                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" maxlength="255" />
                             <span asp-validation-for="ImageFile" class="text-danger"></span>
 
                             @if (!string.IsNullOrEmpty(Model.ImagePath))
