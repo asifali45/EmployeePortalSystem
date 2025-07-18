@@ -59,6 +59,25 @@ namespace EmployeePortalSystem.Controllers
             announcement.PostDate = DateTime.Now;
             announcement.CreatedBy = 1;
 
+            // ✅ Handle image upload
+            if (announcement.ImageFile != null && announcement.ImageFile.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/announcements");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(announcement.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    announcement.ImageFile.CopyTo(stream);
+                }
+
+                announcement.ImagePath = "/uploads/announcements/" + uniqueFileName;
+
+            }
+
             _announcementrepo.Add(announcement);
 
             TempData["Message5"] = "Announcement created successfully!";
@@ -97,7 +116,32 @@ namespace EmployeePortalSystem.Controllers
             model.UpdatedBy = 1;
             model.UpdatedAt = DateTime.Now;
 
-            _announcementrepo.Update(model);
+
+            // ✅ If a new image is uploaded, save it
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/announcements");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ImageFile.CopyTo(stream);
+                }
+
+                model.ImagePath = "/uploads/announcements/" + uniqueFileName;
+            }
+            else
+            {
+                // ✅ Keep the old image if no new one is uploaded
+                model.ImagePath = existing.ImagePath;
+            }
+
+
+                _announcementrepo.Update(model);
             TempData["Message5"] = "Announcement updated successfully!";
             return RedirectToAction("Index");
         }

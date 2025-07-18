@@ -83,10 +83,13 @@
                     }
                 </div>
                 <div class="text-end mt-2">
-                    <a href="@Url.Action("EmployeeAnnouncement", "Announcement")" class="btn btn-secondary btn-sm">View All Announcements</a>
+                    <a href="@Url.Action("EmployeeAnnouncement", "Announcement")" class="button-81" role="button">View All Announcements</a>
                 </div>
             </div>
         }
+
+        
+        
 
         @if (Model.LatestAwards != null && Model.LatestAwards.Any())
         {
@@ -124,7 +127,7 @@
                     }
                 </div>
                 <div class="text-end mt-2">
-                    <a href="@Url.Action("EmployeeAwardList","Award")" class="btn btn-secondary btn-sm">View All Awards</a>
+                    <a href="@Url.Action("EmployeeAwardList", "Award")" class="button-81" role="button">View All Awards</a>
                 </div>
             </div>
         }
@@ -152,7 +155,7 @@
                                         <h4 class="blog-title">@blog.Title</h4>
 
                                         <p class="blog-description">
-                                            @blog.Content.Substring(0, Math.Min(blog.Content.Length, 180))...
+                                            @blog.Content.Substring(0, Math.Min(blog.Content.Length, 130))...
                                         </p>
 
                                         <div class="blog-meta">
@@ -227,7 +230,7 @@
                                 <br />
                             }
                             <div class="text-end mt-2">
-                                <a href="@Url.Action("EmployeeBlogDetails", "Blogs")" class="btn btn-secondary btn-sm">View All Blogs</a>
+                                <a href="@Url.Action("EmployeeBlogDetails", "Blogs")" class="button-81" role="button">View All Blogs</a>
                             </div>
 
                         </div>
@@ -330,7 +333,7 @@
                             }
 
                             <div class="text-end mt-2">
-                                <a href="@Url.Action("EmployeePollDetails", "Polls")" class="btn btn-secondary btn-sm">View All Polls</a>
+                                <a href="@Url.Action("EmployeePollDetails", "Polls")" class="button-81" role="button">View All Polls</a>
                             </div>
                         </div>
                     </div>
@@ -437,69 +440,6 @@
                         });
                 </script>
             }
-
-
-           
-       
-
-        
-      
-
-
-
-       
-
-        <!-- Edit Modal -->
-        <div id="edit-modal" class="modal">
-            <h2>Edit Policy Details</h2>
-            <form>
-                <label>Quotation:</label>
-                <input type="text" id="quotation" name="quotation" />
-
-                <label>Policy Issue:</label>
-                <input type="date" id="policyIssue" name="policyIssue" />
-
-                <label>Policy End:</label>
-                <input type="date" id="policyEnd" name="policyEnd" />
-
-                <label>Status:</label>
-                <input type="text" id="status" name="status" />
-
-                <button type="submit" class="submit-button">Submit</button>
-                <button type="button" id="cancel-button">Cancel</button>
-            </form>
-        </div>
-
-        <script>
-            let selectedRow = null;
-            document.querySelectorAll('.edit-icon').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    selectedRow = this.closest('tr');
-                    const cells = selectedRow.querySelectorAll('td');
-                    document.getElementById('quotation').value = cells[1].innerText;
-                    document.getElementById('policyIssue').value = cells[2].innerText;
-                    document.getElementById('policyEnd').value = cells[3].innerText;
-                    document.getElementById('status').value = cells[4].innerText;
-                    document.getElementById('edit-modal').style.display = 'block';
-                });
-            });
-
-            document.querySelector('.submit-button').addEventListener('click', function (event) {
-                event.preventDefault();
-                if (selectedRow) {
-                    const cells = selectedRow.querySelectorAll('td');
-                    cells[1].innerText = document.getElementById('quotation').value;
-                    cells[2].innerText = document.getElementById('policyIssue').value;
-                    cells[3].innerText = document.getElementById('policyEnd').value;
-                    cells[4].innerText = document.getElementById('status').value;
-                }
-                document.getElementById('edit-modal').style.display = 'none';
-            });
-
-            document.getElementById('cancel-button').addEventListener('click', function () {
-                document.getElementById('edit-modal').style.display = 'none';
-            });
-        </script>
     </div>
 </div>
 

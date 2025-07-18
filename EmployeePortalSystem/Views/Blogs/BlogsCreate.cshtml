@@ -31,7 +31,7 @@
 
                             <label>Title<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Title" type="text" placeholder="Enter the Title here" class="form-control" />
+                                <input asp-for="Title" type="text" maxlength="100" placeholder="Enter the Title here" class="form-control" />
                                 <span asp-validation-for="Title" class="text-danger"></span> 
                             </div>
 
@@ -49,7 +49,7 @@
                         <div class="form_group">
                             <label>Tags<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Tags" type="text" placeholder="Enter the Tags here" class="form-control" />
+                                <input asp-for="Tags" type="text" maxlength="75" placeholder="Enter the Tags here" class="form-control" />
                                 
                             </div>
                         </div>

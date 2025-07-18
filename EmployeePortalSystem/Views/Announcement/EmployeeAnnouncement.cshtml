@@ -23,43 +23,51 @@
         {
             <div class="announcement-card mb-3">
                 <div class="announcement-card-content">
-                    <div class="announcement-card-text-center">
 
-                        <h4 class="announcement-title text-info">@ann.Title</h4>
+                    <!-- Title always on top -->
+                    <h4 class="announcement-title text-info text-center">@ann.Title</h4>
 
-                        <div class="announcement-description mb-2">
-                            <p>@ann.Message</p>
-                        </div>
+                    <!-- Flex container: image left, content right -->
+                    <div class="d-flex flex-row gap-3 flex-wrap align-items-start mt-2">
 
-                        @* @if (ann.IsEvent == true) *@
-                        @* { *@
-                        @*     <div class="event-details bg-light p-2 rounded mb-2"> *@
-                        @*         <span class="event-label">Event Date:</span> @ann.EventDate?.ToString("dd MMM yyyy") <br /> *@
-                        @*         <span class="event-label">Event Time:</span> @ann.EventTime?.ToString(@"hh\:mm") <br /> *@
-                        @*         <span class="event-label">Venue:</span> @ann.Location *@
-                        @*     </div> *@
-                        @* } *@
-                        @if (ann.IsEvent == true)
+                        <!-- Left: Image -->
+                        @if (!string.IsNullOrEmpty(ann.ImagePath))
                         {
-                            <div class="announcement-event-details-row">
-                                <div class="event-item">
-                                    <span class="event-label"> Date:</span> @ann.EventDate?.ToString("dd MMM yyyy")
-                                </div>
-                                <div class="event-item">
-                                    <span class="event-label"> Time:</span> @ann.EventTime?.ToString(@"hh\:mm")
-                                </div>
-                                <div class="event-item">
-                                    <span class="event-label">Venue:</span> @ann.Location
-                                </div>
+                            <div class="announcement-image-container mb-2">
+                                <img src="@ann.ImagePath" alt="Announcement Image" class="announcement-image"
+                                     style="max-height: 200px; border-radius: 8px;" />
                             </div>
                         }
 
-                        <div class="announcement-meta text-muted">
-                            <span>@ann.PostDate?.ToString("dd MMM yyyy")</span>
+                        <!-- Right: Message, Event, Post Date -->
+                        <div style="flex: 1;">
+                            <div class="announcement-description mb-2">
+                                <p>@ann.Message</p>
+                            </div>
+
+                            @if (ann.IsEvent == true)
+                            {
+                                <div class="announcement-event-details-row">
+                                    <div class="event-item">
+                                        <span class="event-label">Date:</span> @ann.EventDate?.ToString("dd MMM yyyy")
+                                    </div>
+                                    <div class="event-item">
+                                        <span class="event-label">Time:</span> @ann.EventTime?.ToString(@"hh\:mm")
+                                    </div>
+                                    <div class="event-item">
+                                        <span class="event-label">Venue:</span> @ann.Location
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="announcement-meta text-muted">
+                                <span>@ann.PostDate?.ToString("dd MMM yyyy")</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         }
     }
     else

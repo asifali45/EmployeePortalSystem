@@ -39,7 +39,7 @@
          
                             <label>Name<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Name" type="text" placeholder="Enter the Committee Name here" class="form-control" />
+                                <input asp-for="Name" type="text" maxlength="100"  placeholder="Enter the Committee Name here" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
 
