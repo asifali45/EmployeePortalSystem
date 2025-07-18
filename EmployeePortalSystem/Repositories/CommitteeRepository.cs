@@ -188,5 +188,12 @@ namespace EmployeePortalSystem.Repositories
                 )";
             return conn.Query<Employee>(sql, new { SearchTerm = $"%{term}%", CommitteeId = committeeId }).ToList();
         }
+
+        public Employee GetEmployeeById(int employeeId)
+        {
+            using var connection = _context.CreateConnection();
+            string sql = "SELECT EmployeeId, Name FROM Employee WHERE EmployeeId = @Id";
+            return connection.QueryFirstOrDefault<Employee>(sql, new { Id = employeeId });
+        }
     }
 }

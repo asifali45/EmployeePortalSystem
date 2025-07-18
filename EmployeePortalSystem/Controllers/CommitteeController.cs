@@ -144,6 +144,7 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
+            var headEmployee = _repository.GetEmployeeById(committee.HeadId ?? 0);
             var model = new CommitteeViewModel
             {
                 CommitteeId = committee.CommitteeId,
@@ -156,6 +157,7 @@ namespace EmployeePortalSystem.Controllers
                 // Don't assign logoPath here — let them re-upload if needed
 
             };
+            ViewBag.HeadName = headEmployee?.Name;
 
             ViewBag.Employees = _repository.GetAllEmployees();           
             return View("CreateEditCommittee", model); 
