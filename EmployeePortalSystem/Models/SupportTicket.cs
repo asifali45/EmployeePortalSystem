@@ -25,6 +25,10 @@
 
         public string? AssignedToName { get; set; }
         public string? EscalatedToName { get; set; }
+        public int? EscalatedBy { get; set; }
+        public string? EscalatedByName { get; set; }
+
+
     }
 
 }

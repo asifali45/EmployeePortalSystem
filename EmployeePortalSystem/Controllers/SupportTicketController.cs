@@ -236,25 +236,38 @@ namespace EmployeePortalSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateResolution(int TicketId, string Resolved)
         {
-
             var updatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
 
-            await _repository.UpdateResolvedAsync(TicketId, Resolved, updatedBy);
+            // ✅ Clean values: only allow "Closed" or "Escalated"
+            if (Resolved != "Closed" && Resolved != "Escalated")
+            {
+                TempData["Error"] = "Invalid resolution selected.";
+                return RedirectToAction("AssignedTickets");
+            }
 
-//             var ticket = await _repository.GetByIdAsync(TicketId);
-//             if (ticket == null)
-//                 return NotFound();
+            // ✅ Update ticket
+            var ticket = await _repository.GetByIdAsync(TicketId);
+            if (ticket == null)
+                return NotFound();
 
-//             ticket.Resolved = Resolved;
-//             ticket.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
-//             ticket.UpdatedAt = DateTime.Now;
+            ticket.Resolved = Resolved;
 
-//             await _repository.UpdateTicketAsync(ticket);
+            // ✅ Optional: sync status for Escalated/Closed
+            if (Resolved == "Closed")
+                ticket.Status = "Resolved";
+            else if (Resolved == "Escalated")
+                ticket.Status = "Escalated";
+                ticket.EscalatedBy = updatedBy;
 
+            ticket.UpdatedBy = updatedBy;
+            ticket.UpdatedAt = DateTime.Now;
+
+            await _repository.UpdateTicketAsync(ticket);
 
             TempData["Message"] = "Resolution updated successfully!";
             return RedirectToAction("AssignedTickets");
         }
+
 
 
 
