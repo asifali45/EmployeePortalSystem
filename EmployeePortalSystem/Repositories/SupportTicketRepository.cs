@@ -46,7 +46,11 @@ namespace EmployeePortalSystem.Repositories
                         LEFT JOIN Employee emp ON t.EmployeeId = emp.EmployeeId
                      LEFT JOIN Employee assign ON t.AssignedTo = assign.EmployeeId
                      LEFT JOIN Employee escal ON t.EscalatedTo = escal.EmployeeId
+
                     LEFT JOIN Employee escal_by ON t.EscalatedBy = escal_by.EmployeeId";
+
+//                     ORDER BY t.UpdatedAt DESC";
+
                 using var connection = _context.CreateConnection();
                 return await connection.QueryAsync<SupportTicket>(query);
         }

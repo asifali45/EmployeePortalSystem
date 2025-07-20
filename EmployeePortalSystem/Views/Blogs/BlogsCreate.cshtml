@@ -50,15 +50,15 @@
                             <label>Tags<span class="imp_field">*</span></label>
                             <div class="val">
                                 <input asp-for="Tags" type="text" maxlength="75" placeholder="Enter the Tags here" class="form-control" />
-                                
+                                <span asp-validation-for="Tags" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
 
-                            <label>Photo</label>
+                            <label>Photo<span class="imp_field">*</span></label>
                             <div class="val">
                                 <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
-                               
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
 
                                
                             </div>

@@ -15,8 +15,9 @@ namespace EmployeePortalSystem.ViewModels
 
         public string? Image { get; set; }
 
+        [Required(ErrorMessage = "Please upload an image for the blog.")]
         public IFormFile? ImageFile { get; set; } // For uploading image files
-
+        [Required]
         public string Tags { get; set; }
 
         public int? AuthorId { get; set; } // EmployeeId of the author

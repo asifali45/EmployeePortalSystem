@@ -30,7 +30,7 @@
                         <div class="form_group">
                             <label>Title <span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Title" class="form-control" placeholder="Enter Title" />
+                                <input asp-for="Title" class="form-control" placeholder="Enter Title" maxlength="255" />
                                 <span asp-validation-for="Title" class="text-danger"></span>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="form_group">
                             <label>Location</label>
-                            <input asp-for="Location" class="form-control" />
+                            <input asp-for="Location" class="form-control" maxlength="255" />
                             <span asp-validation-for="Location" class="text-danger"></span>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
 
                         <label>Photo</label>
                         <div class="val">
-                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" />
+                            <input asp-for="ImageFile" type="file" accept=".png,.jpg,.jpeg" class="form-control" maxlength="255" />
 
 
 

@@ -144,6 +144,7 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
+            var headEmployee = _repository.GetEmployeeById(committee.HeadId ?? 0);
             var model = new CommitteeViewModel
             {
                 CommitteeId = committee.CommitteeId,
@@ -156,6 +157,7 @@ namespace EmployeePortalSystem.Controllers
                 // Don't assign logoPath here — let them re-upload if needed
 
             };
+            ViewBag.HeadName = headEmployee?.Name;
 
             ViewBag.Employees = _repository.GetAllEmployees();           
             return View("CreateEditCommittee", model); 
@@ -281,8 +283,23 @@ namespace EmployeePortalSystem.Controllers
             return RedirectToAction("CommitteeMembers", new { id = committeeId });
         }
 
+        [HttpGet]
+        public JsonResult SearchAvailableEmployees(int committeeId, string term)
+        {
+            var employees = _repository.SearchAvailableEmployees(committeeId, term);
+            return Json(employees);
+        }
 
+        [HttpGet]
+        public JsonResult SearchCurrentEmployeesByName(string term)
+        {
+            var employees = _repository.GetAllEmployees()
+             .Where(e => e.IsCurrentEmployee && e.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+             .Select(e => new { employeeId = e.EmployeeId, name = e.Name })
+             .ToList(); 
 
+            return Json(employees);
+        }
     }
 
 }
