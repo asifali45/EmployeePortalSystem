@@ -96,7 +96,8 @@ namespace EmployeePortalSystem.Repositories
                 e.Photo
             FROM employee e
             LEFT JOIN role r ON e.RoleId = r.RoleId
-            WHERE e.DepartmentId = @departmentId";
+            WHERE e.DepartmentId = @departmentId
+             AND e.IsCurrentEmployee = 1";
 
             return conn.Query<EmployeeDetailsViewModel>(sql, new { departmentId }).ToList();
         }

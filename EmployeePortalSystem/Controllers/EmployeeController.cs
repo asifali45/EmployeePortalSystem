@@ -93,79 +93,154 @@ namespace EmployeePortalSystem.Controllers
         }
 
 
+        //[HttpPost]
+        //public IActionResult EmployeeInsertion(Employee employee, IFormFile? Photo, IFormCollection form)
+        //{
+
+        //    string selectedRole = form["Role"]; 
+        //    employee.IsAdmin = selectedRole == "Admin";
+
+
+
+        //    if (!ModelState.IsValid)
+        //    {
+
+        //        var vm = new EmployeeInsertionViewModel
+        //        {
+        //            Employee = employee,
+        //            Departments = _repo.GetDepartments(),
+        //            Roles = _repo.GetRoles()
+        //        };
+
+        //        return View("EmployeeInsertion", vm);
+        //    }
+        //    if (Photo != null && Photo.Length > 0)
+        //    {
+        //        var uploads = Path.Combine(_env.WebRootPath, "uploads");
+        //        Directory.CreateDirectory(uploads);
+        //        var fileName = Guid.NewGuid() + "_" + Path.GetFileName(Photo.FileName);
+        //        var filePath = Path.Combine(uploads, fileName);
+
+
+        //        using (var fs = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            Photo.CopyTo(fs);
+        //        }
+
+        //        //employee.Photo = "/uploads/" + fileName;
+        //        employee.Photo = fileName;
+        //    }
+        //    else if (employee.EmployeeId > 0)
+        //    {
+
+        //        var existing = _repo.GetEmployeeById(employee.EmployeeId);
+        //        employee.Photo = existing?.Photo;
+        //    }
+        //    else
+        //    {
+
+        //        employee.Photo = null;
+        //    }
+
+        //    int? userId = HttpContext.Session.GetInt32("EmployeeId");
+
+        //    if (employee.EmployeeId > 0)
+        //    {
+
+        //        employee.UpdatedAt = DateTime.Now;
+        //        employee.UpdatedBy = userId;
+
+        //        _repo.UpdateEmployee(employee);
+
+        //        TempData["Message1"] = "Employee updated successfully!";
+        //    }
+        //    else
+        //    {
+        //        employee.CreatedAt = DateTime.Now;
+        //        employee.UpdatedAt = DateTime.Now;
+        //        employee.CreatedBy = userId;
+
+        //        _repo.AddEmployee(employee);
+
+        //        TempData["Message1"] = "Employee added successfully!";
+        //    }
+        //    return RedirectToAction("EmployeeDetails");
+        //}
+
         [HttpPost]
         public IActionResult EmployeeInsertion(Employee employee, IFormFile? Photo, IFormCollection form)
         {
-
-            string selectedRole = form["Role"]; 
+            string selectedRole = form["Role"];
             employee.IsAdmin = selectedRole == "Admin";
-
-            
-
             if (!ModelState.IsValid)
             {
-
-                var vm = new EmployeeInsertionViewModel
-                {
-                    Employee = employee,
-                    Departments = _repo.GetDepartments(),
-                    Roles = _repo.GetRoles()
-                };
-
-                return View("EmployeeInsertion", vm);
+                return PrepareEmployeeInsertionView(employee);
             }
+
             if (Photo != null && Photo.Length > 0)
             {
                 var uploads = Path.Combine(_env.WebRootPath, "uploads");
                 Directory.CreateDirectory(uploads);
                 var fileName = Guid.NewGuid() + "_" + Path.GetFileName(Photo.FileName);
                 var filePath = Path.Combine(uploads, fileName);
-                
 
                 using (var fs = new FileStream(filePath, FileMode.Create))
                 {
                     Photo.CopyTo(fs);
                 }
-
-                //employee.Photo = "/uploads/" + fileName;
-                employee.Photo = fileName;
+            employee.Photo = fileName;
             }
             else if (employee.EmployeeId > 0)
             {
-                
                 var existing = _repo.GetEmployeeById(employee.EmployeeId);
                 employee.Photo = existing?.Photo;
-            }
-            else
-            {
-               
-                employee.Photo = null;
             }
 
             int? userId = HttpContext.Session.GetInt32("EmployeeId");
 
-            if (employee.EmployeeId > 0)
+            try
             {
-               
-                employee.UpdatedAt = DateTime.Now;
-                employee.UpdatedBy = userId;
+                if (employee.EmployeeId > 0)
+                {
+                    employee.UpdatedAt = DateTime.Now;
+                    employee.UpdatedBy = userId;
 
-                _repo.UpdateEmployee(employee);
+                    _repo.UpdateEmployee(employee);
+                    TempData["Message1"] = "Employee updated successfully!";
+                }
+                else
+                {
+                    employee.CreatedAt = DateTime.Now;
+                    employee.UpdatedAt = DateTime.Now;
+                    employee.CreatedBy = userId;
 
-                TempData["Message1"] = "Employee updated successfully!";
+                    _repo.AddEmployee(employee);
+                    TempData["Message1"] = "Employee added successfully!";
+                }
+
+                return RedirectToAction("EmployeeDetails");
             }
-            else
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                employee.CreatedAt = DateTime.Now;
-                employee.UpdatedAt = DateTime.Now;
-                employee.CreatedBy = userId;
-
-                _repo.AddEmployee(employee);
-
-                TempData["Message1"] = "Employee added successfully!";
+                if (ex.Number == 1062) // Duplicate entry
+                {
+                    ModelState.AddModelError("Employee.Email", "This email already exists.");
+                    return PrepareEmployeeInsertionView(employee);
+                }
+                throw; // Re-throw other DB exceptions
             }
-            return RedirectToAction("EmployeeDetails");
-        }
+            }
+
+            private IActionResult PrepareEmployeeInsertionView(Employee employee)
+            {
+                var vm = new EmployeeInsertionViewModel
+                {
+                    Employee = employee,
+                    Departments = _repo.GetDepartments(),
+                    Roles = _repo.GetRoles()
+                };
+                return View("EmployeeInsertion", vm);
+            }
 
     }
 }
