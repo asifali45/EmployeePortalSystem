@@ -104,23 +104,33 @@
     <partial name="_ValidationScriptsPartial" />
 }
 <script>
-    const input = document.querySelector('[name="RecipientName"]');
-    const datalist = document.getElementById('employeeSuggestions');
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("RecipientName");
+        const dataList = document.getElementById("employeeSuggestions");
 
-    input.addEventListener('input', function () {
-        const term = input.value;
-        if (term.length < 2) return;
+        input.addEventListener("input", function () {
+            const searchTerm = input.value;
 
-        fetch(`/Award/SearchEmployeeNames?term=${term}`)
-            .then(response => response.json())
-            .then(data => {
-                datalist.innerHTML = '';
-                data.forEach(name => {
-                    const option = document.createElement('option');
-                    option.value = name;
-                    datalist.appendChild(option);
-                });
-            });
+            if (searchTerm.length >= 1) {
+                fetch(`/Award/SearchEmployeeNames?term=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear existing options
+                        dataList.innerHTML = "";
+
+                        // Add new suggestions
+                        data.forEach(name => {
+                            const option = document.createElement("option");
+                            option.value = name;
+                            dataList.appendChild(option);
+                        });
+                        +112
+                    })
+                    .catch(error => {
+                        console.error("Error fetching employee names:", error);
+                    });
+            }
+        });
     });
      setTimeout(function () {
             var msgDiv = document.getElementById("successMessage");

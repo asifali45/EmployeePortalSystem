@@ -37,6 +37,7 @@
                         <th>Status</th>
                         <th>Response</th>
                         <th>Resolved </th>
+                        <th>EscalatedByName</th>
                         <th>Assign</th>
                         <th>Escalate</th>
                         <th>Update</th>
@@ -59,6 +60,14 @@
                                @ticket.Response
                             </td>
                             <td>@ticket.Resolved</td>
+                            <td>
+                                    @ticket.EscalatedToName
+                                    @if (!string.IsNullOrEmpty(ticket.EscalatedByName))
+                                    {
+                                    <div style="font-size: 12px; color: gray;">(by @ticket.EscalatedByName)</div>
+                                    }
+                            </td>
+
                             <td>@ticket.AssignedToName</td>
 
 
