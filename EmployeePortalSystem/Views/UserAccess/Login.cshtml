@@ -55,11 +55,17 @@
 
                     <div class="button_group">
                         <button type="submit" class="login-btn">Login</button>
-                        <button type="button" class="forgot-btn">Forgot Password</button>
+                        <button type="button" class="forgot-btn" onclick="location.href='@Url.Action("Signup", "UserAccess")'">Signup</button>
+                        
+     
                     </div>
-                    <div class="signup">
-                        Create new ?<a asp-action="Signup" asp-controller="UserAccess">Signup</a>
-                    </div>
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+                   
                     @if(ViewBag.ErrorMessage!=null)
                     {
                         <div class="text-danger" style="margin-top:10px;">
