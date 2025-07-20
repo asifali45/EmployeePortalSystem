@@ -11,7 +11,26 @@
 
 <div class="container">
     <div class="dashboard-contents">
+        <div class="policy_card">
 
+
+            <div class="motor_card_box">
+                <div class="motor_text">
+                    <h2 style="font-weight: bold; font-size: 20px;">Department Member Statistics</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="mychart2" ></canvas>
+                </div>
+            </div>
+            <div class="motor_card_box">
+                <h2 style="font-weight: bold; font-size: 20px;">Top Contributors 🏆</h2>
+                <div class="chart-container">
+                    <canvas id="mychart3" ></canvas>
+                    
+
+                </div>
+            </div>
+        </div>
         
 
         <!-- Announcement Section -->
@@ -263,36 +282,100 @@
 
        
 
-        <script>
-            let selectedRow = null;
-            document.querySelectorAll('.edit-icon').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    selectedRow = this.closest('tr');
-                    const cells = selectedRow.querySelectorAll('td');
-                    document.getElementById('quotation').value = cells[1].innerText;
-                    document.getElementById('policyIssue').value = cells[2].innerText;
-                    document.getElementById('policyEnd').value = cells[3].innerText;
-                    document.getElementById('status').value = cells[4].innerText;
-                    document.getElementById('edit-modal').style.display = 'block';
+        @section Scripts {
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const labels = @Html.Raw(Json.Serialize(Model.DepartmentMemberCounts.Keys));
+                const data = @Html.Raw(Json.Serialize(Model.DepartmentMemberCounts.Values));
+               
+                const ctx2 = document.getElementById('mychart2').getContext('2d');
+                const myChart2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label:"Number of members",
+                            data: data,
+                            backgroundColor:[
+                            '#4dc9f6', '#f67019', '#f53794', '#537bc4',
+                            '#acc236', '#166a8f', '#00a950', '#58595b',
+                            '#8549ba', '#e6194b', '#3cb44b', '#ffe119'
+                            ],
+                            borderRadius: 5
+                                     
+                           
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // ✅ Allow height to fill container
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: { enabled: true },
+                                    legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                display: false 
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
                 });
-            });
 
-            document.querySelector('.submit-button').addEventListener('click', function (event) {
-                event.preventDefault();
-                if (selectedRow) {
-                    const cells = selectedRow.querySelectorAll('td');
-                    cells[1].innerText = document.getElementById('quotation').value;
-                    cells[2].innerText = document.getElementById('policyIssue').value;
-                    cells[3].innerText = document.getElementById('policyEnd').value;
-                    cells[4].innerText = document.getElementById('status').value;
+                //Top Contributors
+
+                 
+    
+        const names = @Html.Raw(Json.Serialize(Model.TopContributors.Select(x => x.EmployeeName)));
+        const totals = @Html.Raw(Json.Serialize(Model.TopContributors.Select(x => x.Total)));
+        const blogs = @Html.Raw(Json.Serialize(Model.TopContributors.Select(x => x.Blogs)));
+        const polls = @Html.Raw(Json.Serialize(Model.TopContributors.Select(x => x.Polls)));
+        const awards = @Html.Raw(Json.Serialize(Model.TopContributors.Select(x => x.Awards)));
+
+        new Chart(document.getElementById('mychart3').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: names,
+                datasets: [{
+                    label: 'Total Contributions',
+                    data: totals,
+                    backgroundColor: ['#4e73df', '#f67019', '#36b9cc', '#f53794', '#e74a3b'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const i = context.dataIndex;
+                                return [
+                                    ` Blogs: ${blogs[i]}`,
+                                    ` Polls: ${polls[i]}`,
+                                    ` Awards: ${awards[i]}`
+                                ];
+                            }
+                        }
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { ticks: { font: { weight: 'bold' } } }
                 }
-                document.getElementById('edit-modal').style.display = 'none';
-            });
+            }
+        });
+            </script>
+}
 
-            document.getElementById('cancel-button').addEventListener('click', function () {
-                document.getElementById('edit-modal').style.display = 'none';
-            });
-        </script>
+           
+        
+
     </div>
 </div>
 
