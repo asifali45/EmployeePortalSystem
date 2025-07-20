@@ -36,13 +36,23 @@
                                 <span asp-validation-for="IssueTitle" class="text-danger"></span>
                             </div>
                         </div>
+                       
+
                         <div class="form_group">
                             <label>Type<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="Type" class="form-control" placeholder="Enter Type" maxlength="100" />
+                                <select asp-for="Type" class="form-control" required>
+                                    <option value="">-- Select Type --</option>
+                                    <option>Technical Issue</option>
+                                    <option>Software Bug</option>
+                                    <option>Network Problem</option>                                                                                           
+                                    <option>Hardware Issue</option>
+                                    <option>Other</option>
+                                </select>
                                 <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
                         </div>
+
 
                     </div>
 
