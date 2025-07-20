@@ -59,9 +59,33 @@
                             <td>
                                @ticket.Response
                             </td>
-                            <td>@ticket.Resolved</td>
+
                             <td>
-                                    @* @ticket.EscalatedToName *@
+                                @{
+                                    string updateStatus;
+
+                                    bool isEscalatedByEmployee = ticket.Resolved == "Escalated" && ticket.EscalatedBy == ticket.UpdatedBy;
+
+                                    if (ticket.Status == "Open" || isEscalatedByEmployee)
+                                    {
+                                        updateStatus = "Pending";
+                                    }
+                                    else
+                                    {
+                                        updateStatus = "Updated";
+                                    }
+                                    string statusClass = updateStatus == "Pending" ? "status-pending" : "status-updated";
+
+                                }
+                                <span class="status-badge @statusClass">
+                                    @updateStatus
+                                </span>
+
+                               
+                            </td>
+
+                            <td>
+                                   
                                     @if (!string.IsNullOrEmpty(ticket.EscalatedByName))
                                     {
                                         @ticket.EscalatedByName
