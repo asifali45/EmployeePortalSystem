@@ -56,7 +56,14 @@
                             <td>@ticket.IssueTitle</td>
                             <td>@ticket.Description</td>
 
-                            <td>@ticket.Status</td>
+                            <td>
+                                @{
+                                    string displayStatus = (ticket.Status == "Escalated" || ticket.Status == "Assigned")
+                                    ? "In Progress"
+                                    : ticket.Status;
+                                }
+                                @displayStatus
+                            </td>
 
                             <td>
                                     @ticket.Response

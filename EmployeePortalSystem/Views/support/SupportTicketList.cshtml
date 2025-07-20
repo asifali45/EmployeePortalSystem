@@ -36,11 +36,11 @@
                         <th>Type</th>
                         <th>Status</th>
                         <th>Response</th>
-                        <th>Resolved </th>
-                        <th>EscalatedByName</th>
+                        <th>Updates</th>
+                        <th>Escalated By</th>
                         <th>Assign</th>
                         <th>Escalate</th>
-                        <th>Update</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,10 +61,10 @@
                             </td>
                             <td>@ticket.Resolved</td>
                             <td>
-                                    @ticket.EscalatedToName
+                                    @* @ticket.EscalatedToName *@
                                     @if (!string.IsNullOrEmpty(ticket.EscalatedByName))
                                     {
-                                    <div style="font-size: 12px; color: gray;">(by @ticket.EscalatedByName)</div>
+                                        @ticket.EscalatedByName
                                     }
                             </td>
 
