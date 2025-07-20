@@ -17,7 +17,7 @@
         </div>
 
         <div class="emp_head">
-            <h2>Tickets Assigned To Me</h2>
+            <h2>Tickets Assigned</h2>
         </div>
 
         <div class="empmaster_card">
@@ -49,35 +49,29 @@
                             <td>@ticket.Status</td>
 
                             <td>
-                                <select name="Resolved" class="form-control resolved-dropdown" @(ticket.Resolved == "Closed" ? "disabled" : "")>
+                                
+
+                                <select name="Resolved" class="form-control1 resolved-dropdown"
+                                        @(ticket.Resolved == "Closed" || ticket.Resolved == "Escalated" ? "disabled" : "")>
                                     <option value="">-- Select Resolution --</option>
 
-                                        @if (ticket.Resolved == "Closed")
-                                        {
-                                        <option value="Closed" selected style="color: red;">Closed</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="Closed" style="color: red;">Closed</option>
-                                        }
+                                    <option value="Closed" selected="@(ticket.Resolved == "Closed" ? "selected" : null)" style="color: red;">
+                                        Closed
+                                    </option>
 
-                                        @if (ticket.Resolved == "Escalated")
-                                        {
-                                        <option value="Escalated" selected style="color: orange;">Escalated</option>
-                                        }
-                                        else
-                                        {
-                                        <option value="Escalated" style="color: orange;">Escalated</option>
-                                        }
+                                    <option value="Escalated" selected="@(ticket.Resolved == "Escalated" ? "selected" : null)" style="color: orange;">
+                                        Escalate
+                                    </option>
                                 </select>
+
 
 
 
 
                             </td>
                             <td>
-                                <div class="form_row">
-                                    <button type="submit" class="custom-button">Save</button>
+                                <div class="form_row1">
+                                    <button type="submit" class="custom-button1">Save</button>
                                 </div>
                             </td>
                             </form>
