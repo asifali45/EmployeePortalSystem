@@ -829,6 +829,16 @@ main {
     font-family: sans-serif;
 }
 
+#mychart2 {
+    width: 100% !important;
+    height: 100% !important;
+}
+#mychart3 {
+    width: 100% !important;
+    height: 100% !important;
+    margin-top:22px;
+}
+
 .y-labels,
 .x-labels {
     position: absolute;
@@ -2029,3 +2039,5 @@ input[type="radio"].highlight-radio:checked {
 .btn btn-outline-secondary btn-sm {
     text-decoration:none;
 }
+
+

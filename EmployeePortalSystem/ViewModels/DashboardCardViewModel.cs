@@ -21,5 +21,17 @@ namespace EmployeePortalSystem.ViewModels
 
         public Dictionary<string, int> ContributionChartData { get; set; }
         public Dictionary<string, int> MonthlyContributionData { get; set; } = new();
+
+        public Dictionary<string, int> DepartmentMemberCounts { get; set; } = new();
+
+        public List<ContributorStats> TopContributors { get; set; } 
+    }
+    public class ContributorStats
+    {
+        public string EmployeeName { get; set; }
+        public int Blogs { get; set; }
+        public int Polls { get; set; }
+        public int Awards { get; set; }
+        public int Total => Blogs + Polls + Awards;
     }
 }
