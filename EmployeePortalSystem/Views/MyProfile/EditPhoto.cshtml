@@ -29,7 +29,7 @@
                         <div class="form_group">
                             <label>Photo <span class="imp_field">*</span></label>
                             <div class="photo_edit">
-                                <input name="PhotoFile" type="file" accept=".png, .jpg, .jpeg" class="form-control" />
+                                <input name="PhotoFile" type="file" accept=".png, .jpg, .jpeg" class="form-control" maxlength="255" />
                                 @if (!string.IsNullOrEmpty(Model.Photo))
                                 {
                                     <div class="photo-preview">

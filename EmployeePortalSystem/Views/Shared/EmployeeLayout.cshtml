@@ -3,6 +3,8 @@
     var name = Context.Session.GetString("EmployeeName");
     var designation = Context.Session.GetString("Designation");
     var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
+    var employeePhoto = Context.Session.GetString("EmployeePhoto");
+    var profileImagePath = !string.IsNullOrEmpty(employeePhoto) ? Url.Content($"/uploads/{employeePhoto}") : Url.Content("~/img/avatar_11852100.png");
     
 }
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -33,7 +35,7 @@
                     </div>
                     <div class="nav_right">
                         <div class="profile">
-                            <a href="@Url.Action("Profile","MyProfile")" class="profile-image"><img src="~/img/Profile Avatar.png" /></a>
+                            <a href="@Url.Action("Profile","MyProfile")" class="profile-image"><img src="@profileImagePath" alt="Profile Photo" /></a>
                             <div class="user_info">
                                 <h6>@name</h6>
                                 <p>@designation</p>

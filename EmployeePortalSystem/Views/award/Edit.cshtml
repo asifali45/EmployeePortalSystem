@@ -29,7 +29,7 @@
                     <div class="form_row">
                         <div class="form_group">
                             <label>Type</label>
-                            <input asp-for="Type" class="form-control" placeholder="Enter Award Type" />
+                            <input asp-for="Type" class="form-control" placeholder="Enter Award Type" maxlength="100" />
                             <span asp-validation-for="Type" class="text-danger"></span>
                         </div>
                         <div class="form_group">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form_group">
                             <label>Given By</label>
-                            <input asp-for="GivenBy" class="form-control" placeholder="Enter Given By" />
+                            <input asp-for="GivenBy" class="form-control" placeholder="Enter Given By" maxlength="100" />
                             <span asp-validation-for="GivenBy" class="text-danger"></span>
                         </div>
                     </div>

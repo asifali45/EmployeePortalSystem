@@ -63,7 +63,7 @@ namespace EmployeePortalSystem.Controllers
 
                 // ✅ Set "CurrentDashboard" for cancel redirection in Delete.cshtml
                 HttpContext.Session.SetString("CurrentDashboard", employee.IsAdmin ? "Admin" : "Employee");
-
+                HttpContext.Session.SetString("EmployeePhoto", employee.Photo ?? "");
                 return RedirectToAction("DashboardEmployee", "UserAccess");
             }   
             else

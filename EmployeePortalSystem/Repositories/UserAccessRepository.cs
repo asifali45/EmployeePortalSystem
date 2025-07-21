@@ -24,7 +24,7 @@ namespace EmployeePortalSystem.Repositories
             {
                 connection.Open();
                 string query = @"
-                SELECT e.EmployeeId, e.Name, r.RoleName, e.IsAdmin
+                SELECT e.EmployeeId, e.Name, r.RoleName, e.IsAdmin, e.Photo
                 FROM employee e
                 JOIN role r ON e.RoleId = r.RoleId
                 WHERE e.Email = @Email AND e.Password = @Password AND e.IsCurrentEmployee = 1";

@@ -73,7 +73,7 @@
                                     <td>
                                         @if (!string.IsNullOrEmpty(a.ImagePath))
                                         {
-                                            <a href="javascript:void(0);" onclick="openModal('@a.Title', '@Url.Content(a.ImagePath)')">View Photo</a>
+                                            <a href="javascript:void(0);" class="view-photo-link" onclick="openModal('@a.Title', '@Url.Content(a.ImagePath)')">View Photo</a>
 
                                         }
                                         else

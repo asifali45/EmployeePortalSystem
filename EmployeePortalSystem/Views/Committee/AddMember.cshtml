@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="emp_head">
-                <h2>Add Committee</h2>
+                <h2>Add Member</h2>
             </div>
         </div>
 
@@ -35,15 +35,11 @@
                         <div class="form_group">
                             <label>Employee<span class="imp_field">*</span></label>
                             <div class="val">
-                                <input asp-for="EmployeeId" list="employeeList" class="form-control" placeholder="Select Employee by Name or ID" />
-
-                                <datalist id="employeeList">
-                                    @foreach (var emp in Model.Employees)
-                                    {
-                                        <option value="@emp.EmployeeId">@emp.Name</option>
-                                    }
-                                </datalist>
-
+                                <div class="form_group position-relative">
+                                <input type="text" id="employeeSearch" placeholder="Search Employee Name" class="form-control" />
+                                <input type="hidden" id="EmployeeId" name="EmployeeId" /> 
+                                <ul id="employeeSuggestions" class="suggestions-list"></ul>
+                                </div>
                                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
                             </div>
                         </div>
@@ -71,4 +67,26 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script> 
+        $(document).ready(function () { 
+            $('#employeeSearch').on('input', function () { 
+                var query = $(this).val(); var committeeId = '@Model.CommitteeId'; 
+                if (query.length < 1) return; $.get('/Committee/SearchAvailableEmployees', 
+                { 
+                    committeeId: committeeId, term: query 
+                }, 
+                function (data) 
+                { 
+                    $('#employeeSuggestions').empty(); 
+                    data.forEach(emp => 
+                        {
+                            $('#employeeSuggestions').append(`<li class='list-group-item' data-id='${emp.employeeId}'>${emp.name}</li>`);
+                        });
+                        $('.list-group-item').on('click', function () { $('#employeeSearch').val($(this).text());
+                        $('#EmployeeId').val($(this).data('id')); $('#employeeSuggestions').empty(); 
+                        });
+                }); 
+            }); 
+        });
+    </script>
 }

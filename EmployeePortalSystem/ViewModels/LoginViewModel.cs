@@ -17,5 +17,6 @@ namespace EmployeePortalSystem.ViewModels
         public string? Name { get; set; }
         public string? RoleName { get; set; }
         public bool IsAdmin { get; set; }
+        public string? Photo { get; set; }
     }
 }

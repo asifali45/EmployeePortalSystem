@@ -32,36 +32,36 @@
                         <div class="form_group">
                             <label>Department Name <span class="imp_field">*</span></label>
                             <div class="val">
-                            <input asp-for="Name" class="form-control" placeholder="Enter the Department Name here" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                                <input asp-for="Name" class="form-control" placeholder="Enter the Department Name here" maxlength="100" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
-                            <label>Description<span class="imp_field">*</span></label>
+                            <label>Description <span class="imp_field">*</span></label>
                             <div class="val">
-                            <input asp-for="Description" class="form-control" placeholder="Enter the description" maxlength="250" />
-                            <span asp-validation-for="Description" class="text-danger"></span>
+                                <input asp-for="Description" class="form-control" placeholder="Enter the description" maxlength="250" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Head Name<span class="imp_field">*</span></label>
+                            <label>Head Name <span class="imp_field">*</span></label>
                             <div class="val">
-                            <input type="text" id="headName" value="@headName" class="form-control" placeholder="Type to search Head Name" autocomplete="off" />
-                            <input type="hidden" id="headId" name="HeadId" value="@Model.HeadId" />
-                            <div id="headSuggestions" style="border: 1px solid #ccc; display:none; position:absolute; background:white; z-index:1000;"></div>
-                            <span asp-validation-for="HeadId" class="text-danger"></span>
+                                <input type="text" id="headName" value="@headName" class="form-control" placeholder="Type to search Head Name" autocomplete="off" />
+                                <input type="hidden" asp-for="HeadId" id="headId" />
+                                <div id="headSuggestions" style="border: 1px solid #ccc; display:none; position:absolute; background:white; z-index:1000;"></div>
+                                <span asp-validation-for="HeadId" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form_group">
                             <label>Parent Department</label>
                             <div class="val">
-                            <select asp-for="ParentDepartmentId" asp-items="parentDepartments" class="form-control">
-                                <option value="">-- Select Parent Department --</option>
-                            </select>
-                            <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
+                                <select asp-for="ParentDepartmentId" asp-items="parentDepartments" class="form-control">
+                                    <option value="">-- Select Parent Department --</option>
+                                </select>
+                                <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -70,8 +70,6 @@
                         <button type="submit" class="custom-button">Save</button>
                         <button type="reset">Cancel</button>
                     </div>
-
-                    
                 </form>
             </div>
         </div>
@@ -86,8 +84,13 @@
             const hiddenHeadId = document.getElementById("headId");
             const suggestionsBox = document.getElementById("headSuggestions");
 
+            // When typing in Head Name box
             headInput.addEventListener("input", function () {
                 const query = headInput.value.trim();
+                hiddenHeadId.value = ""; // Reset HeadId when user types
+                hiddenHeadId.dispatchEvent(new Event('change', { bubbles: true }));
+                hiddenHeadId.dispatchEvent(new Event('input', { bubbles: true }));
+
                 if (query.length < 1) {
                     suggestionsBox.style.display = "none";
                     return;
@@ -110,6 +113,11 @@
                             option.addEventListener("click", () => {
                                 headInput.value = emp.name;
                                 hiddenHeadId.value = emp.employeeId;
+
+                                // Trigger validation
+                                hiddenHeadId.dispatchEvent(new Event('change', { bubbles: true }));
+                                hiddenHeadId.dispatchEvent(new Event('input', { bubbles: true }));
+
                                 suggestionsBox.style.display = "none";
                             });
                             suggestionsBox.appendChild(option);
@@ -123,6 +131,7 @@
                     });
             });
 
+            // Hide suggestions when clicking outside
             document.addEventListener("click", function (e) {
                 if (!suggestionsBox.contains(e.target) && e.target !== headInput) {
                     suggestionsBox.style.display = "none";

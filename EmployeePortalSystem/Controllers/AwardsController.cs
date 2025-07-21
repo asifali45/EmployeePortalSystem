@@ -70,7 +70,7 @@ namespace EmployeePortalSystem.Controllers
                 UpdatedBy = award.UpdatedBy
             };
 
-            return View("Edit", model); // ✅ Change this from "AwardForm" to "Edit"
+            return View("Edit", model); 
         }
 
         // GET: Show confirmation page
