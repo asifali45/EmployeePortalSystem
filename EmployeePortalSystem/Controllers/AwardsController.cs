@@ -53,21 +53,19 @@ namespace EmployeePortalSystem.Controllers
                 return NotFound();
             }
 
-            var recipientName = award.RecipientId.HasValue
-                ? await _repository.GetEmployeeNameByIdAsync(award.RecipientId.Value)
-                : string.Empty;
-
+            
             var model = new AwardViewModel
             {
                 AwardId = award.AwardId,
                 Type = award.Type,
                 EventDate = award.EventDate,
-                RecipientName = recipientName,
+                RecipientName = award.RecipientName,
                 GivenBy = award.GivenBy,
                 Description = award.Description,
                 DisplayOrder = award.DisplayOrder,
                 CreatedBy = award.CreatedBy,
                 UpdatedBy = award.UpdatedBy
+                
             };
 
             return View("Edit", model); 
@@ -135,16 +133,8 @@ namespace EmployeePortalSystem.Controllers
                 return View("AwardForm", model);
             }
 
-            int? recipientId = null;
-            if (!string.IsNullOrWhiteSpace(model.RecipientName))
-            {
-                recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
-                if (recipientId == 0)
-                {
-                    ModelState.AddModelError("RecipientName", "Invalid employee name.");
-                    return View("Edit", model);
-                }
-            }
+            int recipientId = await _repository.GetEmployeeIdByNameAsync(model.RecipientName);
+            int? finalRecipientId = recipientId > 0 ? recipientId : (int?)null;
 
 
             var award = await _repository.GetByIdAsync(model.AwardId);
@@ -156,7 +146,7 @@ namespace EmployeePortalSystem.Controllers
             // Update fields
             award.Type = model.Type;
             award.EventDate = model.EventDate.Value;
-            award.RecipientId = recipientId;
+            award.RecipientId = finalRecipientId;
             award.RecipientName = model.RecipientName;
             award.GivenBy = model.GivenBy;
             award.Description = model.Description;
@@ -167,7 +157,7 @@ namespace EmployeePortalSystem.Controllers
             var updated = await _repository.UpdateAsync(award);
             if (!updated)
             {
-                Console.WriteLine("Update failed.");
+               
                 ModelState.AddModelError("", "Update failed.");
                 return View("Edit", model);
             }
