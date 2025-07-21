@@ -58,10 +58,10 @@
                     {
                         <div class="alert-error" style="margin-top: 10px;">@ViewBag.ErrorMessage</div>
                     }
-                    @if (ViewBag.SuccessMessage != null)
+                    @* @if (ViewBag.SuccessMessage != null)
                     {
                         <div class="alert-success" style="margin-top: 10px;">@ViewBag.SuccessMessage</div>
-                    }
+                    } *@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 </form>

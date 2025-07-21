@@ -151,6 +151,7 @@ body {
     font-weight: 300 !important;
     padding: 0 20px !important;
 }
+   
 
 .login-btn {
     background-color: #cd2f74 !important;
@@ -437,7 +438,7 @@ footer p {
 
 .create_emp_btn {
     background-color: #cd2f74;
-    border-radius: 10px;
+    border-radius: 1.5rem;
     color: #ffffff;
     border: none;
     padding: 8px 16px;
@@ -827,6 +828,16 @@ main {
     width: 100%;
     height: 80%;
     font-family: sans-serif;
+}
+
+#mychart2 {
+    width: 100% !important;
+    height: 100% !important;
+}
+#mychart3 {
+    width: 100% !important;
+    height: 100% !important;
+    margin-top:22px;
 }
 
 .y-labels,
@@ -1993,7 +2004,7 @@ input[type="radio"].highlight-radio:checked {
 }
 
     .button-81:hover {
-        background-color: #f22772;
+        background-color: #cd2f74;
         color: #fff;
     }
         
@@ -2028,4 +2039,72 @@ input[type="radio"].highlight-radio:checked {
 
 .btn btn-outline-secondary btn-sm {
     text-decoration:none;
+}
+
+
+/*tickets*/
+.status-badge {
+    padding: 0px 8px; /* Smaller padding */
+    border-radius: 999px; 
+    color: white;
+    font-weight: 500;
+    font-size: 0.60rem; /* Smaller text */
+    display: inline-block;
+   
+}
+
+.status-pending {
+    background-color: rgba(220, 53, 69); 
+}
+
+.status-updated {
+    background-color: rgba(40, 167, 69); 
+}
+.status-open {
+    background-color: rgba(255, 193, 7); 
+}
+
+.status-inprogress {
+    background-color: rgba(255, 87, 34); 
+}
+
+.status-resolved {
+    background-color: rgba(40, 167, 69); 
+}
+
+.status-default {
+    background-color: rgba(108, 117, 125); 
+}
+
+.form_row1:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    
+}
+
+    .custom-button1 {
+    display: inline-block;
+    background-color: #18AE90;
+    color: white;
+    padding: 0px 26px;
+    border: none;
+    border-radius: 16px;
+    font-weight: normal;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+    height:31px !important;
+}
+
+.form-control1 {
+    border-radius: 7px;
+    padding: 3px 10px;
+}
+
+.button-t{
+    display:flex;
+    justify-content:end;
 }

@@ -96,15 +96,18 @@ namespace EmployeePortalSystem.Controllers
             }
             ViewBag.Results = results;
 
+            var departmentMemberCounts = _repository.GetDepartmentMemberCounts();
 
+            var topContributors = _repository.GetTopContributors(5);
 
             var model = new DashboardCardViewModel
             {
                 LatestBlogs = latestblogs,
                 LatestAnnouncements = latestAnnouncements.ToList(),
                 LatestAwards = latestawards.ToList(),
-                LatestPolls=latestpolls.ToList()
-
+                LatestPolls=latestpolls.ToList(),
+                DepartmentMemberCounts = departmentMemberCounts,
+                TopContributors = topContributors
 
             };
             return View(model);
@@ -205,8 +208,8 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
             }
 
-            ViewBag.SuccessMessage = "Password reset successful. You can now login.";
-            return View(new SignUpViewModel());
+            TempData["SuccessMessage"] = "Password Created successfully.";
+            return RedirectToAction("Login", "UserAccess");
         }
 
 
