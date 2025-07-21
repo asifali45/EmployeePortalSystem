@@ -14,6 +14,8 @@ namespace EmployeePortalSystem.ViewModels
         public string RecipientName { get; set; } 
         public string GivenBy { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+
+        
         public int DisplayOrder { get; set; }
 
 
