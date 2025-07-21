@@ -60,8 +60,14 @@
                         </div>
                         <div class="form_group">
                             <label>Display Order</label>
-                            <input asp-for="DisplayOrder" class="form-control" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            <select asp-for="DisplayOrder" class="form-control">
+                                <option value="">-- Select Order --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            @* <input asp-for="DisplayOrder" class="form-control" type="number" min="1" max="3" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span> *@
                         </div>
                     </div>
 

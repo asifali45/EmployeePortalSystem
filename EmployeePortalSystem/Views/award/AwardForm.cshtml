@@ -74,7 +74,12 @@
                         <div class="form_group">
                             <label>Display Order</label>
                            <div class="val">
-                            <input asp-for="DisplayOrder" class="form-control" />
+                                <select asp-for="DisplayOrder" class="form-control">
+                                    <option value="">-- Select Order --</option>
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
                             @* <span asp-validation-for="DisplayOrder" class="text-danger"></span> *@
                             </div>
                         </div>
