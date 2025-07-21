@@ -52,38 +52,23 @@
                                 <select name="Resolved" class="form-control resolved-dropdown" @(ticket.Resolved == "Closed" ? "disabled" : "")>
                                     <option value="">-- Select Resolution --</option>
 
-                            </td>
-                            <td>
-                                <div class="form_row">
-                                    <button type="submit" class="custom-button">Save</button>
-                                </div>
-                            </td>
-                            </form>
-                        </tr>
-                        
-                    }
+                                        @if (ticket.Resolved == "Closed")
+                                        {
+                                        <option value="Closed" selected style="color: red;">Closed</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="Closed" style="color: red;">Closed</option>
+                                        }
 
-<!--                              <td>
-                                <select name="Resolved" class="form-control">
-                                    <option value="">-- Select Resolution --</option>
-
-                                    @if (ticket.Resolved == "Closed")
-                                    {
-                                        <option value="Closed" selected>Closed</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Closed">Closed</option>
-                                    }
-
-                                    @if (ticket.Resolved == "Set to Senior")
-                                    {
-                                        <option value="Set to Senior" selected>Set to Senior</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Set to Senior">Set to Senior</option>
-                                    }
+                                        @if (ticket.Resolved == "Escalated")
+                                        {
+                                        <option value="Escalated" selected style="color: orange;">Escalated</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="Escalated" style="color: orange;">Escalated</option>
+                                        }
                                 </select>
 
 
@@ -97,8 +82,13 @@
                             </td>
                             </form>
                         </tr>
+                        }
                         
-                    }
+                    
+
+
+
+                            
 
                           
 
