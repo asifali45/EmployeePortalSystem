@@ -1,4 +1,6 @@
-﻿namespace EmployeePortalSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmployeePortalSystem.Models
 {
     public class Award
     {
@@ -9,6 +11,7 @@
         public string RecipientName { get; set; } 
         public string GivenBy { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+
         public int DisplayOrder { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
