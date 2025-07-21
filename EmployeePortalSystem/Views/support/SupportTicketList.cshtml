@@ -36,11 +36,11 @@
                         <th>Type</th>
                         <th>Status</th>
                         <th>Response</th>
-                        <th>Resolved </th>
-                        <th>EscalatedByName</th>
+                        <th>Updates</th>
+                        <th>Escalated By</th>
                         <th>Assign</th>
                         <th>Escalate</th>
-                        <th>Update</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,12 +59,36 @@
                             <td>
                                @ticket.Response
                             </td>
-                            <td>@ticket.Resolved</td>
+
                             <td>
-                                    @ticket.EscalatedToName
+                                @{
+                                    string updateStatus;
+
+                                    bool isEscalatedByEmployee = ticket.Resolved == "Escalated" && ticket.EscalatedBy == ticket.UpdatedBy;
+
+                                    if (ticket.Status == "Open" || isEscalatedByEmployee)
+                                    {
+                                        updateStatus = "Pending";
+                                    }
+                                    else
+                                    {
+                                        updateStatus = "Updated";
+                                    }
+                                    string statusClass = updateStatus == "Pending" ? "status-pending" : "status-updated";
+
+                                }
+                                <span class="status-badge @statusClass">
+                                    @updateStatus
+                                </span>
+
+                               
+                            </td>
+
+                            <td>
+                                   
                                     @if (!string.IsNullOrEmpty(ticket.EscalatedByName))
                                     {
-                                    <div style="font-size: 12px; color: gray;">(by @ticket.EscalatedByName)</div>
+                                        @ticket.EscalatedByName
                                     }
                             </td>
 

@@ -208,8 +208,8 @@ namespace EmployeePortalSystem.Controllers
                 return View(model);
             }
 
-            ViewBag.SuccessMessage = "Password reset successful. You can now login.";
-            return View(new SignUpViewModel());
+            TempData["SuccessMessage"] = "Password Created successfully.";
+            return RedirectToAction("Login", "UserAccess");
         }
 
 

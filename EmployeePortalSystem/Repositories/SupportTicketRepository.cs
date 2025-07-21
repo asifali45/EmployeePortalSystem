@@ -47,9 +47,9 @@ namespace EmployeePortalSystem.Repositories
                      LEFT JOIN Employee assign ON t.AssignedTo = assign.EmployeeId
                      LEFT JOIN Employee escal ON t.EscalatedTo = escal.EmployeeId
 
-                    LEFT JOIN Employee escal_by ON t.EscalatedBy = escal_by.EmployeeId";
+                    LEFT JOIN Employee escal_by ON t.EscalatedBy = escal_by.EmployeeId
 
-//                     ORDER BY t.UpdatedAt DESC";
+                    ORDER BY t.UpdatedAt DESC";
 
                 using var connection = _context.CreateConnection();
                 return await connection.QueryAsync<SupportTicket>(query);
@@ -225,6 +225,9 @@ namespace EmployeePortalSystem.Repositories
                   WHERE AssignedTo = @EmployeeId OR EscalatedTo = @EmployeeId";
             return await connection.QueryAsync<SupportTicket>(query, new { EmployeeId = employeeId });
         }
+
+
+
         // for new resolved 
         public async Task UpdateResolvedAsync(int ticketId, string resolved, int updatedBy)
         {
@@ -243,6 +246,13 @@ namespace EmployeePortalSystem.Repositories
                 Resolved = resolved,
                 UpdatedBy = updatedBy
             });
+        }
+
+        public async Task<bool> IsEmployeeAdmin(int employeeId)
+        {
+            using var conn = _context.CreateConnection();
+            string sql = "SELECT IsAdmin FROM employee WHERE EmployeeId = @Id";
+            return await conn.ExecuteScalarAsync<bool>(sql, new { Id = employeeId });
         }
 
 
