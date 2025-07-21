@@ -94,6 +94,58 @@ namespace EmployeePortalSystem.Repositories
 
             return results.ToDictionary(r => (string)r.Activity, r => (int)r.Count);
         }
+
+        public Dictionary<string, int> GetDepartmentMemberCounts()
+        {
+            using var connection = _context.CreateConnection();
+
+            string sql = @"
+        SELECT d.Name, COUNT(e.EmployeeId) AS MemberCount
+        FROM department d
+        LEFT JOIN employee e ON d.DepartmentId = e.DepartmentId
+        GROUP BY d.Name
+        ORDER BY d.Name;";
+
+            var result = connection.Query(sql).ToDictionary(
+                row => (string)row.Name,
+                row => (int)row.MemberCount
+            );
+
+            return result;
+        }
+
+        public List<ContributorStats> GetTopContributors(int topN = 5)
+        {
+            using var db = _context.CreateConnection();
+            var sql = @"
+    SELECT 
+        e.Name AS EmployeeName,
+        COALESCE(b.BlogCount, 0) AS Blogs,
+        COALESCE(p.PollCount, 0) AS Polls,
+        COALESCE(a.AwardCount, 0) AS Awards
+    FROM employee e
+    LEFT JOIN (
+        SELECT AuthorId, COUNT(*) AS BlogCount 
+        FROM blog 
+        GROUP BY AuthorId
+    ) b ON e.EmployeeId = b.AuthorId
+    LEFT JOIN (
+        SELECT CreatedBy, COUNT(*) AS PollCount 
+        FROM polls 
+        GROUP BY CreatedBy
+    ) p ON e.EmployeeId = p.CreatedBy
+    LEFT JOIN (
+        SELECT RecipientId, COUNT(*) AS AwardCount 
+        FROM awards 
+        GROUP BY RecipientId
+    ) a ON e.EmployeeId = a.RecipientId
+    ORDER BY (COALESCE(b.BlogCount, 0) + COALESCE(p.PollCount, 0) + COALESCE(a.AwardCount, 0)) DESC
+    LIMIT @TopN";
+
+            return db.Query<ContributorStats>(sql, new { TopN = topN }).ToList();
+        }
+
+
     }
 
 }

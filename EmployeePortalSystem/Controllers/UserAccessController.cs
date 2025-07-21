@@ -96,15 +96,18 @@ namespace EmployeePortalSystem.Controllers
             }
             ViewBag.Results = results;
 
+            var departmentMemberCounts = _repository.GetDepartmentMemberCounts();
 
+            var topContributors = _repository.GetTopContributors(5);
 
             var model = new DashboardCardViewModel
             {
                 LatestBlogs = latestblogs,
                 LatestAnnouncements = latestAnnouncements.ToList(),
                 LatestAwards = latestawards.ToList(),
-                LatestPolls=latestpolls.ToList()
-
+                LatestPolls=latestpolls.ToList(),
+                DepartmentMemberCounts = departmentMemberCounts,
+                TopContributors = topContributors
 
             };
             return View(model);
