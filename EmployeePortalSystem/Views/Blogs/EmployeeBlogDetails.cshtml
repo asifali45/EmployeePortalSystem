@@ -20,6 +20,12 @@
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>
+            <div class="search">
+                <form method="get" asp-action="EmployeeBlogDetails" asp-route-employeeId="@currentEmpId" class="form-inline mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search blogs..." value="@Context.Request.Query["search"]" />
+                    <button type="submit" class="button-81"><img src="~/img/search.png" alt="Alternate Text" width="20px" height="20px" /></button>
+                </form>
+            </div>
             <div class="right_btn">
                 <form method="get" asp-action="BlogsCreate" asp-controller="Blogs">
                     <button type="submit" class="create_emp_btn"> Add Blog </button>
