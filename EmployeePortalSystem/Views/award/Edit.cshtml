@@ -28,9 +28,11 @@
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Type</label>
-                            <input asp-for="Type" class="form-control" placeholder="Enter Award Type" maxlength="100" />
-                            <span asp-validation-for="Type" class="text-danger"></span>
+                            <label>Type<span class="imp_field">*</span></label>
+                            <div class="val">
+                                <input asp-for="Type" class="form-control" placeholder="Enter Award Type" maxlength="100" />
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
                             <label>Event Date</label>
@@ -41,22 +43,28 @@
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Recipient Name</label>
+                            <label>Recipient Name<span class="imp_field">*</span></label>
+                            <div class="val">
                             <input asp-for="RecipientName" class="form-control" placeholder="Enter Recipient Name" />
                             <span asp-validation-for="RecipientName" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
-                            <label>Given By</label>
+                            <label>Given By<span class="imp_field">*</span></label>
+                            <div class="val">
                             <input asp-for="GivenBy" class="form-control" placeholder="Enter Given By" maxlength="100" />
                             <span asp-validation-for="GivenBy" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form_row">
                         <div class="form_group">
-                            <label>Description</label>
+                            <label>Description<span class="imp_field">*</span></label>
+                            <div class="val">
                             <input asp-for="Description" class="form-control" placeholder="Enter Description">
                             <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form_group">
                             <label>Display Order</label>
