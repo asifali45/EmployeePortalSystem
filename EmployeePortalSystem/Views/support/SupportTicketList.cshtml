@@ -60,7 +60,7 @@
                                @ticket.Response
                             </td>
 
-                            <td>
+                            @* <td>
                                 @{
                                     string updateStatus;
 
@@ -82,6 +82,48 @@
                                 </span>
 
                                
+                            </td> *@
+
+                            <td>
+                                    @{
+                                        string updateStatus;
+
+                                        bool isEscalatedByEmployee = ticket.Resolved == "Escalated" && ticket.EscalatedBy == ticket.UpdatedBy;
+
+                                       
+                                        if (isEscalatedByEmployee)
+                                        {
+                                            updateStatus = "Pending";
+                                        }
+                                        else if (ticket.Resolved == "In Progress")
+                                        {
+                                            updateStatus = "In Progress";
+                                        }
+                                        else if (ticket.Status == "Open")
+                                        {
+                                            updateStatus = "Pending";
+                                        }
+                                        else if(ticket.Resolved=="Closed")
+                                        {
+                                            updateStatus = "Closed";
+                                        }
+                                            else
+                                        {
+                                            updateStatus = "Updated";
+                                        }
+
+                                        string statusClass = updateStatus switch
+                                        {
+                                            "Open" => "status-open",
+                                            "Pending" => "status-pending",
+                                            "In Progress" => "status-inprogress",
+                                            "Updated" => "status-updated",
+                                            "Closed" => "status-updated",
+                                            _ => "status-default"
+                                        };
+                                    }
+
+                                <span class="status-badge @statusClass">@updateStatus</span>
                             </td>
 
                             <td>

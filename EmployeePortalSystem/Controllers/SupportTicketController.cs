@@ -239,7 +239,13 @@ namespace EmployeePortalSystem.Controllers
             var updatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
 
             // ✅ Clean values: only allow "Closed" or "Escalated"
-            if (Resolved != "Closed" && Resolved != "Escalated")
+            //if (Resolved != "Closed" && Resolved != "Escalated")
+            //{
+            //    TempData["Error"] = "Invalid resolution selected.";
+            //    return RedirectToAction("AssignedTickets");
+            //}
+            var validStatuses = new[] { "Closed", "Escalated", "In Progress", "Open" };
+            if (!validStatuses.Contains(Resolved))
             {
                 TempData["Error"] = "Invalid resolution selected.";
                 return RedirectToAction("AssignedTickets");
