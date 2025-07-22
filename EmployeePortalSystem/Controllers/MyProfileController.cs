@@ -70,7 +70,7 @@ namespace EmployeePortalSystem.Controllers
 
                 employee.Photo = fileName;
                 _repo.UpdateEmployeePhoto(empId.Value, fileName); // Add this method in repo
-                TempData["Message1"] = "Photo updated successfully!";
+                //TempData["Message1"] = "Photo updated successfully!";
             }
 
             return RedirectToAction("Profile");
