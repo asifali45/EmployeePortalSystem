@@ -16,17 +16,37 @@ namespace EmployeePortalSystem.Controllers
             _repository = repository;
             _environment = environment;
         }
-        public IActionResult BlogDetails(int employeeId)
+        public IActionResult BlogDetails(int employeeId,string search)
         {
            
             var blogList = _repository.GetBlogDetails(employeeId);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                blogList = blogList.Where(b =>
+                    (!string.IsNullOrEmpty(b.Title) && b.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(b.Content) && b.Content.Contains(search, StringComparison.OrdinalIgnoreCase))||
+                    (!string.IsNullOrEmpty(b.AuthorName) && b.AuthorName.Contains(search, StringComparison.OrdinalIgnoreCase))
+                ).ToList();
+            }
+
+
             return View("BlogDetails",blogList);
         }
 
         //Employee side
-        public IActionResult EmployeeBlogDetails(int employeeId)
+        public IActionResult EmployeeBlogDetails(int employeeId,string search)
         {
             var blogs = _repository.GetBlogDetails(employeeId);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                blogs = blogs.Where(b =>
+                    (!string.IsNullOrEmpty(b.Title) && b.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(b.Content) && b.Content.Contains(search, StringComparison.OrdinalIgnoreCase))||
+                    (!string.IsNullOrEmpty(b.AuthorName) && b.AuthorName.Contains(search, StringComparison.OrdinalIgnoreCase))
+                ).ToList();
+            }
             return View("EmployeeBlogDetails", blogs);
         }
         [HttpGet]

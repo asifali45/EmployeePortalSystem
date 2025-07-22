@@ -34,6 +34,7 @@ namespace EmployeePortalSystem.Controllers
             var committeeList = _repository.GetAllCommittees();
 
 
+
             return View("EmployeeCommitteeDetails", committeeList);
         }
 
