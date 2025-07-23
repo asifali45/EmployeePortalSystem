@@ -52,11 +52,14 @@
                                 
 
                                 <select name="Resolved" class="form-control1 resolved-dropdown"
-                                        @(ticket.Resolved == "Closed" || ticket.Resolved == "Escalated" ? "disabled" : "")>
+                                        @(ticket.Resolved == "Closed" ? "disabled" : "")>
                                     <option value="">-- Select Resolution --</option>
 
                                     <option value="Closed" selected="@(ticket.Resolved == "Closed" ? "selected" : null)" style="color: red;">
                                         Closed
+                                    </option>
+                                    <option value="In progress" selected="@(ticket.Resolved == "In Progress" ? "selected" : null)" style="color:green;">
+                                        In progress
                                     </option>
 
                                     <option value="Escalated" selected="@(ticket.Resolved == "Escalated" ? "selected" : null)" style="color: orange;">
