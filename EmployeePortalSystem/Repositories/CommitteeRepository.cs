@@ -26,8 +26,16 @@ namespace EmployeePortalSystem.Repositories
                         c.Type,
                         c.Logo,
                         c.Description,
+                        c.HeadId,
+                        e.IsCurrentEmployee,
                         e.Name AS HeadName,
-                        (SELECT COUNT(*) FROM committee_member cm WHERE cm.CommitteeId = c.CommitteeId) AS MemberCount
+                        (
+                            SELECT COUNT(*) 
+                            FROM committee_member cm 
+                            INNER JOIN Employee em ON cm.EmployeeId = em.EmployeeId
+                            WHERE cm.CommitteeId = c.CommitteeId
+                            AND em.IsCurrentEmployee = 1
+                        ) AS MemberCount
                         FROM Committee c
                         LEFT JOIN Employee e ON c.HeadId=e.EmployeeId";
             return connection.Query<CommitteeViewModel>(sql).ToList();

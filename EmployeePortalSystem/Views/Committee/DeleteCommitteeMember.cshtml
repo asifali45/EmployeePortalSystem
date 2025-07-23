@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Delete Committee Member";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    var currentDashboard = HttpContextAccessor.HttpContext.Session.GetString("CurrentDashboard");
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 <div class="container">
     <div class="empmaster_card">
         <div class="del_emp">
@@ -21,12 +24,21 @@
                     </form>
                 </div>
                 <div class="right_cancel">
+                    @if (currentDashboard == "Admin")
+                    {
 
+                        <form method="get" asp-action="CommitteeMembers" asp-controller="Committee" asp-route-id="@Model.CommitteeId">
 
-                    <form method="get" asp-action="CommitteeMembers" asp-controller="Committee" asp-route-id="@Model.CommitteeId">
+                            <button type="submit" class="cancel_button">Cancel</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="get" asp-action="EmployeeCommitteeMembers" asp-controller="Committee" asp-route-id="@Model.CommitteeId">
 
-                        <button type="submit" class="cancel_button">Cancel</button>
-                    </form>
+                            <button type="submit" class="cancel_button">Cancel</button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>

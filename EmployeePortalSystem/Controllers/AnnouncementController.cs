@@ -25,6 +25,7 @@ namespace EmployeePortalSystem.Controllers
 
         public IActionResult Index()
         {
+            
             var announcements = _announcementrepo.GetAll();                     
             return View(announcements);
      
@@ -44,6 +45,7 @@ namespace EmployeePortalSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Announcement announcement)
         {
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             // Remove AnnouncementId if posted accidentally
             ModelState.Remove("AnnouncementId");
 
@@ -57,7 +59,7 @@ namespace EmployeePortalSystem.Controllers
 
             // Set server-side fields
             announcement.PostDate = DateTime.Now;
-            announcement.CreatedBy = 1;
+            announcement.CreatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
 
             // ✅ Handle image upload
             if (announcement.ImageFile != null && announcement.ImageFile.Length > 0)
@@ -81,6 +83,11 @@ namespace EmployeePortalSystem.Controllers
             _announcementrepo.Add(announcement);
 
             TempData["Message5"] = "Announcement created successfully!";
+
+            if (currentDashboard == "Employee")
+            {
+                return RedirectToAction("EmployeeAnnouncement");
+            }
             return RedirectToAction("Index");
         }
 
@@ -102,6 +109,7 @@ namespace EmployeePortalSystem.Controllers
         [HttpPost]
         public IActionResult Edit(Announcement model)
         {
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             if (!ModelState.IsValid)
             {
                 ViewBag.VisibleToOptions = GetVisibleToOptions();
@@ -113,7 +121,7 @@ namespace EmployeePortalSystem.Controllers
             if (existing == null) return NotFound();
 
             model.PostDate = existing.PostDate; // Preserve original PostDate
-            model.UpdatedBy = 1;
+            model.UpdatedBy = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
             model.UpdatedAt = DateTime.Now;
 
 
@@ -143,6 +151,10 @@ namespace EmployeePortalSystem.Controllers
 
                 _announcementrepo.Update(model);
             TempData["Message5"] = "Announcement updated successfully!";
+            if (currentDashboard == "Employee")
+            {
+                return RedirectToAction("EmployeeAnnouncement");
+            }
             return RedirectToAction("Index");
         }
 
@@ -158,8 +170,13 @@ namespace EmployeePortalSystem.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             _announcementrepo.Delete(id);
             TempData["Message5"] = "Announcement deleted successfully!";
+            if (currentDashboard == "Employee")
+            {
+                return RedirectToAction("EmployeeAnnouncement");
+            }
             return RedirectToAction("Index");
         }
 
@@ -177,6 +194,11 @@ namespace EmployeePortalSystem.Controllers
         {
             // Get the current employee's ID from session
             int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            ViewBag.CurrentEmployeeId = employeeId;
+            bool isDeptHead = _repo.GetAll().Any(d => d.HeadId == employeeId);
+            bool isCommHead = _repository.GetAllCommittees().Any(c => c.HeadId == employeeId);
+
+            ViewBag.CanAddAnnouncement = isDeptHead || isCommHead;
             if (employeeId == null)
                 return RedirectToAction("Login", "Account");
 

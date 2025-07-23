@@ -175,6 +175,8 @@ namespace EmployeePortalSystem.Controllers
             var members = _repository.GetCommitteeMembersByCommitteeId(id);
             ViewBag.CommitteeId = id;
             ViewBag.CommitteeName = committee.Name;
+            int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            ViewBag.IsCommitteeHead = (committee.HeadId == employeeId);
             return View("CommitteeMemberDetails", members);
         }
 
@@ -188,6 +190,8 @@ namespace EmployeePortalSystem.Controllers
             var members = _repository.GetCommitteeMembersByCommitteeId(id);
             ViewBag.CommitteeId = id;
             ViewBag.CommitteeName = committee.Name;
+            int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            ViewBag.IsCommitteeHead = (committee.HeadId == employeeId);
             return View("EmployeeCommitteeMemberDetails", members);
         }
 
@@ -214,7 +218,7 @@ namespace EmployeePortalSystem.Controllers
                 return View("AddMember", model);
             }
 
-
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             int? UserId = HttpContext.Session.GetInt32("EmployeeId");
 
             var existingMember = _repository.GetCommitteeMember(model.CommitteeId, model.EmployeeId);
@@ -243,6 +247,10 @@ namespace EmployeePortalSystem.Controllers
 
                 _repository.AddCommitteeMember(newMember);
                 TempData["message3"] = "Member added successfully.";
+            }
+            if (currentDashboard == "Employee")
+            {
+                return RedirectToAction("EmployeeCommitteeMembers", new { id = model.CommitteeId });
             }
             return RedirectToAction("CommitteeMembers", new { id = model.CommitteeId });
         }
@@ -279,8 +287,13 @@ namespace EmployeePortalSystem.Controllers
         [HttpPost]
         public IActionResult DeleteCommitteeMemberConfirmed(int committeeMemberId, int committeeId)
         {
+            string currentDashboard = HttpContext.Session.GetString("CurrentDashboard");
             _repository.DeleteCommitteeMember(committeeMemberId);
             TempData["message3"] = "Member deleted successfully.";
+            if (currentDashboard == "Employee")
+            {
+                return RedirectToAction("EmployeeCommitteeMembers", new { id = committeeId });
+            }
             return RedirectToAction("CommitteeMembers", new { id = committeeId });
         }
 

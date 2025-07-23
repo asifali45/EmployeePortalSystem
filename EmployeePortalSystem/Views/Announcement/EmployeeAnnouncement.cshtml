@@ -12,7 +12,14 @@
                 <button type="submit" class="create_emp_btn">Back</button>
             </form>
         </div>
-
+        @if (ViewBag.CanAddAnnouncement == true)
+        {
+            <div class="right_btn">
+                <form method="get" asp-action="Create" asp-controller="Announcement">
+                    <button type="submit" class="create_emp_btn">Add Announcement</button>
+                </form>
+            </div>
+        }
     </div>
     <div class="emp_head1">
         <h2 class="text-center text-primary">Announcements</h2>
@@ -67,8 +74,19 @@
                         </div>
                     </div>
                 </div>
+                @if (ViewBag.CurrentEmployeeId == ann.CreatedBy)
+                {
+                    <div class="amt-2">
+                        <a href="@Url.Action("Edit", "Announcement", new { id = ann.AnnouncementId })" title="Edit">
+                            <img src="~/img/edit Icon.png" width="15" height="15" />
+                        </a>
+                        <a href="@Url.Action("Delete", "Announcement", new { id = ann.AnnouncementId })" title="Delete">
+                            <img src="~/img/trash-xmark (1).png" width="15" height="15" />
+                        </a>
+                    </div>
+                }
             </div>
-
+           
         }
     }
     else
