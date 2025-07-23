@@ -2078,6 +2078,8 @@ input[type="radio"].highlight-radio:checked {
     background-color: rgba(108, 117, 125); 
 }
 
+
+
 .form_row1:last-child {
     display: flex;
     justify-content: center;
@@ -2104,6 +2106,8 @@ input[type="radio"].highlight-radio:checked {
 .form-control1 {
     border-radius: 7px;
     padding: 3px 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .button-t{

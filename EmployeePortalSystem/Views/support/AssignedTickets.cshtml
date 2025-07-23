@@ -51,19 +51,31 @@
                             <td>
                                 
 
-                                <select name="Resolved" class="form-control1 resolved-dropdown"
-                                        @(ticket.Resolved == "Closed"  ? "disabled" : "")>
-                                    <option value="">-- Select Resolution --</option>
+                               
 
-                                    <option value="Closed" selected="@(ticket.Resolved == "Closed" ? "selected" : null)" style="color: red;">
-                                        Closed
+                                <select name="Resolved" class="form-control1 resolved-dropdown"
+
+
+                                        @(ticket.Resolved == "Closed" ? "disabled" : "")>
+                                   
+
+
+                                    <option value="Open" selected="@(ticket.Resolved == "Open" ? "selected" : null)" style="color: teal;">
+                                        Open
                                     </option>
 
-                                    <option value="Escalated" selected="@(ticket.Resolved == "Escalated" ? "selected" : null)" style="color: orange;">
+                                    <option value="In Progress" selected="@(ticket.Resolved == "In Progress" ? "selected" : null)" style="color: orange;">
+                                        In Progress
+                                    </option>
+
+                                    <option value="Escalated" selected="@(ticket.Resolved == "Escalated" ? "selected" : null)" style="color: red;">
                                         Escalate
                                     </option>
-                                </select>
 
+                                    <option value="Closed" selected="@(ticket.Resolved == "Closed" ? "selected" : null)" style="color: green;">
+                                        Closed
+                                    </option>
+                                </select>
 
 
 
