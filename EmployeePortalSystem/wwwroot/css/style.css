@@ -2129,3 +2129,8 @@ input[type="radio"].highlight-radio:checked {
         margin-left: 10px;
     }
 
+.amt-2 {
+   display:flex;
+    justify-content:end;
+    gap:20px;
+}

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Committee Members";
     Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    bool isHead = ViewBag.IsCommitteeHead ?? false;
 }
 
 <div class="container">
@@ -13,7 +14,16 @@
                     <button type="submit" class="create_emp_btn">Back</button>
                 </form>
             </div>
-            
+            @if (isHead)
+            {
+                <div class="right_btn">
+                    <form method="get" asp-action="AddMember" asp-controller="Committee">
+                        <input type="hidden" name="committeeId" value="@ViewBag.CommitteeId" />
+
+                        <button type="submit" class="create_emp_btn">Add Member</button>
+                    </form>
+                </div>
+            }
         </div>
         <div class="emp_head">
             <h2>Members of @ViewBag.CommitteeName</h2>
@@ -30,7 +40,10 @@
                             <th>Employee Name</th>
                             <th>Photo</th>
                             <th>Department</th>
-                            
+                            @if (isHead)
+                            {
+                                <th>Action</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +67,14 @@
                                         }
                                     </td>
                                     <td>@member.DepartmentName</td>
-                                   
+                                    @if (isHead)
+                                    {
+                                        <td>
+                                            <a asp-action="DeleteCommitteeMember" asp-route-committeeMemberId="@member.CommitteeMemberId" title="Delete">
+                                                <img src="~/img/trash-xmark (1).png" width="20" height="20" />
+                                            </a>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         }

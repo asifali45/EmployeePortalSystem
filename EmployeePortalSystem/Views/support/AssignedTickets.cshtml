@@ -54,8 +54,11 @@
                                
 
                                 <select name="Resolved" class="form-control1 resolved-dropdown"
+
+
                                         @(ticket.Resolved == "Closed" ? "disabled" : "")>
                                    
+
 
                                     <option value="Open" selected="@(ticket.Resolved == "Open" ? "selected" : null)" style="color: teal;">
                                         Open
